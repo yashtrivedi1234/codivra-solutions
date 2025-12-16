@@ -5,12 +5,14 @@ import hardikImg from "../assets/hardik.jpeg";
 import sakshiImg from "../assets/sakshi.jpeg";
 import ruchiImg from "../assets/ruchi.jpeg";
 import aditya from "../assets/aditya.jpeg";
+import yash from "../assets/yash.jpeg";
+import shalu from "../assets/shalu.jpeg";
 
 const teamMembers = [
   {
     name: "Yash Trivedi",
     role: "CEO & Founder",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    image: yash,
     bio: "Founder and strategic leader driving the company vision",
     social: { linkedin: "#", twitter: "#" },
   },
@@ -45,7 +47,7 @@ const teamMembers = [
   {
     name: "Shalu Kumari",
     role: ".NET Developer",
-    image: "https://images.unsplash.com/photo-1548142813-c348350df52b?w=400&h=400&fit=crop&crop=face",
+    image: shalu,
     bio: "Focused on backend development and system stability",
     social: { linkedin: "#" },
   },
