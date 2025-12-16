@@ -41,6 +41,45 @@ export type Database = {
         }
         Relationships: []
       }
+      job_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          email: string
+          id: string
+          job_title: string
+          linkedin_url: string | null
+          name: string
+          phone: string | null
+          portfolio_url: string | null
+          resume_url: string | null
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          job_title: string
+          linkedin_url?: string | null
+          name: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          job_title?: string
+          linkedin_url?: string | null
+          name?: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscriptions: {
         Row: {
           email: string

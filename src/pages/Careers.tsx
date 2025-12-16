@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { MapPin, Clock, Briefcase, ArrowRight, Users, Heart, Zap, Trophy, ChevronDown, ChevronUp } from "lucide-react";
+import { MapPin, Clock, Briefcase, ArrowRight, Users, Heart, Zap, Trophy, ChevronDown, ChevronUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "@/components/AnimatedSection";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const benefits = [
   {
@@ -131,7 +136,156 @@ const jobListings = [
   }
 ];
 
-const JobCard = ({ job }: { job: typeof jobListings[0] }) => {
+interface ApplicationFormProps {
+  jobTitle: string;
+  onClose: () => void;
+}
+
+const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    linkedinUrl: "",
+    portfolioUrl: "",
+    coverLetter: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("job_applications").insert({
+        job_title: jobTitle,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || null,
+        linkedin_url: formData.linkedinUrl.trim() || null,
+        portfolio_url: formData.portfolioUrl.trim() || null,
+        cover_letter: formData.coverLetter.trim() || null
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Application Submitted!",
+        description: "Thank you for applying. We'll review your application and get back to you soon.",
+      });
+      onClose();
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+      <div className="bg-card rounded-2xl shadow-elevated max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-card p-6 border-b border-border flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-foreground">Apply for Position</h3>
+            <p className="text-sm text-muted-foreground">{jobTitle}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-muted rounded-full transition-colors"
+          >
+            <X className="w-5 h-5 text-muted-foreground" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name *</Label>
+            <Input
+              id="name"
+              required
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email Address *</Label>
+            <Input
+              id="email"
+              type="email"
+              required
+              placeholder="john@example.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="linkedin">LinkedIn Profile</Label>
+            <Input
+              id="linkedin"
+              type="url"
+              placeholder="https://linkedin.com/in/yourprofile"
+              value={formData.linkedinUrl}
+              onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="portfolio">Portfolio / Website</Label>
+            <Input
+              id="portfolio"
+              type="url"
+              placeholder="https://yourportfolio.com"
+              value={formData.portfolioUrl}
+              onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="coverLetter">Cover Letter</Label>
+            <Textarea
+              id="coverLetter"
+              placeholder="Tell us why you're interested in this position and what makes you a great fit..."
+              rows={5}
+              value={formData.coverLetter}
+              onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+              Cancel
+            </Button>
+            <Button type="submit" variant="accent" disabled={isSubmitting} className="flex-1">
+              {isSubmitting ? "Submitting..." : "Submit Application"}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+const JobCard = ({ job, onApply }: { job: typeof jobListings[0]; onApply: (title: string) => void }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -155,10 +309,8 @@ const JobCard = ({ job }: { job: typeof jobListings[0] }) => {
               </span>
             </div>
           </div>
-          <Button variant="accent" asChild>
-            <a href={`mailto:careers@codivra.com?subject=Application for ${job.title}`}>
-              Apply Now
-            </a>
+          <Button variant="accent" onClick={() => onApply(job.title)}>
+            Apply Now
           </Button>
         </div>
         
@@ -205,6 +357,7 @@ const JobCard = ({ job }: { job: typeof jobListings[0] }) => {
 
 const Careers = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
+  const [applicationJob, setApplicationJob] = useState<string | null>(null);
   const departments = ["All", ...Array.from(new Set(jobListings.map(job => job.department)))];
   
   const filteredJobs = selectedDepartment === "All" 
@@ -214,6 +367,14 @@ const Careers = () => {
   return (
     <div className="min-h-screen">
       <Header />
+      
+      {/* Application Modal */}
+      {applicationJob && (
+        <ApplicationForm
+          jobTitle={applicationJob}
+          onClose={() => setApplicationJob(null)}
+        />
+      )}
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-gradient-to-b from-muted/50 to-background">
@@ -362,7 +523,7 @@ const Careers = () => {
 
           <AnimatedStagger className="space-y-6 max-w-4xl mx-auto">
             {filteredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
+              <JobCard key={job.id} job={job} onApply={setApplicationJob} />
             ))}
           </AnimatedStagger>
 
@@ -384,11 +545,9 @@ const Careers = () => {
             <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
               We're always looking for talented individuals. Send us your resume and let us know how you can contribute to our team.
             </p>
-            <Button variant="secondary" size="lg" asChild>
-              <a href="mailto:careers@codivra.com">
-                Send Your Resume
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </a>
+            <Button variant="secondary" size="lg" onClick={() => setApplicationJob("General Application")}>
+              Send Your Resume
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </AnimatedSection>
         </div>
