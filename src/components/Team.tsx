@@ -4,6 +4,7 @@ import preetiImg from "../assets/preeti.jpeg";
 import hardikImg from "../assets/hardik.jpeg";
 import sakshiImg from "../assets/sakshi.jpeg";
 import ruchiImg from "../assets/ruchi.jpeg";
+import aditya from "../assets/aditya.jpeg";
 
 const teamMembers = [
   {
@@ -65,7 +66,7 @@ const teamMembers = [
   {
     name: "Aditya Kumar",
     role: "Graphic Designer",
-    image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop&crop=face",
+    image: aditya,
     bio: "Creating visually engaging designs and brand assets",
     social: { linkedin: "#" },
   },
