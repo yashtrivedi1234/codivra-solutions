@@ -12,18 +12,48 @@ export const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      name: (formData.get("name") || "").toString(),
+      email: (formData.get("email") || "").toString(),
+      service: (formData.get("service") || "").toString(),
+      message: (formData.get("message") || "").toString(),
+    };
+
+    try {
+      const apiBase = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
+      const response = await fetch(`${apiBase}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(errorBody?.message || "Unable to send your message.");
+      }
+
+      setIsSubmitted(true);
+      e.currentTarget.reset();
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+    } catch (error) {
+      console.error(error);
+      setIsSubmitted(false);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or reach us at codivirasolution@gmail.com.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -102,13 +132,26 @@ export const Contact = () => {
                         <label className="text-sm font-medium text-foreground mb-2 block">
                           Full Name
                         </label>
-                        <Input placeholder="John Doe" required className="bg-background" />
+                        <Input
+                          name="name"
+                          placeholder="John Doe"
+                          required
+                          className="bg-background"
+                          disabled={isSubmitting}
+                        />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-foreground mb-2 block">
                           Email
                         </label>
-                        <Input type="email" placeholder="john@example.com" required className="bg-background" />
+                        <Input
+                          type="email"
+                          name="email"
+                          placeholder="john@example.com"
+                          required
+                          className="bg-background"
+                          disabled={isSubmitting}
+                        />
                       </div>
                     </div>
 
@@ -117,8 +160,10 @@ export const Contact = () => {
                         Service Interested In
                       </label>
                       <select
+                        name="service"
                         className="w-full h-10 px-3 rounded-lg border border-input bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                         required
+                        disabled={isSubmitting}
                       >
                         <option value="">Select a service</option>
                         <option value="web">Web Development</option>
@@ -134,10 +179,12 @@ export const Contact = () => {
                         Project Details
                       </label>
                       <Textarea
+                        name="message"
                         placeholder="Tell us about your project..."
                         rows={5}
                         required
                         className="bg-background resize-none"
+                        disabled={isSubmitting}
                       />
                     </div>
 

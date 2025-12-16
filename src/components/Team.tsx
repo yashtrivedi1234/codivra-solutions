@@ -1,5 +1,9 @@
 import { Linkedin, Twitter, Github } from "lucide-react";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
+import preetiImg from "../assets/preeti.jpeg";
+import hardikImg from "../assets/hardik.jpeg";
+import sakshiImg from "../assets/sakshi.jpeg";
+import ruchiImg from "../assets/ruchi.jpeg";
 
 const teamMembers = [
   {
@@ -8,6 +12,13 @@ const teamMembers = [
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
     bio: "Founder and strategic leader driving the company vision",
     social: { linkedin: "#", twitter: "#" },
+  },
+  {
+    name: "Sneha Bajpai",
+    role: "Team Lead",
+    image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop&crop=face",
+    bio: "Leading teams to deliver high-quality solutions",
+    social: { linkedin: "#" },
   },
   {
     name: "Najeeba Begum",
@@ -19,30 +30,16 @@ const teamMembers = [
   {
     name: "Preeti Yadav",
     role: "Business Development Executive",
-    image: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face",
+    image: preetiImg,
     bio: "Driving growth and building strong client relationships",
-    social: { linkedin: "#" },
-  },
-  {
-    name: "Sneha Pandey",
-    role: "Team Lead",
-    image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop&crop=face",
-    bio: "Leading teams to deliver high-quality solutions",
     social: { linkedin: "#" },
   },
   {
     name: "Hardik Srivastava",
     role: "MERN Stack Developer",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    image: hardikImg,
     bio: "Building scalable web applications using MERN stack",
     social: { linkedin: "#", github: "#" },
-  },
-  {
-    name: "Sakshi Bhardwaj",
-    role: ".NET Developer",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    bio: "Developing robust applications with .NET technologies",
-    social: { linkedin: "#" },
   },
   {
     name: "Shalu Kumari",
@@ -52,9 +49,16 @@ const teamMembers = [
     social: { linkedin: "#" },
   },
   {
+    name: "Sakshi Bhardwaj",
+    role: ".NET Developer",
+    image: sakshiImg,
+    bio: "Developing robust applications with .NET technologies",
+    social: { linkedin: "#" },
+  },
+  {
     name: "Ruchi Yadav",
     role: "PHP Developer",
-    image: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=400&h=400&fit=crop&crop=face",
+    image: ruchiImg,
     bio: "Experienced in PHP-based web application development",
     social: { linkedin: "#" },
   },
