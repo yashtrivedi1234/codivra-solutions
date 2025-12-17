@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedSection } from "./AnimatedSection";
-import { supabase } from "@/integrations/supabase/client";
 
 export const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,11 +25,14 @@ export const Contact = () => {
     };
 
     try {
-      const { error } = await supabase
-        .from("contact_submissions")
-        .insert(payload);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-      if (error) throw error;
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || result.message || "Failed to send message");
 
       setIsSubmitted(true);
       e.currentTarget.reset();
@@ -43,7 +45,7 @@ export const Contact = () => {
       setIsSubmitted(false);
       toast({
         title: "Something went wrong",
-        description: "Please try again or reach us at codivirasolution@gmail.com.",
+        description: "Please try again or reach us at codivrasolution@gmail.com.",
         variant: "destructive",
       });
     } finally {
@@ -73,7 +75,7 @@ export const Contact = () => {
               {/* Contact Details */}
               <div className="space-y-6">
                 {[
-                  { icon: Mail, label: "Email Us", value: "codivirasolution@gmail.com", href: "mailto:codivirasolution@gmail.com" },
+                  { icon: Mail, label: "Email Us", value: "codivrasolution@gmail.com", href: "mailto:codivrasolution@gmail.com" },
                   { icon: Phone, label: "Call Us", value: "+91 9452819739", href: "tel:+919452819739" },
                   { icon: MapPin, label: "Visit Us", value: "813, Vikas Nagar Colony, Khoobpur, Sitapur", href: null },
                 ].map((item, index) => (
