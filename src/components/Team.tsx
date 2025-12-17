@@ -7,6 +7,7 @@ import ruchiImg from "../assets/ruchi.jpeg";
 import aditya from "../assets/aditya.jpeg";
 import yash from "../assets/yash.jpeg";
 import shalu from "../assets/shalu.jpeg";
+import sneha from "../assets/sneha.jpeg";
 
 const teamMembers = [
   {
@@ -19,7 +20,7 @@ const teamMembers = [
   {
     name: "Sneha Bajpai",
     role: "Team Lead",
-    image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop&crop=face",
+    image: sneha,
     bio: "Leading teams to deliver high-quality solutions",
     social: { linkedin: "#" },
   },
