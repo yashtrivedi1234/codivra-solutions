@@ -117,6 +117,66 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
+// Test endpoint to verify mail sending quickly.
+// If SMTP env vars are not provided, this will use Nodemailer's
+// Ethereal test account and return a preview URL.
+app.get("/test-email", async (_req, res) => {
+  try {
+    const mailOptions = {
+      from:
+        process.env.EMAIL_FROM ||
+        process.env.SMTP_USER ||
+        "no-reply@example.com",
+      to:
+        process.env.EMAIL_TO ||
+        process.env.SMTP_USER ||
+        "" ||
+        "recipient@example.com",
+      subject: "Test email from Codivra Launchpad",
+      text: "This is a test message from the /test-email endpoint.",
+      html: "<p>This is a <strong>test</strong> message from the /test-email endpoint.</p>",
+    };
+
+    // If SMTP config exists, attempt to use the existing transporter.
+    const hasSmtp = !!(process.env.SMTP_HOST || process.env.SMTP_USER);
+
+    if (hasSmtp) {
+      const info = await transporter.sendMail(mailOptions);
+      return res.json({ status: "ok", messageId: info.messageId });
+    }
+
+    // Fallback to Ethereal test account when no SMTP is configured.
+    const testAccount = await nodemailer.createTestAccount();
+    const testTransporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
+
+    const info = await testTransporter.sendMail({
+      ...mailOptions,
+      from: testAccount.user,
+      to: testAccount.user,
+    });
+
+    const previewUrl = nodemailer.getTestMessageUrl(info) || null;
+
+    return res.json({ status: "ok", previewUrl, messageId: info.messageId });
+  } catch (err) {
+    console.error("/test-email error:", err);
+    return res
+      .status(500)
+      .json({
+        status: "error",
+        error: err && err.message ? err.message : String(err),
+      });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Contact API listening on http://localhost:${port}`);
 });
