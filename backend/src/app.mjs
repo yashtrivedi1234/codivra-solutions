@@ -39,6 +39,11 @@ app.use((req, res, next) => {
 // Seed default admin on startup
 seedDefaultAdmin();
 
+// Root route for health check or welcome message
+app.get("/", (req, res) => {
+  res.send("Codivra API is running");
+});
+
 app.use(contactRoutes);
 app.use(careersRoutes);
 app.use(adminRoutes);
