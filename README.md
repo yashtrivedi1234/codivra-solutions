@@ -1,73 +1,90 @@
-# Welcome to your Lovable project
+# Codivra Website & Admin Panel
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Codivra is a modern, full-stack web application designed to showcase a business or agency's services, portfolio, team, blog, and more. The project is divided into two main parts:
 
-## How can I edit this code?
+- **Website (Frontend)**: The public-facing site for visitors and potential clients.
+- **Admin Panel (Backend)**: A secure dashboard for administrators to manage website content and data.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Website (Frontend)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Tech Stack**: React (with Vite), TypeScript, Tailwind CSS
+- **Location**: `frontend/`
+- **Features**:
+  - Home, About, Services, Portfolio, Blog, Careers, Contact pages
+  - Responsive design for all devices
+  - Animated transitions and sections for a modern look
+  - Team and testimonials sections
+  - Contact form with email integration
+  - Blog section for news and updates
+  - Careers page for job listings
+  - SEO-friendly structure
+- **Folder Structure**:
+  - `src/components/` – Reusable UI components
+  - `src/pages/` – Main website pages
+  - `src/hooks/` – Custom React hooks
+  - `src/lib/` – API utilities and store
+  - `src/config/` – Route and config files
+  - `public/` – Static assets
+- **How to Run**:
+  1.  Navigate to `frontend/`
+  2.  Install dependencies: `npm install`
+  3.  Start the dev server: `npm run dev`
+  4.  Visit `http://localhost:5173` in your browser
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Admin Panel (Backend)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Tech Stack**: Node.js, Express (ESM), MongoDB
+- **Location**: `backend/`
+- **Features**:
+  - Secure login for admins
+  - Manage website content: blogs, services, portfolio, team, careers, subscriptions, etc.
+  - File uploads (e.g., images via Cloudinary)
+  - Email notifications and contact management
+  - RESTful API endpoints for frontend integration
+  - Data validation and authentication middleware
+- **Folder Structure**:
+  - `src/controllers/` – Business logic for each resource
+  - `src/routes/` – API route definitions
+  - `src/db/` – Database connection setup
+  - `src/middleware/` – Auth, upload, and other middleware
+  - `src/validation/` – Joi schemas for data validation
+  - `src/services/` – Email and other services
+  - `src/config/` – Environment and third-party configs
+- **How to Run**:
+  1.  Navigate to `backend/`
+  2.  Install dependencies: `npm install`
+  3.  Set up environment variables in `.env` (see `src/config/env.mjs` for required keys)
+  4.  Start the server: `npm start` or `node src/server.mjs`
+  5.  API runs at `http://localhost:5000` (default)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## How It Works
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- The **frontend** fetches and displays data from the backend via REST APIs.
+- The **admin panel** allows authorized users to add, edit, or delete content, which is instantly reflected on the website.
+- All sensitive operations are protected by authentication and validation.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Contribution & Customization
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- Fork or clone the repository.
+- Update content, styles, or add new features as needed.
+- For deployment, configure environment variables and use production build commands.
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Contact
 
-**Use GitHub Codespaces**
+For questions or support, please contact the project maintainer.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Enjoy building with Codivra!**
