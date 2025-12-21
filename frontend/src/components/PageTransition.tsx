@@ -46,11 +46,16 @@ const PageTransition = ({ children }: PageTransitionProps) => {
       transition={pageTransition}
     >
       {isLoading ? (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center bg-[#0A0F1C]">
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
-              <div className="w-12 h-12 border-4 border-muted rounded-full" />
-              <div className="absolute inset-0 w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+              <div className="absolute inset-0 w-16 h-16 border-4 border-[#00D9FF]/20 rounded-full blur-sm" />
+              <div className="w-16 h-16 border-4 border-[#00D9FF] border-t-transparent rounded-full animate-spin" />
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-[#00D9FF] rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
+              <div className="w-2 h-2 bg-[#00D9FF] rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
+              <div className="w-2 h-2 bg-[#00D9FF] rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         </div>

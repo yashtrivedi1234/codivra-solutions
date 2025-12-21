@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Trash2, Edit3, Loader2, X, Upload } from "lucide-react";
+import { Plus, Trash2, Edit3, Loader2, X, Upload, Linkedin, Twitter, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
@@ -11,6 +11,7 @@ import {
 } from "@/lib/api";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const AdminTeam = () => {
   const { data, isLoading, refetch } = useGetTeamQuery();
@@ -40,11 +41,7 @@ const AdminTeam = () => {
       role: "",
       bio: "",
       email: "",
-      social_links: {
-        linkedin: "",
-        twitter: "",
-        github: "",
-      },
+      social_links: { linkedin: "", twitter: "", github: "" },
     });
     setEditingMember(null);
     setImageFile(null);
@@ -123,6 +120,8 @@ const AdminTeam = () => {
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "Cancel",
+      background: "#0A0F1C",
+      color: "#ffffff",
     });
 
     if (!result.isConfirmed) return;
@@ -142,23 +141,26 @@ const AdminTeam = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
-              Manage Team
+            <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              Team Management
             </h1>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-white/60">
               Add and manage your team members
             </p>
           </div>
-          <Button onClick={() => setIsModalOpen(true)} className="gap-2">
-            <Plus className="w-4 h-4" />
+          <Button 
+            onClick={() => setIsModalOpen(true)} 
+            className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-6 py-3 rounded-xl hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
+          >
+            <Plus className="w-4 h-4 mr-2" />
             Add Member
           </Button>
         </div>
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-10 h-10 animate-spin text-[#00D9FF]" />
           </div>
         )}
 
@@ -166,57 +168,94 @@ const AdminTeam = () => {
         {!isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data?.items && data.items.length > 0 ? (
-              data.items.map((member) => (
-                <div
+              data.items.map((member, index) => (
+                <motion.div
                   key={member._id}
-                  className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700 overflow-hidden"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  whileHover={{ y: -4 }}
+                  className="group relative"
                 >
-                  {member.image && (
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-48 object-cover rounded-lg mb-4"
-                    />
-                  )}
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                      {member.name}
-                    </h3>
-                    <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                      {member.role}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
+                    {member.image && (
+                      <div className="relative mb-6 overflow-hidden rounded-xl">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent" />
+                      </div>
+                    )}
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-white mb-1">
+                        {member.name}
+                      </h3>
+                      <p className="text-[#00D9FF] font-semibold text-sm mb-2">
+                        {member.role}
+                      </p>
+                      {member.email && (
+                        <p className="text-xs text-white/50">
+                          {member.email}
+                        </p>
+                      )}
+                    </div>
+                    <p className="text-white/60 text-sm mb-6 line-clamp-3 leading-relaxed">
+                      {member.bio}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      {member.email}
-                    </p>
+                    
+                    {/* Social Links */}
+                    {(member.social_links?.linkedin || member.social_links?.twitter || member.social_links?.github) && (
+                      <div className="flex items-center gap-2 mb-6 pb-6 border-b border-white/10">
+                        {member.social_links?.linkedin && (
+                          <a href={member.social_links.linkedin} target="_blank" rel="noopener noreferrer" 
+                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
+                            <Linkedin className="w-4 h-4 text-white/60" />
+                          </a>
+                        )}
+                        {member.social_links?.twitter && (
+                          <a href={member.social_links.twitter} target="_blank" rel="noopener noreferrer"
+                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
+                            <Twitter className="w-4 h-4 text-white/60" />
+                          </a>
+                        )}
+                        {member.social_links?.github && (
+                          <a href={member.social_links.github} target="_blank" rel="noopener noreferrer"
+                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
+                            <Github className="w-4 h-4 text-white/60" />
+                          </a>
+                        )}
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(member)}
+                        className="flex-1 bg-white/5 border-white/10 text-white hover:bg-white/10"
+                      >
+                        <Edit3 className="w-3.5 h-3.5 mr-1.5" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(member._id)}
+                        disabled={isDeleting}
+                        className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">
-                    {member.bio}
-                  </p>
-                  <div className="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(member)}
-                      className="flex-1"
-                    >
-                      <Edit3 className="w-3.5 h-3.5 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(member._id)}
-                      disabled={isDeleting}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </div>
+                </motion.div>
               ))
             ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="text-slate-500 dark:text-slate-400">
+              <div className="col-span-full text-center py-20">
+                <p className="text-white/50 text-lg">
                   No team members yet. Add one to get started!
                 </p>
               </div>
@@ -226,85 +265,98 @@ const AdminTeam = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full max-w-2xl my-8">
+          <div className="fixed inset-0 bg-[#0A0F1C]/95 backdrop-blur-xl flex items-center justify-center p-4 z-50 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl w-full max-w-2xl my-8"
+            >
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <div className="flex items-center justify-between p-6 border-b border-white/10">
+                <h2 className="text-2xl font-bold text-white">
                   {editingMember ? "Edit Team Member" : "Add Team Member"}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                  className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               {/* Modal Body */}
-              <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-96 overflow-y-auto">
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                    Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="John Doe"
-                  />
+              <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto">
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                      placeholder="John Doe"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
+                      Role *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                      placeholder="Lead Developer"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                    Role *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.role}
-                    onChange={(e) =>
-                      setFormData({ ...formData, role: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="e.g., Lead Developer"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
                     Bio *
                   </label>
                   <textarea
                     required
                     value={formData.bio}
-                    onChange={(e) =>
-                      setFormData({ ...formData, bio: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none"
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all h-24 resize-none"
                     placeholder="Tell us about this team member..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                    Image (Optional)
+                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
+                    Profile Image
                   </label>
                   <div className="space-y-3">
                     {imagePreview && (
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-full h-40 object-cover rounded-lg border border-slate-300 dark:border-slate-600"
+                        className="w-full h-48 object-cover rounded-xl border border-white/10"
                       />
                     )}
-                    <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                      <Upload className="w-5 h-5 text-slate-500" />
-                      <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    <label className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                      <Upload className="w-5 h-5 text-white/60" />
+                      <span className="text-sm font-medium text-white/60">
                         {imageFile ? imageFile.name : "Click to upload image"}
                       </span>
                       <input
@@ -317,94 +369,71 @@ const AdminTeam = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                    Email (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="john@example.com"
-                  />
-                </div>
-
                 <div className="space-y-3">
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                    Social Links (Optional)
+                  <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
+                    Social Links
                   </label>
-                  <input
-                    type="url"
-                    value={formData.social_links.linkedin}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        social_links: {
-                          ...formData.social_links,
-                          linkedin: e.target.value,
-                        },
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="LinkedIn URL"
-                  />
-                  <input
-                    type="url"
-                    value={formData.social_links.twitter}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        social_links: {
-                          ...formData.social_links,
-                          twitter: e.target.value,
-                        },
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="Twitter URL"
-                  />
-                  <input
-                    type="url"
-                    value={formData.social_links.github}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        social_links: {
-                          ...formData.social_links,
-                          github: e.target.value,
-                        },
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="GitHub URL"
-                  />
+                  <div className="space-y-3">
+                    <input
+                      type="url"
+                      value={formData.social_links.linkedin}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          social_links: { ...formData.social_links, linkedin: e.target.value },
+                        })
+                      }
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                      placeholder="LinkedIn URL"
+                    />
+                    <input
+                      type="url"
+                      value={formData.social_links.twitter}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          social_links: { ...formData.social_links, twitter: e.target.value },
+                        })
+                      }
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                      placeholder="Twitter URL"
+                    />
+                    <input
+                      type="url"
+                      value={formData.social_links.github}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          social_links: { ...formData.social_links, github: e.target.value },
+                        })
+                      }
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                      placeholder="GitHub URL"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="button"
-                    variant="outline"
                     onClick={resetForm}
-                    className="flex-1"
+                    className="flex-1 bg-white/5 border border-white/10 text-white hover:bg-white/10"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={isCreating || isUpdating}
-                    className="flex-1 gap-2"
+                    className="flex-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
                   >
                     {(isCreating || isUpdating) && (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     )}
                     {editingMember ? "Update" : "Create"} Member
                   </Button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         )}
       </div>

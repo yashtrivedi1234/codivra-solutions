@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, Trash2, Edit3, Loader2, X, Upload } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
@@ -128,14 +129,14 @@ const AdminServices = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+            <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
               Manage Services
             </h1>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-white/60">
               Add, edit, and manage your services
             </p>
           </div>
-          <Button onClick={() => setIsModalOpen(true)} className="gap-2">
+          <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-6 py-3 rounded-xl hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] gap-2">
             <Plus className="w-4 h-4" />
             Add Service
           </Button>
@@ -143,8 +144,8 @@ const AdminServices = () => {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-10 h-10 animate-spin text-[#00D9FF]" />
           </div>
         )}
 
@@ -152,68 +153,75 @@ const AdminServices = () => {
         {!isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data?.items && data.items.length > 0 ? (
-              data.items.map((service) => (
-                <div
+              data.items.map((service, idx) => (
+                <motion.div
                   key={service._id}
-                  className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-slate-200 dark:border-slate-700"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                  whileHover={{ y: -4 }}
+                  className="group relative"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                        <span className="text-2xl">{service.icon}</span>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                          {service.title}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                          {service.price && (
-                            <p className="text-sm text-blue-600 dark:text-blue-400 font-semibold">
-                              ${service.price}
-                            </p>
-                          )}
-                          <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-0.5 rounded-full">
-                            Active
-                          </span>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#00D9FF]/20 to-[#0066FF]/20 rounded-lg flex items-center justify-center">
+                          <span className="text-2xl text-white">{service.icon}</span>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-white">
+                            {service.title}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {service.price && (
+                              <p className="text-sm text-[#00D9FF] font-semibold">
+                                ${service.price}
+                              </p>
+                            )}
+                            <span className="text-xs bg-[#00D9FF]/20 text-[#00D9FF] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                              Active
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <p className="text-white/60 text-sm mb-4">
+                      {service.description}
+                    </p>
+                    {service.features && service.features.length > 0 && (
+                      <ul className="text-xs text-white/40 mb-4 space-y-1">
+                        {service.features.map((feature, idx) => (
+                          <li key={idx}>• {feature}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <div className="flex items-center gap-2 pt-4 border-t border-white/10">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(service)}
+                        className="flex-1 bg-white/5 border-white/10 text-white hover:bg-white/10"
+                      >
+                        <Edit3 className="w-3.5 h-3.5 mr-1.5" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(service._id)}
+                        disabled={isDeleting}
+                        className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
-                    {service.description}
-                  </p>
-                  {service.features && service.features.length > 0 && (
-                    <ul className="text-xs text-slate-500 dark:text-slate-500 mb-4 space-y-1">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx}>• {feature}</li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(service)}
-                      className="flex-1"
-                    >
-                      <Edit3 className="w-3.5 h-3.5 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(service._id)}
-                      disabled={isDeleting}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </div>
+                </motion.div>
               ))
             ) : (
-              <div className="col-span-3 text-center py-12">
-                <p className="text-slate-500 dark:text-slate-400">
+              <div className="col-span-full text-center py-20">
+                <p className="text-white/50 text-lg">
                   No services found. Add your first service to get started.
                 </p>
               </div>
@@ -223,66 +231,63 @@ const AdminServices = () => {
 
         {/* Add/Edit Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+          <div className="fixed inset-0 bg-[#0A0F1C]/95 backdrop-blur-xl flex items-center justify-center p-4 z-50 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl w-full max-w-2xl my-8"
+            >
+              <div className="flex items-center justify-between p-6 border-b border-white/10">
+                <h2 className="text-2xl font-bold text-white">
                   {editingService ? "Edit Service" : "Add New Service"}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                  className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
                     Service Title *
                   </label>
                   <input
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
                     placeholder="e.g., Web Development"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
                     Description *
                   </label>
                   <textarea
                     required
                     value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none h-24 resize-none"
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all h-24 resize-none"
                     placeholder="Describe the service..."
                   />
                 </div>
-
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
                       Icon Image (Optional)
                     </label>
                     <div className="space-y-3">
                       {iconPreview && (
-                        <div className="w-full h-32 bg-slate-100 dark:bg-slate-900 rounded-lg flex items-center justify-center">
+                        <div className="w-full h-32 bg-white/10 rounded-xl flex items-center justify-center">
                           <img src={iconPreview} alt="Icon preview" className="max-w-full max-h-full" />
                         </div>
                       )}
-                      <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                        <Upload className="w-5 h-5 text-slate-500" />
-                        <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                      <label className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
+                        <Upload className="w-5 h-5 text-white/60" />
+                        <span className="text-sm font-medium text-white/60">
                           {iconFile ? iconFile.name : "Click to upload icon"}
                         </span>
                         <input
@@ -294,70 +299,56 @@ const AdminServices = () => {
                       </label>
                     </div>
                   </div>
-
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
                       Price (Optional)
                     </label>
                     <input
                       type="number"
                       value={formData.price}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          price: Number(e.target.value),
-                        })
-                      }
-                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                      onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
                       placeholder="5000"
                       min="0"
                     />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
                     Features (comma-separated)
                   </label>
                   <input
                     type="text"
                     value={formData.features.join(", ")}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        features: e.target.value
-                          .split(",")
-                          .map((f) => f.trim())
-                          .filter((f) => f),
-                      })
-                    }
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      features: e.target.value.split(",").map((f) => f.trim()).filter((f) => f),
+                    })}
+                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
                     placeholder="Feature 1, Feature 2, Feature 3"
                   />
                 </div>
-
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="button"
-                    variant="outline"
                     onClick={resetForm}
-                    className="flex-1"
+                    className="flex-1 bg-white/5 border border-white/10 text-white hover:bg-white/10"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={isCreating || isUpdating}
-                    className="flex-1 gap-2"
+                    className="flex-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
                   >
                     {(isCreating || isUpdating) && (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     )}
                     {editingService ? "Update" : "Create"} Service
                   </Button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         )}
       </div>

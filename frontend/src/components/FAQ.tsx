@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AnimatedSection } from "./AnimatedSection";
+import { motion } from "framer-motion";
 
 const faqs = [
   {
@@ -43,46 +44,74 @@ const faqs = [
 
 export const FAQ = () => {
   return (
-    <section id="faq" className="py-24 bg-gradient-subtle">
-      <div className="container mx-auto px-4">
+    <section id="faq" className="relative py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#00D9FF]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[#0066FF]/5 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}
-        <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block text-accent font-semibold text-sm tracking-wider uppercase mb-4">
-            FAQ
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Frequently Asked Questions
+        <AnimatedSection className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-block mb-4"
+          >
+            <span className="inline-flex items-center gap-2 text-[#00D9FF] font-bold text-sm tracking-[0.2em] uppercase">
+              <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-[#00D9FF]" />
+              FAQ
+              <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-[#00D9FF]" />
+            </span>
+          </motion.div>
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            Frequently Asked <span className="text-[#00D9FF]">Questions</span>
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-lg text-white/60 leading-relaxed">
             Got questions? We've got answers. Find everything you need to know about working with us.
           </p>
         </AnimatedSection>
 
         {/* Accordion */}
-        <AnimatedSection delay={0.1} className="max-w-3xl mx-auto">
+        <AnimatedSection delay={0.1} className="max-w-4xl mx-auto">
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem
+              <motion.div
                 key={index}
-                value={`item-${index}`}
-                className="bg-card border border-border/50 rounded-xl px-6 shadow-soft data-[state=open]:shadow-card transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
               >
-                <AccordionTrigger className="text-left text-foreground font-semibold hover:text-accent hover:no-underline py-5">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="relative group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl px-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300 data-[state=open]:bg-white/10 data-[state=open]:border-[#00D9FF]"
+                >
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#00D9FF]/5 to-[#0066FF]/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100 transition-opacity duration-500" />
+                  
+                  <AccordionTrigger className="relative text-left text-white font-bold hover:text-[#00D9FF] hover:no-underline py-6 text-lg">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="relative text-white/70 pb-6 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
         </AnimatedSection>
 
         {/* Bottom CTA */}
-        <AnimatedSection delay={0.2} className="text-center mt-12">
-          <p className="text-muted-foreground">
+        <AnimatedSection delay={0.2} className="text-center mt-16">
+          <p className="text-white/60 text-lg">
             Still have questions?{" "}
-            <a href="#contact" className="text-accent font-semibold hover:underline">
+            <a href="#contact" className="text-[#00D9FF] font-bold hover:underline">
               Contact us
             </a>{" "}
             and we'll be happy to help.

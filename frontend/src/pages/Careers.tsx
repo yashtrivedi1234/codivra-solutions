@@ -11,6 +11,7 @@ import { AnimatedSection, AnimatedStagger, AnimatedItem } from "@/components/Ani
 import { useGetJobsQuery, useSubmitApplicationMutation } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
+import { motion } from "framer-motion";
 
 type JobCardData = {
   id: string;
@@ -45,8 +46,6 @@ const benefits = [
     description: "Learning budget, mentorship programs, and career advancement opportunities."
   }
 ];
-
-// No fallback listings: only admin-published jobs will show.
 
 interface ApplicationFormProps {
   jobTitle: string;
@@ -83,17 +82,14 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
 
       toast({
         title: "Career Application Submitted!",
-        description:
-          result.message ||
-          "Thank you for applying to Codivra Solutions Careers. We'll review your application and get back to you soon.",
+        description: result.message || "Thank you for applying to Codivra Solutions Careers. We'll review your application and get back to you soon.",
       });
       onClose();
     } catch (error) {
       console.error("Error submitting application:", error);
       toast({
         title: "Career Application Failed",
-        description:
-          "There was an error submitting your application. Please try again.",
+        description: "There was an error submitting your application. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -102,35 +98,41 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
-      <div className="bg-card rounded-2xl shadow-elevated max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-card p-6 border-b border-border flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0F1C]/95 backdrop-blur-xl">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div className="sticky top-0 bg-white/5 backdrop-blur-xl p-6 border-b border-white/10 flex items-center justify-between z-10">
           <div>
-            <h3 className="text-xl font-bold text-foreground">Apply for Position</h3>
-            <p className="text-sm text-muted-foreground">{jobTitle}</p>
+            <h3 className="text-xl font-bold text-white">Apply for Position</h3>
+            <p className="text-sm text-white/60">{jobTitle}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-muted rounded-full transition-colors"
+            className="p-2 hover:bg-white/10 rounded-xl transition-colors"
           >
-            <X className="w-5 h-5 text-muted-foreground" />
+            <X className="w-5 h-5 text-white/60" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {/* Form fields remain the same but with dark theme styling */}
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
+            <Label htmlFor="name" className="text-white font-semibold">Full Name *</Label>
             <Input
               id="name"
               required
               placeholder="John Doe"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address *</Label>
+            <Label htmlFor="email" className="text-white font-semibold">Email Address *</Label>
             <Input
               id="email"
               type="email"
@@ -138,63 +140,68 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               placeholder="john@example.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
+            <Label htmlFor="phone" className="text-white font-semibold">Phone Number</Label>
             <Input
               id="phone"
               type="tel"
               placeholder="+1 (555) 123-4567"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="linkedin">LinkedIn Profile</Label>
+            <Label htmlFor="linkedin" className="text-white font-semibold">LinkedIn Profile</Label>
             <Input
               id="linkedin"
               type="url"
               placeholder="https://linkedin.com/in/yourprofile"
               value={formData.linkedinUrl}
               onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="portfolio">Portfolio / Website</Label>
+            <Label htmlFor="portfolio" className="text-white font-semibold">Portfolio / Website</Label>
             <Input
               id="portfolio"
               type="url"
               placeholder="https://yourportfolio.com"
               value={formData.portfolioUrl}
               onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="coverLetter">Cover Letter</Label>
+            <Label htmlFor="coverLetter" className="text-white font-semibold">Cover Letter</Label>
             <Textarea
               id="coverLetter"
-              placeholder="Tell us why you're interested in this position and what makes you a great fit..."
+              placeholder="Tell us why you're interested in this position..."
               rows={5}
               value={formData.coverLetter}
               onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#00D9FF] resize-none"
             />
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <Button type="button" onClick={onClose} className="flex-1 bg-white/5 border border-white/10 text-white hover:bg-white/10">
               Cancel
             </Button>
-            <Button type="submit" variant="accent" disabled={isSubmitting} className="flex-1">
+            <Button type="submit" disabled={isSubmitting} className="flex-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold">
               {isSubmitting ? "Submitting..." : "Submit Application"}
             </Button>
           </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -204,75 +211,89 @@ const JobCard = ({ job, onApply }: { job: JobCardData; onApply: (title: string) 
 
   return (
     <AnimatedItem>
-      <div className="bg-card rounded-2xl p-6 shadow-soft hover:shadow-elevated transition-all duration-300 border border-border">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-          <div>
-            <h3 className="text-xl font-bold text-foreground mb-2">{job.title}</h3>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Briefcase className="w-4 h-4" />
-                {job.department}
-              </span>
-              <span className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                {job.location}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                {job.type}
-              </span>
+      <motion.div
+        whileHover={{ y: -4 }}
+        className="relative group"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-3">{job.title}</h3>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
+                <span className="flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-[#00D9FF]" />
+                  {job.department}
+                </span>
+                <span className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#00D9FF]" />
+                  {job.location}
+                </span>
+                <span className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[#00D9FF]" />
+                  {job.type}
+                </span>
+              </div>
             </div>
+            <Button
+              onClick={() => onApply(job.title)}
+              className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-6 rounded-xl hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] whitespace-nowrap"
+            >
+              Apply Now
+            </Button>
           </div>
-          <Button variant="accent" onClick={() => onApply(job.title)}>
-            Apply Now
-          </Button>
+          
+          <p className="text-white/70 mb-6 leading-relaxed">{job.description}</p>
+          
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex items-center gap-2 text-[#00D9FF] font-bold text-sm hover:gap-3 transition-all"
+          >
+            {isExpanded ? "Hide Details" : "View Details"}
+            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+          
+          {isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-6 pt-6 border-t border-white/10 grid md:grid-cols-2 gap-8"
+            >
+              <div>
+                <h4 className="font-bold text-white mb-4 text-lg">Requirements</h4>
+                <ul className="space-y-3">
+                  {job.requirements.map((req, index) => (
+                    <li key={index} className="text-sm text-white/70 flex items-start gap-3">
+                      <span className="w-1.5 h-1.5 bg-[#00D9FF] rounded-full mt-2 flex-shrink-0" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-bold text-white mb-4 text-lg">Responsibilities</h4>
+                <ul className="space-y-3">
+                  {job.responsibilities.map((resp, index) => (
+                    <li key={index} className="text-sm text-white/70 flex items-start gap-3">
+                      <span className="w-1.5 h-1.5 bg-[#00D9FF] rounded-full mt-2 flex-shrink-0" />
+                      {resp}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
         </div>
-        
-        <p className="text-muted-foreground mb-4">{job.description}</p>
-        
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 text-accent font-semibold text-sm hover:underline"
-        >
-          {isExpanded ? "Hide Details" : "View Details"}
-          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </button>
-        
-        {isExpanded && (
-          <div className="mt-6 pt-6 border-t border-border grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold text-foreground mb-3">Requirements</h4>
-              <ul className="space-y-2">
-                {job.requirements.map((req, index) => (
-                  <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    {req}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground mb-3">Responsibilities</h4>
-              <ul className="space-y-2">
-                {job.responsibilities.map((resp, index) => (
-                  <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                    {resp}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      </motion.div>
     </AnimatedItem>
   );
 };
 
 const Careers = () => {
-  const { data, isLoading: isJobsLoading, isFetching: isJobsFetching } = useGetJobsQuery();
+  const { data, isLoading: isJobsLoading } = useGetJobsQuery();
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [applicationJob, setApplicationJob] = useState<string | null>(null);
+  
   const jobsFromApi: JobCardData[] =
     data?.items?.map((job) => ({
       id: job._id,
@@ -293,10 +314,9 @@ const Careers = () => {
     : jobs.filter((job) => job.department === selectedDepartment);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#0A0F1C]">
       <Header />
       
-      {/* Application Modal */}
       {applicationJob && (
         <ApplicationForm
           jobTitle={applicationJob}
@@ -308,21 +328,37 @@ const Careers = () => {
         <PageBreadcrumb />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-b from-muted/50 to-background">
-        <div className="container mx-auto px-4">
-          <AnimatedSection className="text-center max-w-3xl mx-auto">
-            <span className="text-accent font-semibold text-sm uppercase tracking-wider">Join Our Team</span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-2 mb-6">
-              Build the Future With Us
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#00D9FF]/10 rounded-full blur-[120px]" />
+        </div>
+        <div className="container mx-auto px-6 lg:px-12 relative z-10">
+          <AnimatedSection className="text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block mb-4"
+            >
+              <span className="inline-flex items-center gap-2 text-[#00D9FF] font-bold text-sm tracking-[0.2em] uppercase">
+                <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-[#00D9FF]" />
+                Join Our Team
+                <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-[#00D9FF]" />
+              </span>
+            </motion.div>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              Build the Future <span className="text-[#00D9FF]">With Us</span>
             </h1>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-white/60 mb-10 leading-relaxed">
               Join a team of passionate innovators dedicated to creating exceptional digital experiences. 
               We're always looking for talented individuals who share our vision.
             </p>
-            <Button variant="accent" size="lg" asChild>
-              <a href="#openings">
+            <Button
+              asChild
+              className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-8 py-6 text-lg rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)]"
+            >
+              <a href="#openings" className="flex items-center gap-2">
                 View Open Positions
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
           </AnimatedSection>
@@ -330,14 +366,14 @@ const Careers = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-4">
+      <section className="py-20 relative">
+        <div className="container mx-auto px-6 lg:px-12">
           <AnimatedSection className="text-center mb-16">
-            <span className="text-accent font-semibold text-sm uppercase tracking-wider">Why Join Us</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
+            <span className="text-[#00D9FF] font-bold text-sm uppercase tracking-[0.2em]">Why Join Us</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mt-2 mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
               Benefits & Perks
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-white/60 max-w-2xl mx-auto">
               We believe in taking care of our team with comprehensive benefits and a supportive work environment.
             </p>
           </AnimatedSection>
@@ -345,99 +381,34 @@ const Careers = () => {
           <AnimatedStagger className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit) => (
               <AnimatedItem key={benefit.title}>
-                <div className="text-center p-6">
-                  <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <benefit.icon className="w-8 h-8 text-accent" />
+                <motion.div whileHover={{ y: -4 }} className="text-center">
+                  <div className="relative mx-auto mb-6 w-20 h-20">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF] to-[#0066FF] rounded-2xl blur-lg opacity-50" />
+                    <div className="relative w-full h-full bg-gradient-to-br from-[#00D9FF] to-[#0066FF] rounded-2xl flex items-center justify-center">
+                      <benefit.icon className="w-10 h-10 text-white" />
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{benefit.title}</h3>
-                  <p className="text-muted-foreground text-sm">{benefit.description}</p>
-                </div>
+                  <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
+                  <p className="text-white/60 leading-relaxed">{benefit.description}</p>
+                </motion.div>
               </AnimatedItem>
             ))}
           </AnimatedStagger>
         </div>
       </section>
 
-      {/* Culture Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <AnimatedSection>
-              <span className="text-accent font-semibold text-sm uppercase tracking-wider">Our Culture</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-6">
-                A Place Where Ideas Thrive
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                At Codivra Solutions, we foster an environment of innovation, collaboration, and continuous learning. 
-                We believe that great ideas can come from anywhere, and we encourage every team member to contribute their unique perspective.
-              </p>
-              <p className="text-muted-foreground mb-6">
-                Our diverse team brings together expertise from various backgrounds, creating a rich tapestry of skills 
-                and experiences that drives our success.
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  {(() => {
-                    const { count, isLoading } = useTeamCount();
-                    return (
-                      <>
-                        <div className="text-3xl font-bold text-accent mb-1">{isLoading ? "..." : count}</div>
-                        <div className="text-muted-foreground text-sm">Team Members</div>
-                      </>
-                    );
-                  })()}
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-accent mb-1">12</div>
-                  <div className="text-muted-foreground text-sm">Countries</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-accent mb-1">95%</div>
-                  <div className="text-muted-foreground text-sm">Employee Satisfaction</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-accent mb-1">4.8</div>
-                  <div className="text-muted-foreground text-sm">Glassdoor Rating</div>
-                </div>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.2}>
-              <div className="grid grid-cols-2 gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop"
-                  alt="Team collaboration"
-                  className="rounded-2xl shadow-soft"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=300&fit=crop"
-                  alt="Team meeting"
-                  className="rounded-2xl shadow-soft mt-8"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop"
-                  alt="Office workspace"
-                  className="rounded-2xl shadow-soft"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop"
-                  alt="Team event"
-                  className="rounded-2xl shadow-soft mt-8"
-                />
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-
       {/* Job Listings Section */}
-      <section id="openings" className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section id="openings" className="py-20 relative">
+        <div className="absolute inset-0">
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-[#0066FF]/5 rounded-full blur-[120px]" />
+        </div>
+        <div className="container mx-auto px-6 lg:px-12 relative z-10">
           <AnimatedSection className="text-center mb-12">
-            <span className="text-accent font-semibold text-sm uppercase tracking-wider">Open Positions</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
+            <span className="text-[#00D9FF] font-bold text-sm uppercase tracking-[0.2em]">Open Positions</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mt-2 mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
               Current Openings
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-white/60 max-w-2xl mx-auto">
               Explore our open positions and find the perfect role for you.
             </p>
           </AnimatedSection>
@@ -445,60 +416,63 @@ const Careers = () => {
           {/* Department Filter */}
           <AnimatedSection className="flex flex-wrap justify-center gap-3 mb-12">
             {departments.map((dept) => (
-              <button
+              <motion.button
                 key={dept}
                 onClick={() => setSelectedDepartment(dept)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                whileHover={{ scale: 1.05 }}
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                   selectedDepartment === dept
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-card text-muted-foreground hover:bg-muted border border-border"
+                    ? "bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white"
+                    : "bg-white/5 text-white/60 hover:bg-white/10 border border-white/10"
                 }`}
               >
                 {dept}
-              </button>
+              </motion.button>
             ))}
           </AnimatedSection>
 
-          {(isJobsLoading || isJobsFetching) && (
-            <div className="flex justify-center py-6">
-              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          {isJobsLoading && (
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-10 h-10 animate-spin text-[#00D9FF]" />
             </div>
           )}
 
-          {!isJobsLoading && !isJobsFetching && !jobsFromApi.length && (
-            <p className="text-center text-muted-foreground text-sm mb-6">
+          {!isJobsLoading && !jobsFromApi.length && (
+            <p className="text-center text-white/50 text-lg py-12">
               No openings are live right now. Please check back soon.
             </p>
           )}
 
-          <AnimatedStagger className="space-y-6 max-w-4xl mx-auto">
+          <AnimatedStagger className="space-y-8 max-w-5xl mx-auto">
             {filteredJobs.map((job) => (
               <JobCard key={job.id} job={job} onApply={setApplicationJob} />
             ))}
           </AnimatedStagger>
-
-          {!isJobsLoading && !isJobsFetching && filteredJobs.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No open positions in this department at the moment.</p>
-            </div>
-          )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-accent">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-20 relative">
+        <div className="container mx-auto px-6 lg:px-12">
           <AnimatedSection>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
-              Don't See the Right Fit?
-            </h2>
-            <p className="text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-              We're always looking for talented individuals. Send us your resume and let us know how you can contribute to our team.
-            </p>
-            <Button variant="secondary" size="lg" onClick={() => setApplicationJob("General Application")}>
-              Send Your Resume
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <div className="relative max-w-4xl mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 rounded-3xl blur-2xl" />
+              <div className="relative bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-sm border border-white/10 rounded-3xl p-12 text-center">
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  Don't See the Right Fit?
+                </h2>
+                <p className="text-white/60 max-w-2xl mx-auto mb-8 text-lg leading-relaxed">
+                  We're always looking for talented individuals. Send us your resume and let us know how you can contribute to our team.
+                </p>
+                <Button
+                  onClick={() => setApplicationJob("General Application")}
+                  className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-8 py-6 text-lg rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)]"
+                >
+                  Send Your Resume
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+            </div>
           </AnimatedSection>
         </div>
       </section>

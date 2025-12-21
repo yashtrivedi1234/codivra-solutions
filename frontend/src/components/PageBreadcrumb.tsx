@@ -26,13 +26,13 @@ const PageBreadcrumb = () => {
   if (pathSegments.length === 0) return null;
 
   return (
-    <div className="bg-muted/30 border-b border-border/50">
-      <div className="container mx-auto px-4 py-3">
+    <div className="bg-[#0A0F1C]/95 backdrop-blur-xl border-b border-white/5">
+      <div className="container mx-auto px-6 lg:px-12 py-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+                <Link to="/" className="flex items-center gap-2 text-white/60 hover:text-[#00D9FF] transition-colors">
                   <Home className="h-4 w-4" />
                   <span>Home</span>
                 </Link>
@@ -44,18 +44,18 @@ const PageBreadcrumb = () => {
               const name = routeNames[segment] || segment.charAt(0).toUpperCase() + segment.slice(1);
 
               return (
-                <div key={path} className="flex items-center gap-1.5">
+                <div key={path} className="flex items-center gap-2">
                   <BreadcrumbSeparator>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                    <ChevronRight className="h-4 w-4 text-white/30" />
                   </BreadcrumbSeparator>
                   <BreadcrumbItem>
                     {isLast ? (
-                      <BreadcrumbPage className="text-primary font-medium">
+                      <BreadcrumbPage className="text-[#00D9FF] font-semibold">
                         {name}
                       </BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink asChild>
-                        <Link to={path} className="text-muted-foreground hover:text-primary transition-colors">
+                        <Link to={path} className="text-white/60 hover:text-[#00D9FF] transition-colors">
                           {name}
                         </Link>
                       </BreadcrumbLink>

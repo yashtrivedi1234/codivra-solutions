@@ -112,7 +112,7 @@ app.post("/api/contact", async (req, res) => {
 
   const mailFrom =
     process.env.EMAIL_FROM || process.env.SMTP_USER || "no-reply@example.com";
-  const mailTo = process.env.EMAIL_TO || "codivrasolution@gmail.com";
+  const mailTo = process.env.EMAIL_TO || "codivrasolutione@gmail.com";
 
   const mailOptions = {
     from: mailFrom,

@@ -1,6 +1,7 @@
 import { Check, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
+import { motion } from "framer-motion";
 
 const plans = [
   {
@@ -60,105 +61,141 @@ const plans = [
 
 export const Pricing = () => {
   return (
-    <section id="pricing" className="py-24">
-      <div className="container mx-auto px-4">
+    <section id="pricing" className="relative py-32 bg-gradient-to-b from-[#070B14] to-[#0A0F1C] overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[#00D9FF]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-[#0066FF]/5 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}
-        <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block text-accent font-semibold text-sm tracking-wider uppercase mb-4">
-            Our Services
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Simple & Honest Pricing for Startup Services
+        <AnimatedSection className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-block mb-4"
+          >
+            <span className="inline-flex items-center gap-2 text-[#00D9FF] font-bold text-sm tracking-[0.2em] uppercase">
+              <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-[#00D9FF]" />
+              Our Services
+              <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-[#00D9FF]" />
+            </span>
+          </motion.div>
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+          >
+            Simple & <span className="text-[#00D9FF]">Honest Pricing</span>
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-lg text-white/60 leading-relaxed">
             We are a service-based startup helping businesses build websites, apps, and digital solutions.
           </p>
         </AnimatedSection>
 
         {/* Pricing Cards */}
-        <AnimatedStagger className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => (
+        <AnimatedStagger className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+          {plans.map((plan, index) => (
             <AnimatedItem key={plan.name}>
-              <div
-                className={`relative rounded-2xl p-8 transition-all duration-300 h-full ${
-                  plan.highlighted
-                    ? "bg-gradient-primary text-primary-foreground shadow-elevated scale-105 border-0"
-                    : "bg-card border border-border/50 shadow-soft hover-lift"
-                }`}
+              <motion.div
+                whileHover={{ y: plan.highlighted ? 0 : -8 }}
+                transition={{ duration: 0.3 }}
+                className={`group relative h-full ${plan.highlighted ? 'md:scale-105' : ''}`}
               >
                 {/* Popular Badge */}
                 {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <div className="flex items-center gap-1 bg-accent text-accent-foreground px-4 py-1 rounded-full text-sm font-semibold">
-                      <Star className="w-4 h-4 fill-current" />
-                      Most Popular
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] rounded-full blur-lg opacity-75" />
+                      <div className="relative flex items-center gap-2 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white px-5 py-2 rounded-full text-sm font-bold">
+                        <Star className="w-4 h-4 fill-white" />
+                        Most Popular
+                      </div>
                     </div>
                   </div>
                 )}
 
-                {/* Plan Header */}
-                <div className="mb-6">
-                  <h3 className={`text-xl font-bold mb-2 ${plan.highlighted ? "" : "text-foreground"}`}>
-                    {plan.name}
-                  </h3>
-                  <p className={`text-sm ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                    {plan.description}
-                  </p>
-                </div>
+                {/* Glow Effect */}
+                <div className={`absolute inset-0 rounded-3xl blur-2xl transition-opacity duration-500 ${
+                  plan.highlighted 
+                    ? 'bg-gradient-to-br from-[#00D9FF]/20 to-[#0066FF]/20 opacity-100' 
+                    : 'bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 opacity-0 group-hover:opacity-100'
+                }`} />
 
-                {/* Price */}
-                <div className="mb-8">
-                  <div className="flex items-baseline gap-1">
-                    {plan.price !== "Custom" && (
-                      <span className={`text-lg ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                        $
+                {/* Card */}
+                <div className={`relative rounded-3xl p-10 h-full transition-all duration-500 ${
+                  plan.highlighted
+                    ? "bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-sm border-2 border-[#00D9FF]"
+                    : "bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20"
+                }`}>
+                  {/* Plan Header */}
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-black text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      {plan.name}
+                    </h3>
+                    <p className="text-white/60">
+                      {plan.description}
+                    </p>
+                  </div>
+
+                  {/* Price */}
+                  <div className="mb-8 pb-8 border-b border-white/10">
+                    <div className="flex items-baseline gap-2">
+                      {plan.price !== "Custom" && (
+                        <span className="text-2xl text-white/60">$</span>
+                      )}
+                      <span className="text-5xl font-black text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                        {plan.price}
                       </span>
-                    )}
-                    <span className={`text-4xl font-bold ${plan.highlighted ? "" : "text-foreground"}`}>
-                      {plan.price}
+                    </div>
+                    <span className="text-sm text-white/50 font-medium">
+                      {plan.period === "project" ? "per project" : "Get a custom quote"}
                     </span>
                   </div>
-                  <span className={`text-sm ${plan.highlighted ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                    {plan.period === "project" ? "per project" : "Get a custom quote"}
-                  </span>
+
+                  {/* Features */}
+                  <ul className="space-y-4 mb-10">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className="relative mt-0.5">
+                          <div className="absolute inset-0 bg-[#00D9FF] rounded-full blur-sm opacity-50" />
+                          <div className="relative w-5 h-5 bg-[#00D9FF]/20 rounded-full flex items-center justify-center">
+                            <Check className="w-3 h-3 text-[#00D9FF]" />
+                          </div>
+                        </div>
+                        <span className="text-white/70 leading-relaxed">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA Button */}
+                  <Button
+                    className={`w-full font-bold py-6 text-base rounded-xl transition-all duration-300 ${
+                      plan.highlighted
+                        ? "bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white hover:shadow-[0_0_40px_rgba(0,217,255,0.6)]"
+                        : "bg-white/5 border-2 border-white/10 text-white hover:bg-white/10 hover:border-[#00D9FF]"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Button>
                 </div>
-
-                {/* Features */}
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                        plan.highlighted ? "bg-primary-foreground/20" : "bg-accent/10"
-                      }`}>
-                        <Check className={`w-3 h-3 ${plan.highlighted ? "text-primary-foreground" : "text-accent"}`} />
-                      </div>
-                      <span className={`text-sm ${plan.highlighted ? "text-primary-foreground/90" : "text-muted-foreground"}`}>
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA Button */}
-                <Button
-                  variant={plan.highlighted ? "secondary" : "accent"}
-                  size="lg"
-                  className="w-full"
-                >
-                  {plan.cta}
-                </Button>
-              </div>
+              </motion.div>
             </AnimatedItem>
           ))}
         </AnimatedStagger>
 
         {/* Bottom Note */}
-        <AnimatedSection delay={0.3} className="text-center text-muted-foreground text-sm mt-12 max-w-2xl mx-auto">
-          We work as a service partner, not a large agency. 
-          Pricing depends on scope, timelines, and requirements.
-          <a href="#contact" className="text-accent hover:underline ml-1">
-            Talk to us
-          </a> to get the right solution for your business.
+        <AnimatedSection delay={0.3} className="text-center text-white/50 max-w-2xl mx-auto">
+          <p className="leading-relaxed">
+            We work as a service partner, not a large agency. 
+            Pricing depends on scope, timelines, and requirements.
+            <a href="#contact" className="text-[#00D9FF] hover:underline ml-1 font-semibold">
+              Talk to us
+            </a> to get the right solution for your business.
+          </p>
         </AnimatedSection>
       </div>
     </section>

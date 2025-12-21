@@ -2,16 +2,14 @@ import { useNavigate } from "react-router-dom";
 import {
   BarChart3,
   Zap,
-  Palette,
-  DollarSign,
   Layout,
   BookOpen,
   Briefcase,
   MessageSquare,
   LogOut,
   Bell,
-  Activity,
-  Calendar,
+  Settings,
+  HelpCircle,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -36,18 +34,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const adminPages = [
-    { name: "Dashboard", path: "/admin/dashboard", icon: BarChart3 },
-    { name: "Services", path: "/admin/services", icon: Zap },
-    { name: "Team", path: "/admin/team", icon: BarChart3 },
-    { name: "Portfolio", path: "/admin/portfolio", icon: Layout },
-    { name: "Blog", path: "/admin/blog", icon: BookOpen },
-    { name: "Careers", path: "/admin/careers", icon: Briefcase },
-    { name: "Contact", path: "/admin/contact", icon: MessageSquare },
-  ];
-
-
-
   const email = typeof window !== "undefined" ? window.localStorage.getItem("admin_email") : null;
 
   const getInitials = (email: string | null) => {
@@ -63,95 +49,123 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] flex flex-col">
+    <div className="min-h-screen bg-[#F8F9FC] dark:bg-[#0A0F1C] flex flex-col">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
         
         * {
-          font-family: 'Outfit', sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          letter-spacing: -0.01em;
         }
         
         .mono {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'JetBrains Mono', 'Courier New', monospace;
         }
         
-        .glass-effect {
-          background: rgba(255, 255, 255, 0.7);
+        .crm-header {
+          background: rgba(255, 255, 255, 0.95);
+          border-bottom: 1px solid #E5E7EB;
           backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
-        .dark .glass-effect {
-          background: rgba(20, 20, 20, 0.7);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+        .dark .crm-header {
+          background: rgba(15, 23, 42, 0.95);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        .icon-gradient-blue {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        .notification-badge {
+          position: absolute;
+          top: -2px;
+          right: -2px;
+          width: 8px;
+          height: 8px;
+          background: #EF4444;
+          border: 2px solid white;
+          border-radius: 50%;
+        }
+
+        .dark .notification-badge {
+          border-color: #0F172A;
         }
       `}</style>
 
       {/* Header */}
-      <header className="glass-effect sticky top-0 z-50 border-b border-black/5 dark:border-white/5 w-full">
-        <div className="container mx-auto px-6 py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="absolute inset-0 icon-gradient-blue rounded-xl blur-sm opacity-60"></div>
-                
-              </div>
-              <div>
-                <img src={logo} alt="Codivra Logo" className="h-36 w-auto max-w-[420px] min-w-[180px] object-contain" />
-              </div>
+      <header className="w-full fixed top-0 z-50 crm-header">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <img
+                src={logo}
+                alt="Codivra"
+                className="h-10 w-auto object-contain brightness-0 dark:invert"
+              />
+              <div className="h-8 w-px bg-gray-200 dark:bg-gray-700" />
+              <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                Admin Portal
+              </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/5">
-                <Calendar className="w-4 h-4 text-black/60 dark:text-white/60" />
-                <span className="text-sm font-medium text-black/70 dark:text-white/70">
-                  {new Date().toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-              </div>
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-2">
+              {/* Quick Actions */}
+              <button className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group">
+                <HelpCircle className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+              </button>
 
+              <button className="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group">
+                <Settings className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+              </button>
+
+              {/* Notifications */}
               <AdminNotifications />
 
+              {/* Divider */}
+              <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 mx-2" />
+
+              {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300">
-                    <div className="text-right hidden sm:block">
-                      <p className="text-sm font-semibold text-black dark:text-white">
-                        {email || "Admin"}
-                      </p>
-                      <p className="text-xs text-black/50 dark:text-white/50 font-medium">
-                        Administrator
-                      </p>
-                    </div>
-                    <Avatar className="h-11 w-11 border-2 border-black/10 dark:border-white/10">
+                  <button className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <Avatar className="h-9 w-9 border-2 border-gray-200 dark:border-gray-700">
                       <AvatarImage
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`}
                         alt="Admin"
                       />
-                      <AvatarFallback className="icon-gradient-blue text-white font-bold text-sm">
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white font-semibold text-sm">
                         {getInitials(email)}
                       </AvatarFallback>
                     </Avatar>
+                    <div className="hidden md:block text-left">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                        {email?.split('@')[0] || "Admin"}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Administrator
+                      </p>
+                    </div>
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="flex flex-col space-y-1">
+                <DropdownMenuContent align="end" className="w-64">
+                  <DropdownMenuLabel className="flex flex-col space-y-1 pb-2">
                     <span className="text-sm font-semibold">{email || "Admin User"}</span>
-                    <span className="text-xs text-muted-foreground font-medium">
-                      Administrator Account
+                    <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">
+                      {email}
                     </span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Settings className="w-4 h-4 mr-2" />
+                    <span>Account Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <HelpCircle className="w-4 h-4 mr-2" />
+                    <span>Help & Support</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="text-red-600 cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30"
+                    className="text-red-600 dark:text-red-400 cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 focus:bg-red-50 dark:focus:bg-red-950/30"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     <span className="font-medium">Logout</span>
@@ -164,98 +178,40 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </header>
 
       {/* Main Layout */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden pt-16">
         {/* Sidebar */}
         <Sidebar context="admin" showDescription={false} sticky />
+        
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto flex flex-col">
           <div className="flex-1 overflow-y-auto">{children}</div>
 
           {/* Footer */}
-          <footer className="border-t border-black/5 dark:border-white/5 bg-white dark:bg-[#141414] mt-auto overflow-hidden">
-            <div className="container mx-auto px-6 py-8">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                  <h4 className="font-semibold text-black dark:text-white mb-4">About</h4>
-                  <p className="text-sm text-black/60 dark:text-white/60">
-                    Manage your website content and applications efficiently.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-black dark:text-white mb-4">Pages</h4>
-                  <ul className="space-y-2 text-sm text-black/60 dark:text-white/60">
-                    <li>
-                      <button onClick={() => navigate("/admin/dashboard")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Dashboard
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => navigate("/admin/services")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Services
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => navigate("/admin/portfolio")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Portfolio
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-black dark:text-white mb-4">Management</h4>
-                  <ul className="space-y-2 text-sm text-black/60 dark:text-white/60">
-                    <li>
-                      <button onClick={() => navigate("/admin/careers")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Careers
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => navigate("/admin/blog")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Blog
-                      </button>
-                    </li>
-                    <li>
-                      <button onClick={() => navigate("/admin/contact")} className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Contact
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-black dark:text-white mb-4">Support</h4>
-                  <ul className="space-y-2 text-sm text-black/60 dark:text-white/60">
-                    <li>
-                      <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Help Center
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Documentation
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400">
-                        Contact Us
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="border-t border-black/5 dark:border-white/5 pt-6">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm text-black/60 dark:text-white/60">
+          <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0F172A] mt-auto">
+            <div className="container mx-auto px-6 py-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-6">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     © 2025 Codivra Solutions. All rights reserved.
                   </p>
-                  <div className="flex gap-4">
-                    <a href="#" className="text-sm text-black/60 dark:text-white/60 hover:text-blue-600 dark:hover:text-blue-400">
-                      Privacy
+                  <div className="flex gap-4 text-sm">
+                    <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      Privacy Policy
                     </a>
-                    <a href="#" className="text-sm text-black/60 dark:text-white/60 hover:text-blue-600 dark:hover:text-blue-400">
-                      Terms
+                    <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      Terms of Service
+                    </a>
+                    <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                      Documentation
                     </a>
                   </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span>Version 1.0.0</span>
+                  <span className="w-1 h-1 rounded-full bg-green-500"></span>
+                  <span className="text-green-600 dark:text-green-400 font-medium">
+                    All Systems Operational
+                  </span>
                 </div>
               </div>
             </div>
