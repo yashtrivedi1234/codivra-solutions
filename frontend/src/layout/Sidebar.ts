@@ -42,7 +42,6 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Dashboard',
     path: '/admin/dashboard',
     icon: BarChart3,
-    description: 'View analytics and statistics',
     componentPath: 'src/pages/admin/AdminDashboard.tsx',
   },
   {
@@ -50,7 +49,6 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Services',
     path: '/admin/services',
     icon: Zap,
-    description: 'Manage services content',
     componentPath: 'src/pages/admin/AdminServices.tsx',
   },
   {
@@ -58,7 +56,6 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Portfolio',
     path: '/admin/portfolio',
     icon: Layout,
-    description: 'Manage portfolio items',
     componentPath: 'src/pages/admin/AdminPortfolio.tsx',
   },
   {
@@ -66,7 +63,6 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Blog',
     path: '/admin/blog',
     icon: BookOpen,
-    description: 'Manage blog posts',
     componentPath: 'src/pages/admin/AdminBlog.tsx',
   },
   {
@@ -74,7 +70,6 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Careers',
     path: '/admin/careers',
     icon: Briefcase,
-    description: 'Manage job openings',
     componentPath: 'src/pages/admin/AdminCareers.tsx',
   },
   {
@@ -82,8 +77,14 @@ export const adminSidebarItems: SidebarItem[] = [
     label: 'Contact',
     path: '/admin/contact',
     icon: MessageSquare,
-    description: 'View contact submissions',
     componentPath: 'src/pages/admin/AdminContact.tsx',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    path: '/admin/settings',
+    icon: Palette,
+    componentPath: 'src/pages/AdminSettings.tsx',
   },
 ];
 
@@ -94,7 +95,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Home',
     path: '/',
     icon: Home,
-    description: 'Back to home page',
     componentPath: 'src/pages/Index.tsx',
   },
   {
@@ -102,7 +102,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Services',
     path: '/services',
     icon: Zap,
-    description: 'Our services and solutions',
     componentPath: 'src/pages/Services.tsx',
   },
   {
@@ -110,7 +109,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'About',
     path: '/about',
     icon: Palette,
-    description: 'Learn about us',
     componentPath: 'src/pages/About.tsx',
   },
   {
@@ -118,7 +116,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Pricing',
     path: '/pricing',
     icon: DollarSign,
-    description: 'Check our pricing',
     componentPath: 'src/pages/Pricing.tsx',
   },
   {
@@ -126,7 +123,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Portfolio',
     path: '/portfolio',
     icon: Layout,
-    description: 'View our work',
     componentPath: 'src/pages/Portfolio.tsx',
   },
   {
@@ -134,7 +130,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Blog',
     path: '/blog',
     icon: BookOpen,
-    description: 'Read our articles',
     componentPath: 'src/pages/Blog.tsx',
   },
   {
@@ -142,7 +137,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Careers',
     path: '/careers',
     icon: Briefcase,
-    description: 'Join our team',
     componentPath: 'src/pages/Careers.tsx',
   },
   {
@@ -150,7 +144,6 @@ export const websiteSidebarItems: SidebarItem[] = [
     label: 'Contact',
     path: '/contact',
     icon: MessageSquare,
-    description: 'Get in touch',
     componentPath: 'src/pages/Contact.tsx',
   },
 ];
@@ -160,28 +153,6 @@ export const getSidebarItems = (context: 'admin' | 'website' = 'website'): Sideb
   return context === 'admin' ? adminSidebarItems : websiteSidebarItems
 };
 
-// Quick actions or additional sidebar sections
-export interface SidebarSection {
-  id: string;
-  title: string;
-  items: SidebarItem[];
-}
-
-export const adminSidebarSections: SidebarSection[] = [
-  {
-    id: 'main',
-    title: 'Main',
-    items: adminSidebarItems,
-  },
-];
-
-export const websiteSidebarSections: SidebarSection[] = [
-  {
-    id: 'main',
-    title: 'Navigation',
-    items: websiteSidebarItems,
-  },
-];
 
 /**
  * Page File Mapping

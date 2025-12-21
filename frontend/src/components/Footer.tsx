@@ -1,167 +1,127 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useSubmitSubscriptionMutation, useGetServicesQuery } from "@/lib/api";
-
-const footerLinks = {
-  company: [
-    { label: "About Us", href: "/about" },
-    { label: "Our Work", href: "/portfolio" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
-  ],
-};
-
+import { Linkedin, Twitter, Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export const Footer = () => {
-  // Fetch admin-added services
-  const { data: servicesData, isLoading: servicesLoading, isError: servicesError } = useGetServicesQuery();
   const socialLinks = [
     { icon: Linkedin, href: "#", label: "LinkedIn" },
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Facebook, href: "#", label: "Facebook" },
     { icon: Instagram, href: "#", label: "Instagram" },
   ];
-  const [email, setEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { toast } = useToast();
-  const [submitSubscription] = useSubmitSubscriptionMutation();
 
-  const onSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSubmitting(true);
-    try {
-      const res = await submitSubscription({ email: email.trim(), source: "footer" }).unwrap();
-      setEmail("");
-      toast({
-        title: "Subscribed",
-        description: res.message || "Thanks for subscribing!",
-      });
-    } catch (err) {
-      toast({
-        title: "Subscription failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const quickLinks = [
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+    { label: "Portfolio", href: "/portfolio" },
+    { label: "Contact", href: "/contact" },
+  ];
 
   return (
-    <footer className="bg-gradient-primary text-primary-foreground py-16">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            {/* Brand */}
-            <div className="md:col-span-1">
-              <Link to="/" className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center">
-                  <span className="font-bold text-lg">C</span>
-                </div>
-                <span className="text-xl font-bold">
-                  Codivra Solutions<span className="text-accent">.</span>
-                </span>
-              </Link>
-              <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6">
-                Empowering businesses with innovative IT solutions since Dec 2025. 
-                Your trusted partner in digital transformation.
-              </p>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Services Links (dynamic) */}
-            <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <ul className="space-y-3">
-                {servicesLoading ? (
-                  <li className="text-primary-foreground/60 text-sm">Loading...</li>
-                ) : servicesError ? (
-                  <li className="text-primary-foreground/60 text-sm">Failed to load services</li>
-                ) : servicesData?.items?.length > 0 ? (
-                  servicesData.items.map((service) => (
-                    <li key={service._id}>
-                      <Link
-                        to={"/services"}
-                        className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
-                      >
-                        {service.title}
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-primary-foreground/60 text-sm">No services available</li>
-                )}
-              </ul>
-            </div>
-
-            {/* Company Links */}
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-3">
-                {footerLinks.company.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      to={link.href}
-                      className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Newsletter */}
-            <div>
-              <h4 className="font-semibold mb-4">Stay Updated</h4>
-              <p className="text-primary-foreground/70 text-sm mb-4">
-                Subscribe to our newsletter for the latest insights and updates.
-              </p>
-              <form className="flex gap-2" onSubmit={onSubscribe}>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                  className="flex-1 h-10 px-4 rounded-lg bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
-                />
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="h-10 px-4 bg-accent text-accent-foreground rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-60"
+    <footer className="bg-gray-50 text-gray-900">
+      {/* Main Footer */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Brand Section */}
+          <div className="lg:col-span-1">
+            <Link to="/" className="inline-block mb-4">
+              <img
+                src={logo}
+                alt="Codivra Solutions"
+                className="h-16 w-auto object-contain"
+              />
+            </Link>
+            <p className="text-sm text-gray-600 mb-4">
+              Innovative IT solutions for modern businesses.
+            </p>
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  aria-label={social.label}
+                  className="w-9 h-9 bg-white border border-gray-200 rounded-lg flex items-center justify-center hover:bg-accent hover:text-white hover:border-accent transition-all duration-200"
                 >
-                  {submitting ? "Subscribing..." : "Subscribe"}
-                </button>
-              </form>
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-primary-foreground/60 text-sm">
-              © {new Date().getFullYear()} Codivra Solution. All rights reserved.
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              {quickLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-gray-600 hover:text-accent transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-4">Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2 text-sm text-gray-600">
+                <Mail className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <a href="mailto:info@codivra.com" className="hover:text-accent transition-colors">
+                  info@codivra.com
+                </a>
+              </li>
+              <li className="flex items-start gap-2 text-sm text-gray-600">
+                <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <a href="tel:+1234567890" className="hover:text-accent transition-colors">
+                  +123 456 7890
+                </a>
+              </li>
+              <li className="flex items-start gap-2 text-sm text-gray-600">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span>Lucknow, Uttar Pradesh, India</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-4">Newsletter</h4>
+            <p className="text-sm text-gray-600 mb-4">
+              Get updates on latest tech trends.
             </p>
-            <div className="flex gap-6">
-              <Link to="/privacy-policy" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
-                Privacy Policy
+            <form className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="email"
+                placeholder="Your email"
+                className="flex-1 h-10 px-3 rounded-md bg-white border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
+              />
+              <button
+                type="submit"
+                className="h-10 px-4 bg-accent text-white rounded-md text-sm font-semibold hover:opacity-90 transition-opacity"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs sm:text-sm text-gray-500">
+            <p>© {new Date().getFullYear()} Codivra Solutions. All rights reserved.</p>
+            <div className="flex gap-4">
+              <Link to="/privacy-policy" className="hover:text-accent transition-colors">
+                Privacy
               </Link>
-              <Link to="/terms-of-service" className="text-primary-foreground/60 hover:text-primary-foreground text-sm transition-colors">
-                Terms of Service
+              <Link to="/terms-of-service" className="hover:text-accent transition-colors">
+                Terms
               </Link>
             </div>
           </div>

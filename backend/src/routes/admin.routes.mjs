@@ -5,10 +5,18 @@ import {
   handleDeleteJobApplication,
   handleListJobApplications,
   handleAdminChangePassword,
+  handleAdminUpdateCredentials,
 } from "../controllers/admin.controller.mjs";
 import { requireAdmin } from "../middleware/auth.middleware.mjs";
 
 const router = Router();
+
+// Update admin credentials (email/password)
+router.post(
+  "/api/admin/update-credentials",
+  requireAdmin,
+  handleAdminUpdateCredentials
+);
 
 // Auth routes
 router.post("/api/admin/login", handleAdminLogin);

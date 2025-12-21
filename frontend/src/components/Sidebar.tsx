@@ -2,17 +2,21 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { X, Menu } from 'lucide-react';
 import { getSidebarItems, adminSidebarItems, websiteSidebarItems } from '@/layout/Sidebar';
+import logo from '@/assets/logo.png';
 
 interface SidebarProps {
   context?: 'admin' | 'website';
   isOpen?: boolean;
   onClose?: () => void;
+  showDescription?: boolean;
+  sticky?: boolean;
 }
 
-const Sidebar = ({ context = 'website', isOpen = true, onClose }: SidebarProps) => {
+const Sidebar = ({ context = 'website', isOpen = true, onClose, showDescription = true, sticky = false }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(isOpen);
+  const [collapsed, setCollapsed] = useState(false);
 
   const items = getSidebarItems(context);
   const isAdmin = context === 'admin';
@@ -47,37 +51,39 @@ const Sidebar = ({ context = 'website', isOpen = true, onClose }: SidebarProps) 
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen w-64 bg-white dark:bg-[#0a0a0a] border-r border-black/5 dark:border-white/5 flex flex-col transition-all duration-300 z-40 overflow-hidden ${
+        className={`$${sticky ? 'sticky' : 'fixed'} md:sticky top-0 left-0 h-screen ${collapsed ? 'w-20' : 'w-64'} bg-white/60 dark:bg-[#181c23]/60 shadow-xl border border-slate-200 dark:border-slate-800 flex flex-col transition-all duration-300 z-40 overflow-hidden rounded-r-2xl backdrop-blur-lg ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
+        style={{
+          ...(sticky ? { position: 'sticky', top: 0, overflowY: 'visible' } : {}),
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+        }}
       >
         {/* Header */}
-        <div className="p-6 border-b border-black/5 dark:border-white/5">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="icon-gradient-blue p-2 rounded-lg">
-                <Menu className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="text-sm font-bold text-black dark:text-white">
-                  {isAdmin ? 'Admin' : 'Menu'}
-                </h2>
-                <p className="text-xs text-black/50 dark:text-white/50 font-medium">
-                  {isAdmin ? 'Management' : 'Navigation'}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setMobileOpen(false)}
-              className="md:hidden p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors"
+        <div className={`p-6 border-b border-slate-200 dark:border-slate-800 ${collapsed ? 'px-2 py-4' : ''}`} style={{ background: 'transparent' }}>
+          <div className="flex items-center mb-4 gap-3">
+            <div
+              className="icon-gradient-blue p-2 rounded-2xl cursor-pointer shadow-md hover:scale-110 transition-transform border-4 border-white dark:border-[#181c23]"
+              onClick={() => setCollapsed((c) => !c)}
+              title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              style={{ boxShadow: '0 4px 24px 0 rgba(76,110,245,0.10)' }}
             >
-              <X className="w-5 h-5 text-black dark:text-white" />
-            </button>
+              <Menu className="w-6 h-6 text-white" />
+            </div>
+            {!collapsed && (
+              <div className="flex flex-col">
+                <img src={logo} alt="Codivra Logo" className="h-36 w-auto max-w-[420px] min-w-[180px] object-contain mb-1" />
+                <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 tracking-widest uppercase mt-0.5">
+                  Admin Panel
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 overflow-y-auto p-6 space-y-2">
+        <nav className="flex-1 p-3 space-y-1">
           {items.map((item) => {
             const IconComponent = item.icon;
             const active = isActive(item.path);
@@ -86,44 +92,27 @@ const Sidebar = ({ context = 'website', isOpen = true, onClose }: SidebarProps) 
               <button
                 key={item.id}
                 onClick={() => handleNavigate(item.path)}
-                className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 flex items-center gap-3 group ${
+                className={`w-full text-left py-3 rounded-xl transition-all duration-200 flex items-center group ${
                   active
-                    ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-semibold'
-                    : 'hover:bg-black/5 dark:hover:bg-white/5 text-black/70 dark:text-white/70 font-medium'
-                }`}
+                    ? 'bg-white/80 dark:bg-blue-400/20 text-blue-700 dark:text-blue-200 font-bold shadow-lg border-l-4 border-blue-500'
+                    : 'hover:bg-white/40 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-200 font-medium border-l-4 border-transparent'
+                } ${collapsed ? 'justify-center items-center px-0' : 'gap-3 px-4'}`}
+                title={item.label}
+                style={collapsed ? { minHeight: 48, minWidth: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' } : {}}
               >
-                <IconComponent className={`w-5 h-5 ${active ? 'text-blue-600 dark:text-blue-400' : 'group-hover:text-black dark:group-hover:text-white'}`} />
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{item.label}</p>
-                  {item.description && (
-                    <p className="text-xs opacity-70 mt-0.5">{item.description}</p>
-                  )}
-                </div>
-                {item.badge && (
-                  <span className="text-xs bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 px-2 py-1 rounded-full font-semibold">
-                    {item.badge}
-                  </span>
+                <span style={collapsed ? { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32 } : {}}>
+                  <IconComponent className={`w-5 h-5 ${active ? 'text-blue-600 dark:text-blue-200' : 'group-hover:text-blue-700 dark:group-hover:text-blue-200'}`} />
+                </span>
+                {!collapsed && (
+                  <div className="flex-1">
+                    <p className="text-base font-semibold tracking-wide">{item.label}</p>
+                  </div>
                 )}
               </button>
             );
           })}
         </nav>
-
-        {/* Footer Info */}
-        <div className="p-6 border-t border-black/5 dark:border-white/5">
-          <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4 border border-blue-200 dark:border-blue-900/40">
-            <p className="text-xs font-bold text-black/60 dark:text-white/60 uppercase tracking-wide mb-1">
-              {isAdmin ? 'Admin Panel' : 'Website'}
-            </p>
-            <p className="text-xs text-black/50 dark:text-white/50 font-medium">
-              {isAdmin
-                ? 'Manage your content and settings'
-                : 'Explore our services and solutions'}
-            </p>
-          </div>
-        </div>
       </aside>
-
       {/* Style */}
       <style>{`
         .icon-gradient-blue {

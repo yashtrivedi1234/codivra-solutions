@@ -1,3 +1,5 @@
+import logo from '@/assets/logo.png';
+
 export interface FooterSection {
   id: string;
   title: string;
@@ -62,3 +64,6 @@ export const footerBottomLinks = [
 export const footerCopyright = '© 2025 Codivra Solutions. All rights reserved.';
 export const footerBrandName = 'Codivra Solutions';
 export const footerBrandDescription = 'Professional web solutions and digital services for your business success.';
+export const footerBrandLogo = logo;
+
+// When rendering logo in Footer, use: <img src={footerBrandLogo} alt="Codivra Logo" className="h-36 w-auto max-w-[420px] min-w-[180px] object-contain" />

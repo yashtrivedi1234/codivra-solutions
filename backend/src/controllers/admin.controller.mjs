@@ -1,6 +1,67 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { adminLoginSchema } from "../validation/admin.schema.mjs";
+import { adminUpdateSchema } from "../validation/admin.update.schema.mjs";
+// Update admin email and/or password
+export async function handleAdminUpdateCredentials(req, res) {
+  if (!req.admin) {
+    return res.status(401).json({
+      success: false,
+      error: "Unauthorized",
+    });
+  }
+
+  const parsed = adminUpdateSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid input",
+      issues: parsed.error.flatten(),
+    });
+  }
+
+  const { email, password } = parsed.data;
+  if (!email && !password) {
+    return res.status(400).json({
+      success: false,
+      error: "At least one of email or password must be provided",
+    });
+  }
+
+  try {
+    const collection = await getCollection("admins");
+    const admin = await collection.findOne({ email: req.admin.email });
+    if (!admin) {
+      return res.status(404).json({
+        success: false,
+        error: "Admin not found",
+      });
+    }
+
+    const update = {};
+    if (email) update.email = email;
+    if (password) {
+      update.passwordHash = await bcrypt.hash(password, 10);
+    }
+    update.updated_at = new Date().toISOString();
+
+    await collection.updateOne({ _id: admin._id }, { $set: update });
+
+    return res.json({
+      success: true,
+      message: "Admin credentials updated successfully",
+      updated: {
+        email: email || admin.email,
+      },
+    });
+  } catch (err) {
+    console.error("❌ [Admin] Update credentials error:", err);
+    return res.status(500).json({
+      success: false,
+      error: "Failed to update admin credentials",
+    });
+  }
+}
 import {
   ADMIN_EMAIL,
   ADMIN_PASSWORD,

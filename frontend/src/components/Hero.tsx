@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code2, Sparkles } from "lucide-react";
 import { useGetPageQuery } from "@/lib/api";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   const { data } = useGetPageQuery("home");
@@ -81,13 +82,26 @@ export const Hero = () => {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button variant="hero" size="xl" className="group">
-              Get a Free Quote
-              <ArrowRight className="transition-transform group-hover:translate-x-1" />
+            <Button
+              variant="hero"
+              size="xl"
+              className="group"
+              asChild
+            >
+              <Link to="/contact">
+                Get a Free Quote
+                <ArrowRight className="transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
-            <Button variant="heroOutline" size="xl">
-              <Code2 size={20} />
-              View Our Work
+            <Button
+              variant="heroOutline"
+              size="xl"
+              asChild
+            >
+              <Link to="/portfolio">
+                <Code2 size={20} />
+                View Our Work
+              </Link>
             </Button>
           </motion.div>
 

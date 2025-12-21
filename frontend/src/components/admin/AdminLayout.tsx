@@ -25,6 +25,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { ReactNode } from "react";
 import AdminNotifications from "./AdminNotifications";
+import Sidebar from '../Sidebar';
+import logo from '@/assets/logo.png';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -96,16 +98,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="absolute inset-0 icon-gradient-blue rounded-xl blur-sm opacity-60"></div>
-                <div className="relative icon-gradient-blue p-2.5 rounded-xl">
-                </div>
+                
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-black dark:text-white tracking-tight">
-                  Codivra Solutions
-                </h1>
-                <p className="text-sm text-black/50 dark:text-white/50 font-medium">
-                  Analytics & Management
-                </p>
+                <img src={logo} alt="Codivra Logo" className="h-36 w-auto max-w-[420px] min-w-[180px] object-contain" />
               </div>
             </div>
 
@@ -170,60 +166,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="hidden md:flex w-64 border-r border-black/5 dark:border-white/5 bg-white dark:bg-[#141414] flex-col overflow-hidden">
-          <div className="p-6 border-b border-black/5 dark:border-white/5">
-            <h2 className="text-sm font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mb-4">
-              Navigation
-            </h2>
-            <nav className="space-y-2">
-              {adminPages.map((page) => {
-                const IconComponent = page.icon;
-                const isActive = window.location.pathname === page.path;
-                return (
-                  <button
-                    key={page.path}
-                    onClick={() => navigate(page.path)}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg transition-all duration-200 flex items-center gap-2 font-medium text-sm ${
-                      isActive
-                        ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-semibold"
-                        : "hover:bg-black/5 dark:hover:bg-white/5 text-black/70 dark:text-white/70"
-                    }`}
-                  >
-                    <IconComponent className="w-4 h-4" />
-                    {page.name}
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
-
-          <div className="p-6 flex-1">
-            <h3 className="text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-wider mb-3">
-              Quick Links
-            </h3>
-            <div className="space-y-2 text-sm">
-              <a
-                href="#"
-                className="block px-3 py-2 rounded-lg text-black/70 dark:text-white/70 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              >
-                Documentation
-              </a>
-              <a
-                href="#"
-                className="block px-3 py-2 rounded-lg text-black/70 dark:text-white/70 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              >
-                Support
-              </a>
-              <a
-                href="#"
-                className="block px-3 py-2 rounded-lg text-black/70 dark:text-white/70 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              >
-                Settings
-              </a>
-            </div>
-          </div>
-        </aside>
-
+        <Sidebar context="admin" showDescription={false} sticky />
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto flex flex-col">
           <div className="flex-1 overflow-y-auto">{children}</div>

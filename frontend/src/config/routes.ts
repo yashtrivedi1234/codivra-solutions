@@ -109,6 +109,14 @@ export const adminRoutes: RouteConfig[] = [
     sidebar: false,
     auth: false,
   },
+  {
+    path: '/admin/settings',
+    label: 'Settings',
+    component: (await import('@/pages/AdminSettings')).default,
+    context: 'admin',
+    sidebar: true,
+    auth: true,
+  },
 ];
 
 /**
