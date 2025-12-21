@@ -10,6 +10,15 @@ import {
 import { requireAdmin } from "../middleware/auth.middleware.mjs";
 
 const router = Router();
+import {
+  handleSendEmailOtp,
+  handleVerifyEmailOtp,
+} from "../controllers/admin.controller.mjs";
+// Send OTP to new email
+router.post("/api/admin/send-email-otp", requireAdmin, handleSendEmailOtp);
+
+// Verify OTP for email update
+router.post("/api/admin/verify-email-otp", requireAdmin, handleVerifyEmailOtp);
 
 // Update admin credentials (email/password)
 router.post(

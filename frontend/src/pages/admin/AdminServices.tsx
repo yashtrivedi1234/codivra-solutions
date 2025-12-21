@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Plus, Trash2, Edit3, Loader2, X, Upload } from "lucide-react";
-import { motion } from "framer-motion";
+import { Plus, Trash2, Edit3, Loader2, X, Upload, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
@@ -23,11 +22,11 @@ const AdminServices = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
   const [iconFile, setIconFile] = useState<File | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     features: [] as string[],
-    // price: 0, (removed)
   });
 
   const resetForm = () => {
@@ -35,7 +34,6 @@ const AdminServices = () => {
       title: "",
       description: "",
       features: [],
-      price: 0,
     });
     setEditingService(null);
     setIconFile(null);
@@ -49,7 +47,6 @@ const AdminServices = () => {
       title: service.title,
       description: service.description,
       features: service.features || [],
-      // price: service.price || 0, (removed)
     });
     setIconPreview(service.icon || null);
     setIconFile(null);
@@ -74,7 +71,6 @@ const AdminServices = () => {
       const formDataObj = new FormData();
       formDataObj.append("title", formData.title);
       formDataObj.append("description", formData.description);
-      // formDataObj.append("price", formData.price.toString()); (removed)
       formData.features.forEach((feature) => {
         formDataObj.append("features[]", feature);
       });
@@ -106,9 +102,9 @@ const AdminServices = () => {
       text: "This action cannot be undone",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ef4444",
+      confirmButtonColor: "#dc2626",
       cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
       cancelButtonText: "Cancel",
     });
 
@@ -123,182 +119,247 @@ const AdminServices = () => {
     }
   };
 
+  const filteredServices = data?.items?.filter((service) =>
+    service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    service.description.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
   return (
     <AdminLayout>
-      <div className="p-8">
+      <div className="p-6 bg-gray-50 min-h-screen">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              Manage Services
-            </h1>
-            <p className="text-white/60">
-              Add, edit, and manage your services
-            </p>
+        <div className="bg-white border-b border-gray-200 -m-6 mb-6 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900">Services</h1>
+              <p className="text-sm text-gray-500 mt-1">
+                Manage your service offerings
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsModalOpen(true)} 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Service
+            </Button>
           </div>
-          <Button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-6 py-3 rounded-xl hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] gap-2">
-            <Plus className="w-4 h-4" />
-            Add Service
-          </Button>
+        </div>
+
+        {/* Toolbar */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1 relative max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search services..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="font-medium">{filteredServices.length}</span>
+              <span>services</span>
+            </div>
+          </div>
         </div>
 
         {/* Loading State */}
         {isLoading && (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-[#00D9FF]" />
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           </div>
         )}
 
-        {/* Services Grid */}
+        {/* Table */}
         {!isLoading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data?.items && data.items.length > 0 ? (
-              data.items.map((service, idx) => (
-                <motion.div
-                  key={service._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: idx * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className="group relative"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#00D9FF]/20 to-[#0066FF]/20 rounded-lg flex items-center justify-center">
-                          <span className="text-2xl text-white">{service.icon}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-white">
-                            {service.title}
-                          </h3>
-                          <div className="flex items-center gap-2">
-                            {/* Price removed from display */}
-                            <span className="text-xs bg-[#00D9FF]/20 text-[#00D9FF] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                              Active
-                            </span>
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            {filteredServices.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Service
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Features
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {filteredServices.map((service) => (
+                      <tr key={service._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            {service.icon && (
+                              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <span className="text-xl">{service.icon}</span>
+                              </div>
+                            )}
+                            <div className="font-medium text-gray-900">{service.title}</div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-white/60 text-sm mb-4">
-                      {service.description}
-                    </p>
-                    {service.features && service.features.length > 0 && (
-                      <ul className="text-xs text-white/40 mb-4 space-y-1">
-                        {service.features.map((feature, idx) => (
-                          <li key={idx}>• {feature}</li>
-                        ))}
-                      </ul>
-                    )}
-                    <div className="flex items-center gap-2 pt-4 border-t border-white/10">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(service)}
-                        className="flex-1 bg-white/5 border-white/10 text-white hover:bg-white/10"
-                      >
-                        <Edit3 className="w-3.5 h-3.5 mr-1.5" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(service._id)}
-                        disabled={isDeleting}
-                        className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-gray-600 line-clamp-2 max-w-md">
+                            {service.description}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-xs text-gray-500">
+                            {service.features?.length || 0} features
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => handleEdit(service)}
+                              className="text-gray-400 hover:text-blue-600 transition-colors p-1.5 hover:bg-blue-50 rounded"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(service._id)}
+                              disabled={isDeleting}
+                              className="text-gray-400 hover:text-red-600 transition-colors p-1.5 hover:bg-red-50 rounded disabled:opacity-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
-              <div className="col-span-full text-center py-20">
-                <p className="text-white/50 text-lg">
-                  No services found. Add your first service to get started.
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Plus className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {searchQuery ? "No services found" : "No services yet"}
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  {searchQuery ? "Try adjusting your search" : "Get started by adding your first service"}
                 </p>
+                {!searchQuery && (
+                  <Button 
+                    onClick={() => setIsModalOpen(true)} 
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Service
+                  </Button>
+                )}
               </div>
             )}
           </div>
         )}
 
-        {/* Add/Edit Modal */}
+        {/* Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-[#0A0F1C]/95 backdrop-blur-xl flex items-center justify-center p-4 z-50 overflow-y-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl w-full max-w-2xl my-8"
-            >
-              <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <h2 className="text-2xl font-bold text-white">
-                  {editingService ? "Edit Service" : "Add New Service"}
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-xl my-8">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {editingService ? "Edit Service" : "Add Service"}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto">
+
+              {/* Modal Body */}
+              <form onSubmit={handleSubmit} className="p-4 space-y-3">
+                {/* Icon Upload */}
                 <div>
-                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                    Service Title *
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Icon
+                  </label>
+                  <div className="flex items-center gap-3">
+                    {iconPreview ? (
+                      <div className="relative">
+                        <div className="w-14 h-14 rounded-lg bg-blue-100 flex items-center justify-center">
+                          <span className="text-2xl">{iconPreview}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIconPreview(null);
+                            setIconFile(null);
+                          }}
+                          className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center border border-dashed border-gray-300">
+                        <Upload className="w-5 h-5 text-gray-400" />
+                      </div>
+                    )}
+                    <label className="flex-1">
+                      <span className="inline-block px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md cursor-pointer transition-colors text-xs font-medium">
+                        {iconFile ? "Change" : "Upload"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleIconChange}
+                        className="hidden"
+                      />
+                      {iconFile && (
+                        <span className="ml-2 text-xs text-gray-500 truncate max-w-[200px] inline-block">{iconFile.name}</span>
+                      )}
+                    </label>
+                  </div>
+                </div>
+
+                {/* Title */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                    placeholder="e.g., Web Development"
+                    className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Web Development"
                   />
                 </div>
+
+                {/* Description */}
                 <div>
-                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                    Description *
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Description <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     required
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all h-24 resize-none"
+                    className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent h-20 resize-none"
                     placeholder="Describe the service..."
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
-                      Icon Image (Optional)
-                    </label>
-                    <div className="space-y-3">
-                      {iconPreview && (
-                        <div className="w-full h-32 bg-white/10 rounded-xl flex items-center justify-center">
-                          <img src={iconPreview} alt="Icon preview" className="max-w-full max-h-full" />
-                        </div>
-                      )}
-                      <label className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
-                        <Upload className="w-5 h-5 text-white/60" />
-                        <span className="text-sm font-medium text-white/60">
-                          {iconFile ? iconFile.name : "Click to upload icon"}
-                        </span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleIconChange}
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  {/* Price input removed from form */}
-                </div>
+
+                {/* Features */}
                 <div>
-                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
                     Features (comma-separated)
                   </label>
                   <input
@@ -308,31 +369,33 @@ const AdminServices = () => {
                       ...formData,
                       features: e.target.value.split(",").map((f) => f.trim()).filter((f) => f),
                     })}
-                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
+                    className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Feature 1, Feature 2, Feature 3"
                   />
                 </div>
-                <div className="flex gap-3 pt-4">
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-3 border-t border-gray-200">
                   <Button
                     type="button"
                     onClick={resetForm}
-                    className="flex-1 bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                    className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-1.5 rounded-md text-sm font-medium"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={isCreating || isUpdating}
-                    className="flex-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {(isCreating || isUpdating) && (
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
                     )}
-                    {editingService ? "Update" : "Create"} Service
+                    {editingService ? "Update" : "Add"}
                   </Button>
                 </div>
               </form>
-            </motion.div>
+            </div>
           </div>
         )}
       </div>

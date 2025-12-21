@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { adminLoginSchema } from "../validation/admin.schema.mjs";
 import { adminUpdateSchema } from "../validation/admin.update.schema.mjs";
+import { sendOtpEmail } from "../services/emailOtp.service.mjs";
+
 // Update admin email and/or password
 export async function handleAdminUpdateCredentials(req, res) {
   if (!req.admin) {
@@ -359,4 +361,41 @@ export async function handleDeleteJobApplication(req, res) {
       error: "Failed to delete job application",
     });
   }
+}
+
+let otpStore = {};
+
+export async function handleSendEmailOtp(req, res) {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ success: false, error: "Email is required" });
+  }
+  // Generate 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore[email] = { otp, expires: Date.now() + 5 * 60 * 1000 };
+  try {
+    await sendOtpEmail(email, otp);
+    return res.json({ success: true, message: "OTP sent to email" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, error: "Failed to send OTP" });
+  }
+}
+
+export async function handleVerifyEmailOtp(req, res) {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Email and OTP required" });
+  }
+  const record = otpStore[email];
+  if (!record || record.otp !== otp || Date.now() > record.expires) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Invalid or expired OTP" });
+  }
+  delete otpStore[email];
+  return res.json({ success: true, message: "OTP verified" });
 }

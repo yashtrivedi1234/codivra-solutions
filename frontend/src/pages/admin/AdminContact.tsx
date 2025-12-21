@@ -32,7 +32,7 @@ const AdminContact = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-[#F8F9FC] dark:bg-[#0A0F1C] px-6 py-8">
+      <div className="min-h-screen bg-[#F8F9FC] dark:bg-[#0A0F1C] px-6 py-8" style={{ color: 'black' }}>
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
           

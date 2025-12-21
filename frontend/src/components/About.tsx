@@ -168,14 +168,14 @@ export const About = () => {
               </motion.div>
 
               {/* Floating Card */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="absolute -bottom-8 -right-8 bg-gradient-to-br from-[#00D9FF] to-[#0066FF] rounded-2xl p-6 shadow-2xl max-w-xs"
-              >
-                <div className="flex items-center gap-4 mb-3">
+              > */}
+                {/* <div className="flex items-center gap-4 mb-3">
                   <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                     <Target className="w-6 h-6 text-white" />
                   </div>
@@ -183,11 +183,11 @@ export const About = () => {
                     <div className="text-2xl font-black text-white">98%</div>
                     <div className="text-xs text-white/80">Client Satisfaction</div>
                   </div>
-                </div>
-                <p className="text-sm text-white/90">
+                </div> */}
+                {/* <p className="text-sm text-white/90">
                   Our commitment to excellence drives everything we do.
-                </p>
-              </motion.div>
+                </p> */}
+              {/* </motion.div> */}
             </div>
           </AnimatedSection>
         </div>

@@ -176,7 +176,7 @@ export const Hero = () => {
               Trusted by Industry Leaders
             </p>
             <div className="flex flex-wrap items-center gap-8 lg:gap-12">
-              {["TechStart", "InnovateCo", "GrowthLabs", "DigitalEdge", "ScaleUp"].map(
+              {["Aitds Events", "InnovateCo", "GrowthLabs", "DigitalEdge", "ScaleUp"].map(
                 (company, i) => (
                   <motion.span
                     key={company}

@@ -52,6 +52,13 @@ export const adminSidebarItems: SidebarItem[] = [
     componentPath: 'src/pages/admin/AdminServices.tsx',
   },
   {
+    id: 'team',
+    label: 'Team',
+    path: '/admin/team',
+    icon: Briefcase,
+    componentPath: 'src/pages/admin/AdminTeam.tsx',
+  },
+  {
     id: 'portfolio',
     label: 'Portfolio',
     path: '/admin/portfolio',

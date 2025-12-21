@@ -1,3 +1,4 @@
+import AdminSettings from "@/pages/AdminSettings";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -34,6 +35,16 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        <Route
+          path="/admin/settings"
+          element={
+            <RequireAdmin>
+              <PageTransition>
+                <AdminSettings />
+              </PageTransition>
+            </RequireAdmin>
+          }
+        />
         <Route
           path="/"
           element={

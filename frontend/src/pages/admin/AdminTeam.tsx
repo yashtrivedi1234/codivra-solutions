@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Trash2, Edit3, Loader2, X, Upload, Linkedin, Twitter, Github } from "lucide-react";
+import { Plus, Trash2, Edit3, Loader2, X, Upload, Linkedin, Twitter, Github, Mail, Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/lib/api";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { motion } from "framer-motion";
 
 const AdminTeam = () => {
   const { data, isLoading, refetch } = useGetTeamQuery();
@@ -23,6 +22,7 @@ const AdminTeam = () => {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -116,12 +116,10 @@ const AdminTeam = () => {
       text: "This action cannot be undone",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ef4444",
+      confirmButtonColor: "#dc2626",
       cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
       cancelButtonText: "Cancel",
-      background: "#0A0F1C",
-      color: "#ffffff",
     });
 
     if (!result.isConfirmed) return;
@@ -135,129 +133,206 @@ const AdminTeam = () => {
     }
   };
 
+  const filteredMembers = data?.items?.filter((member) =>
+    member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.email?.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
   return (
     <AdminLayout>
-      <div className="p-8">
+      <div className="p-6 bg-gray-50 min-h-screen">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              Team Management
-            </h1>
-            <p className="text-white/60">
-              Add and manage your team members
-            </p>
+        <div className="bg-white border-b border-gray-200 -m-6 mb-6 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900">Team Members</h1>
+              <p className="text-sm text-gray-500 mt-1">
+                Manage your team members and their information
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsModalOpen(true)} 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Member
+            </Button>
           </div>
-          <Button 
-            onClick={() => setIsModalOpen(true)} 
-            className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold px-6 py-3 rounded-xl hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Member
-          </Button>
+        </div>
+
+        {/* Toolbar */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1 relative max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search members..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="font-medium">{filteredMembers.length}</span>
+              <span>members</span>
+            </div>
+          </div>
         </div>
 
         {/* Loading State */}
         {isLoading && (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-[#00D9FF]" />
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           </div>
         )}
 
-        {/* Team Grid */}
+        {/* Table */}
         {!isLoading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data?.items && data.items.length > 0 ? (
-              data.items.map((member, index) => (
-                <motion.div
-                  key={member._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className="group relative"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-500">
-                    {member.image && (
-                      <div className="relative mb-6 overflow-hidden rounded-xl">
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent" />
-                      </div>
-                    )}
-                    <div className="mb-4">
-                      <h3 className="text-xl font-bold text-white mb-1">
-                        {member.name}
-                      </h3>
-                      <p className="text-[#00D9FF] font-semibold text-sm mb-2">
-                        {member.role}
-                      </p>
-                      {member.email && (
-                        <p className="text-xs text-white/50">
-                          {member.email}
-                        </p>
-                      )}
-                    </div>
-                    <p className="text-white/60 text-sm mb-6 line-clamp-3 leading-relaxed">
-                      {member.bio}
-                    </p>
-                    
-                    {/* Social Links */}
-                    {(member.social_links?.linkedin || member.social_links?.twitter || member.social_links?.github) && (
-                      <div className="flex items-center gap-2 mb-6 pb-6 border-b border-white/10">
-                        {member.social_links?.linkedin && (
-                          <a href={member.social_links.linkedin} target="_blank" rel="noopener noreferrer" 
-                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
-                            <Linkedin className="w-4 h-4 text-white/60" />
-                          </a>
-                        )}
-                        {member.social_links?.twitter && (
-                          <a href={member.social_links.twitter} target="_blank" rel="noopener noreferrer"
-                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
-                            <Twitter className="w-4 h-4 text-white/60" />
-                          </a>
-                        )}
-                        {member.social_links?.github && (
-                          <a href={member.social_links.github} target="_blank" rel="noopener noreferrer"
-                            className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#00D9FF]/20 transition-colors">
-                            <Github className="w-4 h-4 text-white/60" />
-                          </a>
-                        )}
-                      </div>
-                    )}
-                    
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(member)}
-                        className="flex-1 bg-white/5 border-white/10 text-white hover:bg-white/10"
-                      >
-                        <Edit3 className="w-3.5 h-3.5 mr-1.5" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(member._id)}
-                        disabled={isDeleting}
-                        className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            {filteredMembers.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Member
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Role
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Social
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {filteredMembers.map((member) => (
+                      <tr key={member._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            {member.image ? (
+                              <img
+                                src={member.image}
+                                alt={member.name}
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span className="text-blue-600 font-medium text-sm">
+                                  {member.name.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                            )}
+                            <div>
+                              <div className="font-medium text-gray-900">{member.name}</div>
+                              <div className="text-sm text-gray-500 line-clamp-1 max-w-xs">
+                                {member.bio}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            {member.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          {member.email ? (
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Mail className="w-4 h-4 text-gray-400" />
+                              <span className="truncate max-w-xs">{member.email}</span>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-gray-400">—</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            {member.social_links?.linkedin && (
+                              <a
+                                href={member.social_links.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-blue-600 transition-colors"
+                              >
+                                <Linkedin className="w-4 h-4" />
+                              </a>
+                            )}
+                            {member.social_links?.twitter && (
+                              <a
+                                href={member.social_links.twitter}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-blue-400 transition-colors"
+                              >
+                                <Twitter className="w-4 h-4" />
+                              </a>
+                            )}
+                            {member.social_links?.github && (
+                              <a
+                                href={member.social_links.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-gray-900 transition-colors"
+                              >
+                                <Github className="w-4 h-4" />
+                              </a>
+                            )}
+                            {!member.social_links?.linkedin && !member.social_links?.twitter && !member.social_links?.github && (
+                              <span className="text-sm text-gray-400">—</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => handleEdit(member)}
+                              className="text-gray-400 hover:text-blue-600 transition-colors p-1.5 hover:bg-blue-50 rounded"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(member._id)}
+                              disabled={isDeleting}
+                              className="text-gray-400 hover:text-red-600 transition-colors p-1.5 hover:bg-red-50 rounded disabled:opacity-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
-              <div className="col-span-full text-center py-20">
-                <p className="text-white/50 text-lg">
-                  No team members yet. Add one to get started!
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Plus className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {searchQuery ? "No members found" : "No team members yet"}
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  {searchQuery ? "Try adjusting your search" : "Get started by adding your first team member"}
                 </p>
+                {!searchQuery && (
+                  <Button 
+                    onClick={() => setIsModalOpen(true)} 
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Member
+                  </Button>
+                )}
               </div>
             )}
           </div>
@@ -265,99 +340,55 @@ const AdminTeam = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-[#0A0F1C]/95 backdrop-blur-xl flex items-center justify-center p-4 z-50 overflow-y-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl w-full max-w-2xl my-8"
-            >
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" style={{ overflow: 'visible' }}>
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-xl">
               {/* Modal Header */}
-              <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <h2 className="text-2xl font-bold text-white">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">
                   {editingMember ? "Edit Team Member" : "Add Team Member"}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="text-white/60 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-lg"
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Modal Body */}
-              <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                      placeholder="John Doe"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                      Role *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                      placeholder="Lead Developer"
-                    />
-                  </div>
-                </div>
-
+              <form onSubmit={handleSubmit} className="p-4 space-y-3">
+                {/* Image Upload */}
                 <div>
-                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                    Bio *
-                  </label>
-                  <textarea
-                    required
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all h-24 resize-none"
-                    placeholder="Tell us about this team member..."
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-white/70 mb-2 uppercase tracking-wider">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                    placeholder="john@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
                     Profile Image
                   </label>
-                  <div className="space-y-3">
-                    {imagePreview && (
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-full h-48 object-cover rounded-xl border border-white/10"
-                      />
+                  <div className="flex items-center gap-3">
+                    {imagePreview ? (
+                      <div className="relative">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-14 h-14 rounded-full object-cover border border-gray-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setImagePreview(null);
+                            setImageFile(null);
+                          }}
+                          className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center border border-dashed border-gray-300">
+                        <Upload className="w-5 h-5 text-gray-400" />
+                      </div>
                     )}
-                    <label className="flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/5 transition-colors">
-                      <Upload className="w-5 h-5 text-white/60" />
-                      <span className="text-sm font-medium text-white/60">
-                        {imageFile ? imageFile.name : "Click to upload image"}
+                    <label className="flex-1">
+                      <span className="inline-block px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md cursor-pointer transition-colors text-xs font-medium">
+                        {imageFile ? "Change" : "Upload"}
                       </span>
                       <input
                         type="file"
@@ -365,75 +396,148 @@ const AdminTeam = () => {
                         onChange={handleImageChange}
                         className="hidden"
                       />
+                      {imageFile && (
+                        <span className="ml-2 text-xs text-gray-500 truncate max-w-[200px] inline-block">{imageFile.name}</span>
+                      )}
                     </label>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="block text-sm font-bold text-white/70 mb-3 uppercase tracking-wider">
-                    Social Links
-                  </label>
-                  <div className="space-y-3">
+                {/* Name and Role */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
                     <input
-                      type="url"
-                      value={formData.social_links.linkedin}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          social_links: { ...formData.social_links, linkedin: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                      placeholder="LinkedIn URL"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="John Doe"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                      Role <span className="text-red-500">*</span>
+                    </label>
                     <input
-                      type="url"
-                      value={formData.social_links.twitter}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          social_links: { ...formData.social_links, twitter: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                      placeholder="Twitter URL"
-                    />
-                    <input
-                      type="url"
-                      value={formData.social_links.github}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          social_links: { ...formData.social_links, github: e.target.value },
-                        })
-                      }
-                      className="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] focus:ring-2 focus:ring-[#00D9FF]/20 transition-all"
-                      placeholder="GitHub URL"
+                      type="text"
+                      required
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Lead Developer"
                     />
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-4">
+                {/* Email */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                {/* Bio */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Bio <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    required
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent h-20 resize-none"
+                    placeholder="Brief description..."
+                  />
+                </div>
+
+                {/* Social Links */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                    Social Links (Optional)
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Linkedin className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <input
+                        type="url"
+                        value={formData.social_links.linkedin}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            social_links: { ...formData.social_links, linkedin: e.target.value },
+                          })
+                        }
+                        className="flex-1 px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="LinkedIn URL"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Twitter className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <input
+                        type="url"
+                        value={formData.social_links.twitter}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            social_links: { ...formData.social_links, twitter: e.target.value },
+                          })
+                        }
+                        className="flex-1 px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Twitter URL"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Github className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <input
+                        type="url"
+                        value={formData.social_links.github}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            social_links: { ...formData.social_links, github: e.target.value },
+                          })
+                        }
+                        className="flex-1 px-2.5 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="GitHub URL"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-3 border-t border-gray-200">
                   <Button
                     type="button"
                     onClick={resetForm}
-                    className="flex-1 bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                    className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-1.5 rounded-md text-sm font-medium"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={isCreating || isUpdating}
-                    className="flex-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-bold hover:shadow-[0_0_30px_rgba(0,217,255,0.5)]"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {(isCreating || isUpdating) && (
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
                     )}
-                    {editingMember ? "Update" : "Create"} Member
+                    {editingMember ? "Update" : "Add"}
                   </Button>
                 </div>
               </form>
-            </motion.div>
+            </div>
           </div>
         )}
       </div>
