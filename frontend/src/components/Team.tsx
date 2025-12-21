@@ -2,38 +2,9 @@ import { Linkedin, Twitter, Github, Loader2 } from "lucide-react";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
 import { useGetTeamQuery } from "@/lib/api";
 
-// Fallback team members for display when API is unavailable
-const fallbackTeamMembers = [
-  {
-    name: "Yash Trivedi",
-    role: "CEO & Founder",
-    bio: "Founder and strategic leader driving the company vision",
-    social: { linkedin: "#", twitter: "#" },
-  },
-  {
-    name: "Sneha Bajpai",
-    role: "Team Lead",
-    bio: "Leading teams to deliver high-quality solutions",
-    social: { linkedin: "#" },
-  },
-  {
-    name: "Preeti Yadav",
-    role: "Business Development Executive",
-    bio: "Driving growth and building strong client relationships",
-    social: { linkedin: "#" },
-  },
-  {
-    name: "Hardik Srivastava",
-    role: "MERN Stack Developer",
-    bio: "Building scalable web applications using MERN stack",
-    social: { linkedin: "#", github: "#" },
-  },
-];
-
 export const Team = () => {
   const { data, isLoading } = useGetTeamQuery();
-  
-  const teamMembers = data?.items && data.items.length > 0 
+  const teamMembers = data?.items && data.items.length > 0
     ? data.items.map((member) => ({
         name: member.name,
         role: member.role,
@@ -45,7 +16,7 @@ export const Team = () => {
           github: member.social_links?.github || "",
         },
       }))
-    : fallbackTeamMembers;
+    : [];
 
   return (
     <section id="team" className="py-24">
@@ -71,7 +42,7 @@ export const Team = () => {
         )}
 
         {/* Team Grid */}
-        {!isLoading && (
+        {!isLoading && teamMembers.length > 0 && (
           <AnimatedStagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {teamMembers.map((member) => (
               <AnimatedItem key={member.name}>
@@ -143,6 +114,12 @@ export const Team = () => {
               </AnimatedItem>
             ))}
           </AnimatedStagger>
+        )}
+        {/* Optionally, show a message if no team members are available */}
+        {!isLoading && teamMembers.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            No team members found.
+          </div>
         )}
       </div>
     </section>
