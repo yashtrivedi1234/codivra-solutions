@@ -3,6 +3,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Sparkles, Zap, Rocket } from "lucide-react";
 import { useGetPageQuery } from "@/lib/api";
 import { Link } from "react-router-dom";
+import aitdLogo from "@/assets/aitd-logo.png";
+
+const trustedAvatars = [
+  { src: aitdLogo, href: "https://aitd-events.club/", label: "AITDS Events" },
+  { src: "https://i.pravatar.cc/100?img=24", label: "Client 2" },
+  { src: "https://i.pravatar.cc/100?img=36", label: "Client 3" },
+  { src: "https://i.pravatar.cc/100?img=48", label: "Client 4" },
+  { src: "https://i.pravatar.cc/100?img=60", label: "Client 5" },
+];
 
 export const Hero = () => {
   const { data } = useGetPageQuery("home");
@@ -101,7 +110,7 @@ export const Hero = () => {
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, type: "spring" }}
-            className="inline-flex items-center gap-3 mb-8"
+            className="inline-flex items-center gap-3 mb-8 mt-8"
           >
             <div className="relative">
               <motion.div 
@@ -172,7 +181,7 @@ export const Hero = () => {
                 asChild
                 className="group relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-10 py-8 text-lg rounded-2xl transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,217,255,0.7)] uppercase tracking-wider"
               >
-                <Link to="#contact" className="flex items-center gap-3">
+                <Link to="/contact" className="flex items-center gap-3">
                   <Rocket className="w-6 h-6" />
                   Start Your Project
                   <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
@@ -185,7 +194,7 @@ export const Hero = () => {
                 asChild
                 className="group relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/20 text-white font-bold px-10 py-8 text-lg rounded-2xl hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 uppercase tracking-wider"
               >
-                <Link to="#portfolio" className="flex items-center gap-3">
+                <Link to="/portfolio" className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#00D9FF]/20 transition-all">
                     <Play className="w-5 h-5 fill-white ml-1" />
                   </div>
@@ -195,42 +204,6 @@ export const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* Stats Cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
-          >
-            {[
-              { value: "50+", label: "Happy Clients" },
-              { value: "100+", label: "Projects Done" },
-              { value: "24/7", label: "Support" },
-              { value: "100%", label: "Satisfaction" },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.9 + (i * 0.1), type: "spring" }}
-                whileHover={{ y: -5, scale: 1.05 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-br from-[#00D9FF]/20 to-[#0066FF]/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-6 text-center group-hover:border-[#00D9FF]/40 transition-all">
-                  <div 
-                    className="text-4xl font-black text-[#00D9FF] mb-2" 
-                    style={{ fontFamily: "'Oswald', sans-serif" }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-white/60 font-bold uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
 
           {/* Trust Indicators */}
           <motion.div
@@ -241,70 +214,79 @@ export const Hero = () => {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="flex -space-x-3">
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 1.1 + (i * 0.05), type: "spring" }}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00D9FF]/30 to-[#0066FF]/30 border-2 border-[#0A0F1C] flex items-center justify-center"
-                  >
-                    <span className="text-white/60 text-xs font-bold">
-                      {String.fromCharCode(65 + i)}
-                    </span>
-                  </motion.div>
-                ))}
+                {trustedAvatars.map((item, i) => {
+                  const avatar = (
+                    <motion.div
+                      key={item.src}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 1.1 + i * 0.05, type: "spring" }}
+                      className="w-10 h-10 rounded-full border-2 border-[#0A0F1C] overflow-hidden ring-2 ring-[#00D9FF]/40"
+                    >
+                      <img src={item.src} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+                    </motion.div>
+                  );
+                  return item.href ? (
+                    <a
+                      key={item.src}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                      className="block"
+                    >
+                      {avatar}
+                    </a>
+                  ) : (
+                    avatar
+                  );
+                })}
               </div>
               <p className="text-sm text-white/50 font-bold uppercase tracking-wider">
-                Trusted by 50+ Industry Leaders
+                Trusted by 5+ Industry Leaders
               </p>
             </div>
             
             <div className="flex flex-wrap items-center gap-8 lg:gap-12">
-              {["Aitds Events", "InnovateCo", "GrowthLabs", "DigitalEdge", "ScaleUp"].map(
-                (company, i) => (
-                  <motion.span
-                    key={company}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 + i * 0.1 }}
-                    whileHover={{ scale: 1.1, opacity: 0.8 }}
-                    className="text-xl lg:text-2xl font-black text-white/30 hover:text-white/60 transition-all cursor-pointer uppercase tracking-wide"
-                    style={{ fontFamily: "'Oswald', sans-serif" }}
+              {[
+                { name: "Aitds Events", href: "https://aitd-events.club/" },
+                { name: "InnovateCo" },
+                { name: "GrowthLabs" },
+                { name: "DigitalEdge" },
+                { name: "ScaleUp" },
+              ].map((company, i) => {
+                const sharedProps = {
+                  initial: { opacity: 0, y: 20 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { delay: 1.2 + i * 0.1 },
+                  whileHover: { scale: 1.1, opacity: 0.8 },
+                  className:
+                    "text-xl lg:text-2xl font-black text-white/30 hover:text-white/60 transition-all cursor-pointer uppercase tracking-wide",
+                  style: { fontFamily: "'Oswald', sans-serif" },
+                };
+
+                return company.href ? (
+                  <motion.a
+                    key={company.name}
+                    href={company.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...sharedProps}
                   >
-                    {company}
+                    {company.name}
+                  </motion.a>
+                ) : (
+                  <motion.span key={company.name} {...sharedProps}>
+                    {company.name}
                   </motion.span>
-                )
-              )}
+                );
+              })}
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-white/40 text-xs font-bold uppercase tracking-wider">
-            Scroll
-          </span>
-          <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2">
-            <motion.div
-              className="w-1.5 h-2.5 bg-gradient-to-b from-[#00D9FF] to-[#0066FF] rounded-full"
-              animate={{ y: [0, 16, 0], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </div>
-        </motion.div>
-      </motion.div>
+      {/* Add Google Fonts */}
 
       {/* Add Google Fonts */}
       <style>{`

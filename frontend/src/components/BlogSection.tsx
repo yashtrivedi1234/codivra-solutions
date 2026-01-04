@@ -1,4 +1,4 @@
-import { ArrowRight, Calendar, Clock, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react"; // added Sparkles
 import { Button } from "@/components/ui/button";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
 import { useGetPageQuery, useGetBlogQuery } from "@/lib/api";
@@ -18,15 +18,9 @@ export const BlogSection = () => {
 
   const blogPosts = (blogData?.items || []).slice(0, 3).map((post) => ({
     title: post.title,
-    excerpt: post.excerpt,
-    image: post.image || "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
+    image:
+      post.image,
     category: post.category,
-    date: new Date(post.created_at || "").toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    }),
-    readTime: "5 min read",
     slug: post._id,
   }));
 
@@ -41,17 +35,24 @@ export const BlogSection = () => {
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <AnimatedSection className="text-center max-w-3xl mx-auto mb-20">
+          <div className="flex justify-center">
+            <motion.div
+              className="inline-flex items-center gap-3 mb-6 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border border-[#00D9FF]/30 rounded-full px-6 py-3"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Sparkles className="w-4 h-4 text-[#00D9FF]" />
+              <span className="text-[#00D9FF] font-bold text-sm tracking-[0.15em] uppercase">
+                Our Blog
+              </span>
+              <Sparkles className="w-4 h-4 text-[#00D9FF]" />
+            </motion.div>
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="inline-block mb-4"
           >
-            <span className="inline-flex items-center gap-2 text-[#00D9FF] font-bold text-sm tracking-[0.2em] uppercase">
-              <span className="w-8 h-[2px] bg-gradient-to-r from-transparent to-[#00D9FF]" />
-              Our Blog
-              <span className="w-8 h-[2px] bg-gradient-to-l from-transparent to-[#00D9FF]" />
-            </span>
           </motion.div>
           <h2
             className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight"
@@ -118,26 +119,12 @@ export const BlogSection = () => {
                       {/* Content */}
                       <div className="p-6">
                         {/* Meta */}
-                        <div className="flex items-center gap-4 text-white/50 text-sm mb-4">
-                          <span className="flex items-center gap-1.5">
-                            <Calendar className="w-4 h-4" />
-                            {post.date}
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <Clock className="w-4 h-4" />
-                            {post.readTime}
-                          </span>
-                        </div>
+                        {/* Removed Meta section */}
 
                         {/* Title */}
                         <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#00D9FF] transition-colors line-clamp-2 leading-tight">
                           {post.title}
                         </h3>
-
-                        {/* Excerpt */}
-                        <p className="text-white/60 text-sm leading-relaxed line-clamp-3">
-                          {post.excerpt}
-                        </p>
 
                         {/* Read More Link */}
                         <div className="mt-4 flex items-center gap-2 text-[#00D9FF] font-semibold text-sm group-hover:gap-3 transition-all">

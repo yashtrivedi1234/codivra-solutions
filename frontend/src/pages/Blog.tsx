@@ -12,7 +12,7 @@ import { Link } from "react-router-dom"; // Add this import
 
 const Blog = () => {
   const { data, isLoading } = useGetBlogQuery();
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [submitSubscription] = useSubmitSubscriptionMutation();
@@ -20,21 +20,30 @@ const Blog = () => {
 
   const allPosts = data?.items || [];
 
-  // Get unique categories
   const categories = [
     { name: "All", count: allPosts.length },
     ...Array.from(
       allPosts.reduce((acc, post) => {
-        const existing = acc.get(post.category);
-        acc.set(post.category, (existing || 0) + 1);
+        const key = (post.category || "Other").trim().toLowerCase();
+        const label = post.category || "Other";
+        const existing = acc.get(key);
+        acc.set(key, { label, count: (existing?.count || 0) + 1 });
         return acc;
-      }, new Map())
-    ).map(([name, count]) => ({ name, count })),
+      }, new Map<string, { label: string; count: number }>())
+    ).map(([key, value]) => ({
+      key,
+      name: value.label,
+      count: value.count,
+    })),
   ];
 
-  const filteredPosts = activeCategory === "All"
-    ? allPosts
-    : allPosts.filter((post) => post.category === activeCategory);
+  const filteredPosts =
+    activeCategory === "all"
+      ? allPosts
+      : allPosts.filter(
+          (post) =>
+            (post.category || "Other").trim().toLowerCase() === activeCategory
+        );
 
   const featuredPost = allPosts[0];
 
@@ -120,8 +129,7 @@ const Blog = () => {
                   className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight"
                   style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
                 >
-                  DISCOVER
-                  <br />
+                  DISCOVER{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                     THE FUTURE
                   </span>
@@ -199,24 +207,6 @@ const Blog = () => {
                           
                           {/* Content Section */}
                           <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center">
-                            <div className="flex items-center gap-4 mb-6">
-                              <div className="flex items-center gap-2 text-sm text-white/50">
-                                <Calendar className="w-4 h-4" />
-                                <span className="font-semibold">
-                                  {new Date(featuredPost.created_at || "").toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                  })}
-                                </span>
-                              </div>
-                              <span className="text-white/30">•</span>
-                              <div className="flex items-center gap-2 text-sm text-white/50">
-                                <Clock className="w-4 h-4" />
-                                <span className="font-semibold">5 min</span>
-                              </div>
-                            </div>
-                            
                             <h3 
                               className="text-3xl lg:text-4xl font-black text-white mb-6 leading-tight group-hover:text-[#00D9FF] transition-colors duration-300"
                               style={{ fontFamily: "'Oswald', sans-serif" }}
@@ -260,21 +250,21 @@ const Blog = () => {
               <div className="flex flex-wrap gap-3">
                 {categories.map((category, idx) => (
                   <motion.button
-                    key={category.name}
-                    onClick={() => setActiveCategory(category.name)}
+                    key={category.key ?? category.name}
+                    onClick={() => setActiveCategory(category.key ?? "all")}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: idx * 0.05 }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`relative px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 ${
-                      activeCategory === category.name
+                      activeCategory === (category.key ?? "all")
                         ? "bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white shadow-[0_0_30px_rgba(0,217,255,0.4)]"
                         : "bg-white/5 text-white/70 hover:bg-white/10 border border-white/10 hover:border-[#00D9FF]/30"
                     }`}
                   >
                     <span className="uppercase tracking-wider">{category.name}</span>
-                    <span className={`ml-2 ${activeCategory === category.name ? 'opacity-90' : 'opacity-50'}`}>
+                    <span className={`ml-2 ${activeCategory === (category.key ?? "all") ? 'opacity-90' : 'opacity-50'}`}>
                       ({category.count})
                     </span>
                   </motion.button>
@@ -289,9 +279,12 @@ const Blog = () => {
       <section className="py-12 relative">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            <AnimatedStagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatedStagger
+              key={activeCategory}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
               {filteredPosts.map((post, idx) => (
-                <AnimatedItem key={post._id}>
+                <AnimatedItem key={`${activeCategory}-${post._id}`}>
                   <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -334,23 +327,6 @@ const Blog = () => {
                           
                           {/* Content */}
                           <div className="p-6 flex flex-col flex-1">
-                            {/* Meta info */}
-                            <div className="flex items-center gap-3 mb-4 text-xs text-white/50 font-semibold">
-                              <span className="flex items-center gap-1.5">
-                                <Calendar className="w-3.5 h-3.5" />
-                                {new Date(post.created_at || "").toLocaleDateString("en-US", { 
-                                  month: "short", 
-                                  day: "numeric",
-                                  year: "numeric"
-                                })}
-                              </span>
-                              <span className="text-white/30">•</span>
-                              <span className="flex items-center gap-1.5">
-                                <Clock className="w-3.5 h-3.5" />
-                                {Math.ceil((post.content?.split(" ") || []).length / 200)} min read
-                              </span>
-                            </div>
-                            
                             {/* Title */}
                             <h3 
                               className="text-xl lg:text-2xl font-black text-white mb-4 leading-tight group-hover:text-[#00D9FF] transition-colors duration-300 line-clamp-3"
@@ -411,24 +387,25 @@ const Blog = () => {
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#0066FF]/5 rounded-full blur-[100px]" />
                 
                 <div className="relative z-10">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ type: "spring", duration: 0.8 }}
-                    className="inline-flex items-center gap-2 bg-[#00D9FF]/10 border border-[#00D9FF]/30 rounded-full px-6 py-2 mb-8 mx-auto"
-                  >
-                    <Sparkles className="w-4 h-4 text-[#00D9FF]" />
-                    <span className="text-[#00D9FF] font-bold text-sm uppercase tracking-wider">
-                      Join the Community
-                    </span>
-                  </motion.div>
+                  <div className="flex justify-center">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ type: "spring", duration: 0.8 }}
+                      className="inline-flex items-center gap-2 bg-[#00D9FF]/10 border border-[#00D9FF]/30 rounded-full px-6 py-2 mb-8"
+                    >
+                      <Sparkles className="w-4 h-4 text-[#00D9FF]" />
+                      <span className="text-[#00D9FF] font-bold text-sm uppercase tracking-wider">
+                        Join the Community
+                      </span>
+                    </motion.div>
+                  </div>
                   
                   <h2 
                     className="text-4xl md:text-6xl font-black text-white mb-6 text-center leading-tight"
                     style={{ fontFamily: "'Oswald', sans-serif" }}
                   >
-                    NEVER MISS
-                    <br />
+                    NEVER MISS{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                       AN UPDATE
                     </span>

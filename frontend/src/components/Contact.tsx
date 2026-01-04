@@ -331,37 +331,6 @@ export const Contact = () => {
                   </div>
                 </motion.div>
               </AnimatedSection>
-
-              {/* Trust Badge */}
-              <AnimatedSection>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 }}
-                  className="pt-6 border-t-2 border-white/10"
-                >
-                  <p className="text-white/50 text-sm mb-3 font-semibold uppercase tracking-wider">
-                    Trusted Worldwide
-                  </p>
-                  <div className="flex items-center gap-2">
-                    {[...Array(5)].map((_, i) => (
-                      <motion.div 
-                        key={i} 
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.6 + (i * 0.05) }}
-                        className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00D9FF]/20 to-[#0066FF]/20 border-2 border-white/20 flex items-center justify-center text-white/70 text-xs font-black" 
-                        style={{ marginLeft: i > 0 ? '-16px' : '0', zIndex: 5 - i }}
-                      >
-                        {String.fromCharCode(65 + i)}
-                      </motion.div>
-                    ))}
-                    <span className="ml-3 text-white/60 text-sm font-bold">+45 more</span>
-                  </div>
-                </motion.div>
-              </AnimatedSection>
             </div>
 
             {/* Right - Contact Form */}

@@ -6,13 +6,13 @@ import logo from "@/assets/logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-	{ href: "#services", label: "Services" },
-	{ href: "#about", label: "About" },
-	{ href: "#pricing", label: "Pricing" },
-	{ href: "#portfolio", label: "Portfolio" },
+	{ href: "/services", label: "Services" },
+	{ href: "/about", label: "About" },
+	{ href: "/pricing", label: "Pricing" },
+	{ href: "/portfolio", label: "Portfolio" },
 	{ href: "/blog", label: "Blog" },
 	{ href: "/careers", label: "Careers" },
-	{ href: "#contact", label: "Contact" },
+	{ href: "/contact", label: "Contact" },
 ];
 
 export const Header = () => {
@@ -24,7 +24,7 @@ export const Header = () => {
 			<motion.header
 				initial={{ y: -100, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+				transition={{ duration: 0.1, ease: "easeOut" }}
 				className="w-full fixed top-0 z-50 transition-all duration-500 bg-[#0A0F1C]/95 backdrop-blur-xl border-b-2 border-white/10"
 			>
 				<div className="container mx-auto px-6 lg:px-12">
@@ -116,7 +116,7 @@ export const Header = () => {
 									asChild
 									className="relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] group uppercase tracking-wider text-sm"
 								>
-									<Link to="#contact" className="flex items-center gap-2">
+									<Link to="/contact" className="flex items-center gap-2">
 										<Rocket className="w-5 h-5" />
 										Start Project
 										<ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

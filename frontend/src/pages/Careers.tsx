@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTeamCount } from "@/hooks/use-team-count";
 import { 
   MapPin, 
@@ -49,25 +49,25 @@ const benefits = [
   {
     icon: Heart,
     title: "Health & Wellness",
-    description: "Comprehensive health insurance, mental health support, and wellness programs.",
+    description: "Comprehensive health insurance mental health support and wellness programs",
     color: "from-pink-500 to-rose-500"
   },
   {
     icon: Zap,
     title: "Flexible Work",
-    description: "Remote-first culture with flexible hours to maintain work-life balance.",
+    description: "Remote first culture with flexible hours ensuring sustainable worklife balance growth",
     color: "from-yellow-500 to-orange-500"
   },
   {
     icon: Trophy,
     title: "Growth & Learning",
-    description: "Learning budget, mentorship programs, and career advancement opportunities.",
+    description: "Learning budget mentorship programs and clear career advancement opportunities",
     color: "from-purple-500 to-indigo-500"
   },
   {
     icon: Coffee,
     title: "Team Culture",
-    description: "Collaborative environment with regular team events and knowledge sharing.",
+    description: "Collaborative environment with team bonding events and knowledge sharing",
     color: "from-[#00D9FF] to-[#0066FF]"
   }
 ];
@@ -237,10 +237,10 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ type: "spring", duration: 0.5 }}
-        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-[2rem] shadow-[0_0_60px_rgba(0,217,255,0.3)] max-w-2xl w-full max-h-[90vh] overflow-hidden"
+        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-[#00D9FF]/30 rounded-2xl shadow-[0_0_40px_rgba(0,217,255,0.25)] max-w-lg w-full max-h-[85vh] overflow-hidden"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl p-8 border-b-2 border-[#00D9FF]/30 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl p-5 border-b-2 border-[#00D9FF]/30 flex items-center justify-between z-10">
           <div>
             <h3 className="text-2xl font-black text-white uppercase tracking-wider" style={{ fontFamily: "'Oswald', sans-serif" }}>
               Apply Now
@@ -258,10 +258,10 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-8 space-y-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto max-h-[calc(85vh-90px)]">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-white font-bold text-sm uppercase tracking-wider">
-              Full Name *
+              Full Name
             </Label>
             <Input
               id="name"
@@ -271,7 +271,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               value={formData.name}
               onChange={handleInputChange}
               onBlur={() => handleBlur("name")}
-              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
+              className={`h-11 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
                 errors.name && touchedFields.name ? "border-red-500" : ""
               }`}
               disabled={isSubmitting}
@@ -280,7 +280,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.name}
               </motion.p>
@@ -289,7 +289,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-white font-bold text-sm uppercase tracking-wider">
-              Email Address *
+              Email Address
             </Label>
             <Input
               id="email"
@@ -300,7 +300,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               value={formData.email}
               onChange={handleInputChange}
               onBlur={() => handleBlur("email")}
-              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
+              className={`h-11 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
                 errors.email && touchedFields.email ? "border-red-500" : ""
               }`}
               disabled={isSubmitting}
@@ -309,7 +309,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.email}
               </motion.p>
@@ -329,7 +329,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               onChange={handleInputChange}
               onBlur={() => handleBlur("phone")}
               inputMode="numeric"
-              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
+              className={`h-11 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
                 errors.phone && touchedFields.phone ? "border-red-500" : ""
               }`}
               disabled={isSubmitting}
@@ -338,7 +338,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.phone}
               </motion.p>
@@ -357,7 +357,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               value={formData.linkedinUrl}
               onChange={handleInputChange}
               onBlur={() => handleBlur("linkedinUrl")}
-              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
+              className={`h-11 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
                 errors.linkedinUrl && touchedFields.linkedinUrl ? "border-red-500" : ""
               }`}
               disabled={isSubmitting}
@@ -366,7 +366,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.linkedinUrl}
               </motion.p>
@@ -385,7 +385,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               value={formData.portfolioUrl}
               onChange={handleInputChange}
               onBlur={() => handleBlur("portfolioUrl")}
-              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
+              className={`h-11 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 rounded-xl font-semibold transition-all ${
                 errors.portfolioUrl && touchedFields.portfolioUrl ? "border-red-500" : ""
               }`}
               disabled={isSubmitting}
@@ -394,7 +394,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.portfolioUrl}
               </motion.p>
@@ -409,7 +409,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               id="coverLetter"
               name="coverLetter"
               placeholder="Tell us why you're interested in this position..."
-              rows={5}
+              rows={4}
               value={formData.coverLetter}
               onChange={handleInputChange}
               onBlur={() => handleBlur("coverLetter")}
@@ -422,7 +422,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <motion.p 
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-400 text-sm font-semibold"
+                className="text-red-400 text-xs font-semibold"
               >
                 {errors.coverLetter}
               </motion.p>
@@ -434,7 +434,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <Button 
                 type="button" 
                 onClick={onClose} 
-                className="w-full h-14 bg-white/5 border-2 border-white/20 text-white hover:bg-white/10 font-bold text-base rounded-xl uppercase tracking-wider"
+                className="w-full h-11 bg-white/5 border-2 border-white/20 text-white hover:bg-white/10 font-bold text-base rounded-xl uppercase tracking-wider"
                 disabled={isSubmitting}
               >
                 Cancel
@@ -444,7 +444,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
               <Button 
                 type="submit" 
                 disabled={isSubmitting} 
-                className="w-full h-14 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black text-base rounded-xl uppercase tracking-wider shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:shadow-[0_0_50px_rgba(0,217,255,0.6)] transition-all"
+                className="w-full h-11 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black text-base rounded-xl uppercase tracking-wider shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:shadow-[0_0_50px_rgba(0,217,255,0.6)] transition-all"
               >
                 {isSubmitting ? (
                   <span className="flex items-center gap-2">
@@ -607,29 +607,47 @@ const JobCard = ({ job, onApply }: { job: JobCardData; onApply: (title: string) 
   );
 };
 
+const normalizeDept = (name?: string) =>
+  name && name.trim() ? name.trim().toLowerCase() : "other";
+
 const Careers = () => {
   const { data, isLoading: isJobsLoading } = useGetJobsQuery();
-  const [selectedDepartment, setSelectedDepartment] = useState("All");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
   const [applicationJob, setApplicationJob] = useState<string | null>(null);
   
-  const jobsFromApi: JobCardData[] =
-    data?.items?.map((job) => ({
-      id: job._id,
-      title: job.title,
-      department: job.department,
-      location: job.location,
-      type: job.type,
-      description: job.description,
-      requirements: job.requirements || [],
-      responsibilities: job.responsibilities || [],
-    })) || [];
+  const jobsFromApi: JobCardData[] = useMemo(() => {
+    return (
+      data?.items?.map((job) => ({
+        id: job._id,
+        title: job.title,
+        department: job.department,
+        location: job.location,
+        type: job.type,
+        description: job.description,
+        requirements: job.requirements || [],
+        responsibilities: job.responsibilities || [],
+      })) || []
+    );
+  }, [data?.items]);
 
-  const jobs = jobsFromApi;
-  const departments = ["All", ...Array.from(new Set(jobs.map((job) => job.department)))].filter(Boolean);
 
-  const filteredJobs = selectedDepartment === "All"
-    ? jobs
-    : jobs.filter((job) => job.department === selectedDepartment);
+  const departments = useMemo(() => {
+    const map = new Map<string, string>();
+    jobsFromApi.forEach((job) => {
+      const norm = normalizeDept(job.department);
+      if (!map.has(norm)) {
+        map.set(norm, job.department?.trim() || "Other");
+      }
+    });
+    return [{ value: "all", label: "All" }, ...Array.from(map.entries()).map(([value, label]) => ({ value, label }))];
+  }, [jobsFromApi]);
+
+  const filteredJobs =
+    selectedDepartment === "all"
+      ? jobsFromApi
+      : jobsFromApi.filter(
+          (job) => normalizeDept(job.department) === selectedDepartment
+        );
 
   return (
     <div className="min-h-screen bg-[#0A0F1C] overflow-hidden">
@@ -691,8 +709,7 @@ const Careers = () => {
                     className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight"
                     style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
                   >
-                    BUILD THE
-                    <br />
+                    BUILD THE{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                       FUTURE
                     </span>
@@ -808,20 +825,20 @@ const Careers = () => {
               <AnimatedSection className="flex flex-wrap gap-3 mb-12">
                 {departments.map((dept, idx) => (
                   <motion.button
-                    key={dept}
-                    onClick={() => setSelectedDepartment(dept)}
+                    key={dept.value}
+                    onClick={() => setSelectedDepartment(dept.value)}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: idx * 0.05 }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-6 py-3 rounded-full font-bold text-sm transition-all uppercase tracking-wider ${
-                      selectedDepartment === dept
+                      selectedDepartment === dept.value
                         ? "bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white shadow-[0_0_30px_rgba(0,217,255,0.4)]"
                         : "bg-white/5 text-white/70 hover:bg-white/10 border-2 border-white/10 hover:border-[#00D9FF]/30"
                     }`}
                   >
-                    {dept}
+                    {dept.label}
                   </motion.button>
                 ))}
               </AnimatedSection>
@@ -865,7 +882,7 @@ const Careers = () => {
               )}
 
               {/* Job Cards */}
-              <AnimatedStagger className="space-y-6">
+              <AnimatedStagger key={selectedDepartment} className="space-y-6">
                 {filteredJobs.map((job) => (
                   <JobCard key={job.id} job={job} onApply={setApplicationJob} />
                 ))}
@@ -911,8 +928,7 @@ const Careers = () => {
                       className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight"
                       style={{ fontFamily: "'Oswald', sans-serif" }}
                     >
-                      DON'T SEE THE
-                      <br />
+                      DON'T SEE THE{" "}
                       <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                         RIGHT FIT?
                       </span>

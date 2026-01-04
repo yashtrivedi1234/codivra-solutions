@@ -53,8 +53,7 @@ export const Team = () => {
             className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
             style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
           >
-            MEET THE
-            <br />
+            MEET THE{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
               EXPERTS
             </span>
@@ -159,23 +158,6 @@ export const Team = () => {
                       {/* Spacer */}
                       <div className="flex-1" />
 
-                      {/* Social Links (placeholder) */}
-                      <div className="flex items-center gap-2 pt-4 border-t-2 border-white/10">
-                        <motion.button
-                          whileHover={{ scale: 1.1, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="w-10 h-10 bg-white/5 hover:bg-[#00D9FF]/20 border border-white/20 hover:border-[#00D9FF]/40 rounded-lg flex items-center justify-center transition-all group/btn"
-                        >
-                          <Mail className="w-4 h-4 text-white/60 group-hover/btn:text-[#00D9FF] transition-colors" />
-                        </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.1, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="w-10 h-10 bg-white/5 hover:bg-[#00D9FF]/20 border border-white/20 hover:border-[#00D9FF]/40 rounded-lg flex items-center justify-center transition-all group/btn"
-                        >
-                          <Linkedin className="w-4 h-4 text-white/60 group-hover/btn:text-[#00D9FF] transition-colors" />
-                        </motion.button>
-                      </div>
                     </div>
                   </div>
                 </motion.div>

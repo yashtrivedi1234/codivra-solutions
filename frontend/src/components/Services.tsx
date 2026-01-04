@@ -2,8 +2,10 @@ import { Loader2, Sparkles, ArrowRight, Zap } from "lucide-react";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
 import { useGetServicesQuery } from "@/lib/api";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export const Services = () => {
+  const navigate = useNavigate();
   const { data, isLoading } = useGetServicesQuery();
 
   return (
@@ -62,8 +64,7 @@ export const Services = () => {
             className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
             style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
           >
-            COMPREHENSIVE
-            <br />
+            <span className="text-white">COMPREHENSIVE</span>{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
               IT SOLUTIONS
             </span>
@@ -108,6 +109,15 @@ export const Services = () => {
               return (
                 <AnimatedItem key={service._id}>
                   <motion.div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => navigate("/contact")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigate("/contact");
+                      }
+                    }}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -135,7 +145,7 @@ export const Services = () => {
                                 loading="lazy"
                                 onError={(e) => {
                                   console.error("[Services] Image failed to load:", imageUrl);
-                                  e.currentTarget.style.display = 'none';
+                                  e.currentTarget.style.display = "none";
                                 }}
                               />
                               {/* Dark Gradient Overlay */}
@@ -154,31 +164,31 @@ export const Services = () => {
                         )}
 
                         {/* Content Overlay */}
-                        <div className="absolute inset-0 flex flex-col justify-end p-8">
+                        <div className="absolute inset-0 flex flex-col justify-end items-center p-8 text-center">
                           {/* Service Number */}
                           <motion.div
                             initial={{ opacity: 0, scale: 0 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.2 + (idx * 0.1) }}
+                            transition={{ delay: 0.2 + idx * 0.1 }}
                             className="absolute top-6 left-6"
                           >
                             <div className="w-12 h-12 bg-gradient-to-br from-[#00D9FF] to-[#0066FF] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(0,217,255,0.4)]">
-                              <span 
-                                className="text-white font-black text-xl" 
+                              <span
+                                className="text-white font-black text-xl"
                                 style={{ fontFamily: "'Oswald', sans-serif" }}
                               >
-                                {String(idx + 1).padStart(2, '0')}
+                                {String(idx + 1).padStart(2, "0")}
                               </span>
                             </div>
                           </motion.div>
 
                           {/* Title */}
-                          <motion.h3 
-                            className="text-2xl lg:text-3xl font-black text-white mb-4 leading-tight uppercase tracking-wide transform transition-transform duration-300 group-hover:translate-y-[-8px]"
-                            style={{ 
+                          <motion.h3
+                            className="text-xl lg:text-2xl font-black text-white mb-4 leading-tight uppercase tracking-wide text-center transform transition-transform duration-300 group-hover:translate-y-[-6px]"
+                            style={{
                               fontFamily: "'Oswald', sans-serif",
-                              textShadow: '0 2px 20px rgba(0,0,0,0.8)'
+                              textShadow: "0 2px 20px rgba(0,0,0,0.8)",
                             }}
                           >
                             {service.title}
@@ -186,7 +196,7 @@ export const Services = () => {
                           
                           {/* Action Bar */}
                           <div className="flex items-center justify-between pt-4 border-t-2 border-white/20">
-                            <motion.div 
+                            <motion.div
                               className="w-16 h-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] rounded-full transform origin-left transition-all duration-300 group-hover:w-24"
                             />
                             
@@ -207,7 +217,7 @@ export const Services = () => {
                         </div>
 
                         {/* Shimmer Effect on Hover */}
-                        <motion.div 
+                        <motion.div
                           className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
                           initial={{ x: "-100%" }}
                           whileHover={{ x: "100%" }}

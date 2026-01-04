@@ -27,12 +27,12 @@ const PageBreadcrumb = () => {
 
   return (
     <div className="bg-[#0A0F1C]/95 backdrop-blur-xl border-b border-white/5">
-      <div className="container mx-auto px-6 lg:px-12 py-4">
+      <div className="container mx-auto px-6 lg:px-12 pt-6 pb-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-2 text-white/60 hover:text-[#00D9FF] transition-colors">
+                <Link to="/" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
                   <Home className="h-4 w-4" />
                   <span>Home</span>
                 </Link>
@@ -55,7 +55,7 @@ const PageBreadcrumb = () => {
                       </BreadcrumbPage>
                     ) : (
                       <BreadcrumbLink asChild>
-                        <Link to={path} className="text-white/60 hover:text-[#00D9FF] transition-colors">
+                        <Link to={path} className="text-white/60 hover:text-white transition-colors">
                           {name}
                         </Link>
                       </BreadcrumbLink>

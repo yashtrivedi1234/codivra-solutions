@@ -7,6 +7,7 @@ import {
 import { AnimatedSection } from "./AnimatedSection";
 import { motion } from "framer-motion";
 import { Sparkles, HelpCircle, MessageCircle, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const faqs = [
   {
@@ -44,6 +45,7 @@ const faqs = [
 ];
 
 export const FAQ = () => {
+  const navigate = useNavigate();
   return (
     <section id="faq" className="relative py-24 md:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
       {/* Animated Background Elements */}
@@ -84,8 +86,7 @@ export const FAQ = () => {
             className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
             style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
           >
-            FREQUENTLY
-            <br />
+            FREQUENTLY{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
               ASKED QUESTIONS
             </span>
@@ -162,13 +163,20 @@ export const FAQ = () => {
                   Our team is here to help. Get in touch and we'll answer any questions you have.
                 </p>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a 
-                    href="#contact" 
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-8 py-4 rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-all uppercase tracking-wider text-sm group"
+                  <button
+                    type="button"
+                    onClick={() => navigate("/contact")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigate("/contact");
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-8 py-4 rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-all uppercase tracking-wider text-sm group focus:outline-none focus:ring-2 focus:ring-[#00D9FF] focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   >
                     Contact Us Now
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </a>
+                  </button>
                 </motion.div>
               </div>
             </div>

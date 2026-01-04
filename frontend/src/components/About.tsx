@@ -36,7 +36,7 @@ export const About = () => {
       { value: isLoading ? "..." : `${count}`, label: "Core Team" },
       { value: "10+", label: "Projects Delivered" },
       { value: "100%", label: "Client Satisfaction" },
-      { value: "Dec 2024", label: "Founded" },
+      { value: "Dec 2025", label: "Founded" },
     ];
 
   // Parallax scroll effect
@@ -152,10 +152,10 @@ export const About = () => {
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center max-w-7xl mx-auto">
-          {/* Left Content */}
-          <div>
-            <AnimatedSection>
+        {/* Top Heading */}
+        <div className="max-w-7xl mx-auto mb-20">
+          <AnimatedSection>
+            <div className="flex justify-center">
               <motion.div 
                 className="inline-flex items-center gap-3 mb-6 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border border-[#00D9FF]/30 rounded-full px-6 py-3"
                 whileHover={{ scale: 1.05 }}
@@ -164,40 +164,50 @@ export const About = () => {
                 <span className="text-[#00D9FF] font-bold text-sm tracking-[0.15em] uppercase">
                   About Us
                 </span>
+                <Sparkles className="w-4 h-4 text-[#00D9FF]" />
               </motion.div>
-
-              <motion.h2
-                className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
-                style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                WHY CLIENTS
-                <br />
+            </div>
+             <div className="flex justify-center">
+               <motion.h2
+                 className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tight text-center"
+                 style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
+                 initial={{ opacity: 0, y: 30 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ duration: 0.8 }}
+               >
+                WHY CLIENTS{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                   CHOOSE US
                 </span>
               </motion.h2>
+            </div>
+          </AnimatedSection>
+        </div>
 
-              <motion.p 
+        {/* Content Section */}
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-stretch max-w-7xl mx-auto">
+          {/* Left Content */}
+          <div>
+            <AnimatedSection>
+              <motion.p
                 className="text-xl text-white/70 leading-relaxed mb-6 font-light"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.6 }}
               >
                 {paragraph1}
               </motion.p>
-              <motion.p 
+
+              <motion.p
                 className="text-lg text-white/60 leading-relaxed mb-10 font-light"
                 style={{ fontFamily: "'Crimson Pro', serif" }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
               >
                 {paragraph2}
               </motion.p>
@@ -211,19 +221,17 @@ export const About = () => {
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.4 + (index * 0.1) }}
+                    transition={{ delay: 0.2 + index * 0.1 }}
                     whileHover={{ x: 8 }}
                   >
-                    {/* Glow */}
                     <div className={`absolute -inset-1 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500 rounded-2xl`} />
-                    
                     <div className="relative flex gap-5 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-6 group-hover:border-white/30 transition-all">
                       <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
                         <item.icon className="w-8 h-8 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4 
-                          className="font-black text-white text-xl mb-2 uppercase tracking-wide" 
+                        <h4
+                          className="font-black text-white text-xl mb-2 uppercase tracking-wide"
                           style={{ fontFamily: "'Oswald', sans-serif" }}
                         >
                           {item.title}
@@ -239,10 +247,10 @@ export const About = () => {
             </AnimatedSection>
           </div>
 
-          {/* Right Stats Visual */}
-          <div>
-            <AnimatedSection delay={0.2}>
-              <div className="relative">
+          {/* Right Stats Card */}
+          <div className="h-full">
+            <AnimatedSection delay={0.2} className="h-full">
+              <div className="relative h-full">
                 {/* Main Stats Card */}
                 <motion.div
                   ref={statsCardRef}
@@ -250,7 +258,7 @@ export const About = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
-                  className="relative"
+                  className="relative h-full flex"
                 >
                   {/* Glow */}
                   <motion.div 
@@ -262,7 +270,7 @@ export const About = () => {
                     transition={{ duration: 4, repeat: Infinity }}
                   />
 
-                  <div className="relative bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-[2rem] p-10 overflow-visible">
+                  <div className="relative h-full w-full bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-[2rem] p-10 flex flex-col justify-between">
                     {/* Header */}
                     <div className="flex items-center gap-3 mb-8">
                       <TrendingUp className="w-6 h-6 text-[#00D9FF]" />
@@ -314,7 +322,7 @@ export const About = () => {
                       transition={{ duration: 0.5, delay: 0.7 }}
                       className="pt-8 border-t-2 border-white/20"
                     >
-                      <div className="flex flex-wrap gap-3">
+                      <div className="flex flex-wrap gap-3 justify-center">
                         {["Quality Focused", "Agile Process", "24/7 Support"].map((badge, idx) => (
                           <motion.div
                             key={badge}

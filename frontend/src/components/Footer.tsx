@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetServicesQuery, useSubmitSubscriptionMutation } from "@/lib/api";
-import { Linkedin, Twitter, Facebook, Instagram, Mail, Phone, MapPin, ArrowRight, Send, Sparkles } from "lucide-react";
+import { Linkedin, X, Facebook, Instagram, Mail, Phone, MapPin, ArrowRight, Send, Sparkles } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -18,24 +18,24 @@ export const Footer = () => {
   
   const socialLinks = [
     { icon: Linkedin, href: "#", label: "LinkedIn", color: "from-blue-600 to-blue-400" },
-    { icon: Twitter, href: "#", label: "Twitter", color: "from-sky-500 to-blue-500" },
+    { icon: X, href: "#", label: "X (Twitter)", color: "from-neutral-900 to-neutral-700" },
     { icon: Facebook, href: "#", label: "Facebook", color: "from-blue-700 to-blue-500" },
-    { icon: Instagram, href: "#", label: "Instagram", color: "from-pink-500 to-purple-500" },
+    { icon: Instagram, href: "https://www.instagram.com/codivrasolutions/", label: "Instagram", color: "from-pink-500 to-purple-500" },
   ];
 
   const quickLinks = [
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
-    { label: "Portfolio", href: "#portfolio" },
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+    { label: "Portfolio", href: "/portfolio" },
     { label: "Careers", href: "/careers" },
     { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/contact" },
   ];
 
   // Prepare services from backend
   const services = data?.items?.map((service) => ({
     label: service.title,
-    href: `#services`,
+    href: `/services`,
   })) || [];
 
   return (
