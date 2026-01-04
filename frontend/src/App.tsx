@@ -51,11 +51,11 @@ function App() {
           theme="light"
         />
         <Router>
+          <ReadingProgressBar progress={progress} />
           <AnimatedRoutes />
           <ScrollToTop />
           <Chatbot />
         </Router>
-        <ReadingProgressBar progress={progress} />
       </TooltipProvider>
     </QueryClientProvider>
   );
