@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Shield, Clock, Headphones, Award, Zap, Heart, Sparkles, TrendingUp, Rocket } from "lucide-react";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
 import { useTeamCount } from "@/hooks/use-team-count";
+import { usePortfolioCount } from "@/hooks/use-portfolio-count";
 
 const reasons = [
   {
@@ -69,15 +70,17 @@ const services = [
 ];
 
 export const WhyChooseUs = () => {
-  const { count, isLoading } = useTeamCount();
+  const { count: teamCount, isLoading: teamLoading } = useTeamCount();
+  const { count: portfolioCount, isLoading: portfolioLoading } = usePortfolioCount();
   const stats = [
     { value: "Dec 2025", label: "Founded" },
-    { value: isLoading ? "..." : `${count}`, label: "Core Team Members" },
+    { value: teamLoading ? "..." : `${teamCount}`, label: "Core Team Members" },
+    { value: portfolioLoading ? "..." : `${portfolioCount}+`, label: "Projects Completed" },
     ...staticStats,
   ].slice(0, 4);
 
   return (
-    <section id="why-us" className="relative py-24 md:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
+    <section id="why-us" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
@@ -98,7 +101,7 @@ export const WhyChooseUs = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <AnimatedSection className="text-center max-w-5xl mx-auto mb-16">
           <motion.div 
@@ -112,10 +115,10 @@ export const WhyChooseUs = () => {
             <Sparkles className="w-4 h-4 text-[#00D9FF]" />
           </motion.div>
 
-          <h2
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
-            style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
-          >
+            <h2 
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
+              style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
+            >
             WHY CLIENTS
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
@@ -140,7 +143,7 @@ export const WhyChooseUs = () => {
               transition={{ duration: 4, repeat: Infinity }}
             />
             
-            <div className="relative bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-[2rem] p-10">
+            <div className="relative bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10">
               <div className="flex items-center gap-3 mb-8">
                 <TrendingUp className="w-6 h-6 text-[#00D9FF]" />
                 <h3 
@@ -163,7 +166,7 @@ export const WhyChooseUs = () => {
                     className="text-center"
                   >
                     <div 
-                      className="text-5xl md:text-6xl font-black text-[#00D9FF] mb-2" 
+                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#00D9FF] mb-2" 
                       style={{ fontFamily: "'Oswald', sans-serif" }}
                     >
                       {stat.value}

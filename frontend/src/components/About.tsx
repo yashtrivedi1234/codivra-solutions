@@ -3,6 +3,7 @@ import { Target, Users, Lightbulb, Check, Sparkles, TrendingUp } from "lucide-re
 import { AnimatedSection } from "./AnimatedSection";
 import { useGetPageQuery } from "@/lib/api";
 import { useTeamCount } from "@/hooks/use-team-count";
+import { usePortfolioCount } from "@/hooks/use-portfolio-count";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,7 +15,8 @@ if (typeof window !== "undefined") {
 
 export const About = () => {
   const { data } = useGetPageQuery("about");
-  const { count, isLoading } = useTeamCount();
+  const { count: teamCount, isLoading: teamLoading } = useTeamCount();
+  const { count: portfolioCount, isLoading: portfolioLoading } = usePortfolioCount();
   const main = data?.sections.find((s) => s.key === "main")?.data || {};
   
   const sectionRef = useRef<HTMLElement>(null);
@@ -33,8 +35,8 @@ export const About = () => {
 
   const stats =
     main.stats || [
-      { value: isLoading ? "..." : `${count}`, label: "Core Team" },
-      { value: "10+", label: "Projects Delivered" },
+      { value: teamLoading ? "..." : `${teamCount}`, label: "Core Team" },
+      { value: portfolioLoading ? "..." : `${portfolioCount}+`, label: "Projects Delivered" },
       { value: "100%", label: "Client Satisfaction" },
       { value: "Dec 2025", label: "Founded" },
     ];
@@ -129,7 +131,7 @@ export const About = () => {
     <section 
       ref={sectionRef}
       id="about" 
-      className="relative py-24 md:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden"
+      className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden"
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -151,7 +153,7 @@ export const About = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Top Heading */}
         <div className="max-w-7xl mx-auto mb-20">
           <AnimatedSection>
@@ -169,7 +171,7 @@ export const About = () => {
             </div>
              <div className="flex justify-center">
                <motion.h2
-                 className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tight text-center"
+                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight text-center px-2 sm:px-0"
                  style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
@@ -225,18 +227,18 @@ export const About = () => {
                     whileHover={{ x: 8 }}
                   >
                     <div className={`absolute -inset-1 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500 rounded-2xl`} />
-                    <div className="relative flex gap-5 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-6 group-hover:border-white/30 transition-all">
-                      <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
-                        <item.icon className="w-8 h-8 text-white" />
+                    <div className="relative flex gap-3 sm:gap-5 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 group-hover:border-white/30 transition-all">
+                      <div className={`w-12 h-12 sm:w-14 md:w-16 sm:h-14 md:h-16 bg-gradient-to-br ${item.color} rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                        <item.icon className="w-6 h-6 sm:w-7 md:w-8 sm:h-7 md:h-8 text-white" />
                       </div>
                       <div className="flex-1">
                         <h4
-                          className="font-black text-white text-xl mb-2 uppercase tracking-wide"
+                          className="font-black text-white text-lg sm:text-xl mb-1 sm:mb-2 uppercase tracking-wide"
                           style={{ fontFamily: "'Oswald', sans-serif" }}
                         >
                           {item.title}
                         </h4>
-                        <p className="text-base text-white/70 leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                        <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
                           {item.desc}
                         </p>
                       </div>
@@ -270,7 +272,7 @@ export const About = () => {
                     transition={{ duration: 4, repeat: Infinity }}
                   />
 
-                  <div className="relative h-full w-full bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-[2rem] p-10 flex flex-col justify-between">
+                  <div className="relative h-full w-full bg-gradient-to-br from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl border-2 border-[#00D9FF]/30 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between">
                     {/* Header */}
                     <div className="flex items-center gap-3 mb-8">
                       <TrendingUp className="w-6 h-6 text-[#00D9FF]" />
@@ -293,7 +295,7 @@ export const About = () => {
                         >
                           <div className="relative bg-white/5 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300">
                             <motion.div 
-                              className="text-5xl font-black text-[#00D9FF] mb-2" 
+                              className="text-3xl sm:text-4xl md:text-5xl font-black text-[#00D9FF] mb-2" 
                               style={{ fontFamily: "'Oswald', sans-serif" }}
                               initial={{ scale: 0 }}
                               whileInView={{ scale: 1 }}

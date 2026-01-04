@@ -288,3 +288,94 @@ export async function sendWelcomeEmail(toEmail) {
   const info = await transporter.sendMail(mailOptions);
   return { success: true, messageId: info.messageId };
 }
+
+export async function sendInquiryEmail(payload) {
+  if (!isEmailConfigured) {
+    console.log(
+      `📧 [email] Would send inquiry email (email not configured): ${payload.email}`
+    );
+    return { success: true, message: "Email queued (service not configured)" };
+  }
+
+  const mailOptions = {
+    from: EMAIL_FROM,
+    to: EMAIL_TO,
+    subject: `New inquiry from ${payload.name} — ${payload.subject}`,
+    text: `Name: ${payload.name}\nEmail: ${payload.email}\nPhone: ${
+      payload.phone || "N/A"
+    }\nCompany: ${payload.company || "N/A"}\nSubject: ${payload.subject}\nService: ${
+      payload.service || "N/A"
+    }\n\nMessage:\n${payload.message}`,
+    html: renderBaseEmail({
+      preheader: `New inquiry via website`.concat(
+        payload.subject ? ` — ${payload.subject}` : ""
+      ),
+      title: `New inquiry`.concat(
+        payload.subject ? ` — ${payload.subject}` : ""
+      ),
+      bodyHtml: `
+        <p style="margin:0 0 8px 0"><strong>Name:</strong> ${payload.name}</p>
+        <p style="margin:0 0 8px 0"><strong>Email:</strong> ${payload.email}</p>
+        <p style="margin:0 0 8px 0"><strong>Phone:</strong> ${
+          payload.phone || "N/A"
+        }</p>
+        <p style="margin:0 0 8px 0"><strong>Company:</strong> ${
+          payload.company || "N/A"
+        }</p>
+        <p style="margin:0 0 8px 0"><strong>Subject:</strong> ${payload.subject}</p>
+        <p style="margin:0 0 8px 0"><strong>Service:</strong> ${
+          payload.service || "N/A"
+        }</p>
+        <p style="margin:12px 0 0 0"><strong>Message:</strong></p>
+        <div>${payload.message.replace(/\n/g, "<br/>")}</div>
+      `,
+      cta: BRAND.website
+        ? { label: "Open Dashboard", url: BRAND.website }
+        : null,
+    }),
+  };
+
+  if (transporter) {
+    return transporter.sendMail(mailOptions);
+  }
+}
+
+export async function sendInquiryConfirmationEmail(payload) {
+  if (!isEmailConfigured) {
+    console.log(
+      `📧 [email] Would send confirmation email to user (email not configured): ${payload.email}`
+    );
+    return {
+      success: true,
+      message: "Confirmation email queued (service not configured)",
+    };
+  }
+
+  const mailOptions = {
+    from: EMAIL_FROM,
+    to: payload.email,
+    subject: `Thank you for your inquiry — ${BRAND.name}`,
+    text: `Hi ${payload.name},\n\nThank you for your inquiry to ${BRAND.name}! We have received your message and will get back to you soon.\n\nSubject: ${payload.subject}\n\nYour message:\n${payload.message}\n\nBest regards,\n${BRAND.name} Team`,
+    html: renderBaseEmail({
+      preheader: `Thank you for your inquiry to ${BRAND.name}`,
+      title: `Thank you, ${payload.name}!`,
+      bodyHtml: `
+        <p>Hi <strong>${payload.name}</strong>,</p>
+        <p>Thank you for your inquiry to <strong>${
+          BRAND.name
+        }</strong>! We have received your message and will get back to you soon.</p>
+        <p style="margin:12px 0 0 0"><strong>Subject:</strong> ${payload.subject}</p>
+        <p style="margin:12px 0 0 0"><strong>Your message:</strong></p>
+        <div>${payload.message.replace(/\n/g, "<br/>")}</div>
+        <p style="margin-top:18px">Best regards,<br/>${BRAND.name} Team</p>
+      `,
+      cta: BRAND.website
+        ? { label: `Visit ${BRAND.name}`, url: BRAND.website }
+        : null,
+    }),
+  };
+
+  if (transporter) {
+    return transporter.sendMail(mailOptions);
+  }
+}

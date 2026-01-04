@@ -183,7 +183,7 @@ const BlogDetail = () => {
 
       {/* Article Header */}
       <section className="relative py-12 md:py-20">
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
             <motion.button
@@ -214,7 +214,7 @@ const BlogDetail = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-8 leading-[1.1]"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 sm:mb-8 leading-[1.1] px-2 sm:px-0"
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 {blogPost.title}
@@ -228,7 +228,7 @@ const BlogDetail = () => {
       {/* Featured Image */}
       {blogPost.image && (
         <section className="relative py-8">
-          <div className="container mx-auto px-6 lg:px-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <AnimatedSection>
               <div className="max-w-5xl mx-auto">
                 <motion.div
@@ -252,7 +252,7 @@ const BlogDetail = () => {
 
       {/* Article Content */}
       <section className="relative py-12 md:py-20">
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto">
             <AnimatedSection>
               <motion.article
@@ -276,7 +276,7 @@ const BlogDetail = () => {
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
         <section className="py-20 relative">
-          <div className="container mx-auto px-6 lg:px-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               <AnimatedSection>
                 <div className="flex items-center gap-4 mb-12">

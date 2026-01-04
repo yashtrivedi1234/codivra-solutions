@@ -22,6 +22,7 @@ export { default as Portfolio } from './Portfolio.tsx';
 export { default as Blog } from './Blog.tsx';
 export { default as Careers } from './Careers.tsx';
 export { default as Contact } from './Contact.tsx';
+export { default as Inquiry } from './Inquiry.tsx';
 
 // Auth Pages
 export { default as AdminLogin } from './AdminLogin';
@@ -50,6 +51,7 @@ export type WebsitePageName =
   | 'Portfolio'
   | 'Blog'
   | 'Careers'
-  | 'Contact';
+  | 'Contact'
+  | 'Inquiry';
 
 export type PageName = AdminPageName | WebsitePageName | 'AdminLogin' | 'NotFound';

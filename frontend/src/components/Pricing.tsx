@@ -74,7 +74,7 @@ export const Pricing = () => {
 	};
 
 	return (
-		<section id="pricing" className="relative py-24 md:py-32 bg-gradient-to-b from-[#070B14] to-[#0A0F1C] overflow-hidden">
+		<section id="pricing" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#070B14] to-[#0A0F1C] overflow-hidden">
 			{/* Animated Background Elements */}
 			<div className="absolute inset-0 pointer-events-none">
 				<motion.div
@@ -95,7 +95,7 @@ export const Pricing = () => {
 				/>
 			</div>
 
-			<div className="container mx-auto px-6 lg:px-12 relative z-10">
+			<div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
 				{/* Section Header */}
 				<AnimatedSection className="text-center max-w-5xl mx-auto mb-16">
 					<motion.div
@@ -110,7 +110,7 @@ export const Pricing = () => {
 					</motion.div>
 
 					<h2
-						className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
+						className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
 						style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
 					>
 						SIMPLE &{" "}
@@ -197,7 +197,7 @@ export const Pricing = () => {
 												<span className="text-2xl text-white/60 font-bold">₹</span>
 											)}
 											<span
-												className="text-5xl md:text-6xl font-black text-white"
+												className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white"
 												style={{ fontFamily: "'Oswald', sans-serif" }}
 											>
 												{plan.price}

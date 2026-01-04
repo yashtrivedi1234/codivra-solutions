@@ -115,9 +115,9 @@ export const Portfolio = () => {
       <section
         ref={sectionRef}
         id="portfolio"
-        className="relative py-32 bg-[#0A0F1C]"
+        className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-[#0A0F1C]"
       >
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex items-center justify-center min-h-96">
             <div className="text-center">
               <div className="relative w-20 h-20 mx-auto mb-6">
@@ -144,14 +144,14 @@ export const Portfolio = () => {
     <section
       ref={sectionRef}
       id="portfolio"
-      className="relative py-24 md:py-32 bg-[#0A0F1C]"
+      className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-[#0A0F1C]"
     >
       <div className="absolute inset-0 pointer-events-none">
-        <div className="portfolio-bg-1 absolute top-1/4 right-0 w-[800px] h-[800px] bg-[#00D9FF]/3 rounded-full blur-[150px]" />
-        <div className="portfolio-bg-2 absolute bottom-1/4 left-0 w-[600px] h-[600px] bg-[#0066FF]/3 rounded-full blur-[150px]" />
+        <div className="portfolio-bg-1 absolute top-1/4 right-0 w-[400px] sm:w-[600px] md:w-[800px] h-[400px] sm:h-[600px] md:h-[800px] bg-[#00D9FF]/3 rounded-full blur-[150px]" />
+        <div className="portfolio-bg-2 absolute bottom-1/4 left-0 w-[300px] sm:w-[450px] md:w-[600px] h-[300px] sm:h-[450px] md:h-[600px] bg-[#0066FF]/3 rounded-full blur-[150px]" />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <div
           ref={headerRef}
@@ -169,7 +169,7 @@ export const Portfolio = () => {
           </div>
 
           <h2
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight text-center"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight text-center px-2 sm:px-0"
             style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
           >
             FEATURED{" "}
@@ -178,7 +178,7 @@ export const Portfolio = () => {
             </span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
             Sample work representing the type of services we provide to startups and growing businesses
           </p>
         </div>
@@ -204,7 +204,7 @@ export const Portfolio = () => {
         ) : (
           <div
             ref={gridRef}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto"
           >
             {projects.map((project, index) => (
               <PortfolioCard

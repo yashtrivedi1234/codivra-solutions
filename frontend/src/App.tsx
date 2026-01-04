@@ -9,6 +9,7 @@ import AnimatedRoutes from "./components/AnimatedRoutes";
 import ScrollToTop from "./components/ScrollToTop";
 import { useEffect, useState } from "react";
 import ReadingProgressBar from "./components/ReadingProgressBar";
+import { Chatbot } from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ function App() {
           <ScrollToTop />
         </BrowserRouter>
         <ReadingProgressBar progress={progress} />
+        <Chatbot />
       </TooltipProvider>
     </QueryClientProvider>
   );

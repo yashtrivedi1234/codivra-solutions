@@ -13,6 +13,7 @@ const navLinks = [
 	{ href: "/blog", label: "Blog" },
 	{ href: "/careers", label: "Careers" },
 	{ href: "/contact", label: "Contact" },
+	{ href: "/inquiry", label: "Inquiry" },
 ];
 
 export const Header = () => {
@@ -27,8 +28,8 @@ export const Header = () => {
 				transition={{ duration: 0.1, ease: "easeOut" }}
 				className="w-full fixed top-0 z-50 transition-all duration-500 bg-[#0A0F1C]/95 backdrop-blur-xl border-b-2 border-white/10"
 			>
-				<div className="container mx-auto px-6 lg:px-12">
-					<div className="flex items-center justify-between h-20 lg:h-24">
+				<div className="container mx-auto px-4 sm:px-6 lg:px-12">
+					<div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
 						{/* Logo */}
 						<Link to="/" className="relative z-10 flex items-center group">
 							<motion.img
@@ -36,7 +37,7 @@ export const Header = () => {
 								whileTap={{ scale: 0.95 }}
 								src={logo}
 								alt="Codivra"
-								className="h-12 lg:h-16 w-auto object-contain transition-all duration-300 brightness-0 invert"
+								className="h-10 sm:h-12 lg:h-16 w-auto object-contain transition-all duration-300 brightness-0 invert"
 							/>
 						</Link>
 
@@ -82,7 +83,7 @@ export const Header = () => {
 									>
 										<Link
 											to={link.href}
-											className={`relative px-5 py-3 text-sm font-bold tracking-wider transition-all duration-300 group uppercase block ${
+											className={`relative px-2 sm:px-3 md:px-4 lg:px-5 py-2 sm:py-3 text-xs sm:text-sm font-bold tracking-wider transition-all duration-300 group uppercase block ${
 												isActive
 													? "text-[#00D9FF]"
 													: "text-white/70 hover:text-white"
@@ -114,12 +115,12 @@ export const Header = () => {
 							<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
 								<Button
 									asChild
-									className="relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-8 py-6 rounded-xl transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] group uppercase tracking-wider text-sm"
+									className="relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-6 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] group uppercase tracking-wider text-xs sm:text-sm"
 								>
-									<Link to="/contact" className="flex items-center gap-2">
-										<Rocket className="w-5 h-5" />
-										Start Project
-										<ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+									<Link to="/inquiry" className="flex items-center gap-1 sm:gap-2">
+										<Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
+										<span className="hidden sm:inline">Inquiry</span>
+										<ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
 									</Link>
 								</Button>
 							</motion.div>
@@ -203,7 +204,7 @@ export const Header = () => {
 											animate={{ opacity: 1, x: 0 }}
 											transition={{ delay: index * 0.05, type: "spring" }}
 											whileTap={{ scale: 0.95 }}
-											className={`w-full text-center py-5 text-3xl font-black transition-all duration-300 rounded-2xl uppercase tracking-wide ${
+											className={`w-full text-center py-4 sm:py-5 text-2xl sm:text-3xl font-black transition-all duration-300 rounded-xl sm:rounded-2xl uppercase tracking-wide ${
 												isActive
 													? "text-[#00D9FF] bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border-2 border-[#00D9FF]/30"
 													: "text-white/70 hover:text-white hover:bg-white/5"
@@ -222,7 +223,7 @@ export const Header = () => {
 										>
 											<Link
 												to={link.href}
-												className={`block w-full text-center py-5 text-3xl font-black transition-all duration-300 rounded-2xl uppercase tracking-wide ${
+												className={`block w-full text-center py-4 sm:py-5 text-2xl sm:text-3xl font-black transition-all duration-300 rounded-xl sm:rounded-2xl uppercase tracking-wide ${
 													isActive
 														? "text-[#00D9FF] bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border-2 border-[#00D9FF]/30"
 														: "text-white/70 hover:text-white hover:bg-white/5"
@@ -246,15 +247,15 @@ export const Header = () => {
 							>
 								<Button
 									asChild
-									className="w-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black py-8 text-xl rounded-2xl hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] uppercase tracking-wider"
+									className="w-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black py-6 sm:py-7 md:py-8 text-lg sm:text-xl rounded-xl sm:rounded-2xl hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] uppercase tracking-wider"
 								>
 									<Link 
-										to="#contact" 
+										to="/inquiry" 
 										onClick={() => setIsMobileMenuOpen(false)}
 										className="flex items-center justify-center gap-3"
 									>
 										<Rocket className="w-6 h-6" />
-										Start Project
+										Inquiry
 										<Zap className="w-6 h-6" />
 									</Link>
 								</Button>

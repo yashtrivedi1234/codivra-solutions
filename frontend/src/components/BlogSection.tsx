@@ -25,14 +25,14 @@ export const BlogSection = () => {
   }));
 
   return (
-    <section className="relative py-32 bg-gradient-to-b from-[#070B14] to-[#0A0F1C] overflow-hidden">
+    <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#070B14] to-[#0A0F1C] overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#00D9FF]/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-[#0066FF]/5 rounded-full blur-[120px]" />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Section Header */}
         <AnimatedSection className="text-center max-w-3xl mx-auto mb-20">
           <div className="flex justify-center">
@@ -55,7 +55,7 @@ export const BlogSection = () => {
           >
           </motion.div>
           <h2
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight px-2 sm:px-0"
             style={{ fontFamily: "'Outfit', sans-serif" }}
           >
             {heading.split(" ").slice(0, 2).join(" ")} <span className="text-[#00D9FF]">{heading.split(" ").slice(2).join(" ")}</span>

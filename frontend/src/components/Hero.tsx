@@ -136,7 +136,7 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <h1
-              className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black text-white leading-[0.95] mb-8 tracking-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-black text-white leading-[0.95] mb-6 sm:mb-8 tracking-tight"
               style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
             >
               <motion.span 
@@ -163,7 +163,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-xl md:text-2xl text-white/70 max-w-3xl mb-12 leading-relaxed font-light"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mb-8 sm:mb-12 leading-relaxed font-light px-2 sm:px-0"
             style={{ fontFamily: "'Crimson Pro', serif" }}
           >
             {subtitle}
@@ -174,17 +174,17 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-16"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-12 sm:mb-16"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 asChild
-                className="group relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-10 py-8 text-lg rounded-2xl transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,217,255,0.7)] uppercase tracking-wider"
+                className="group relative overflow-hidden bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-6 py-6 sm:px-8 sm:py-7 md:px-10 md:py-8 text-base sm:text-lg rounded-xl sm:rounded-2xl transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,217,255,0.7)] uppercase tracking-wider w-full sm:w-auto"
               >
                 <Link to="/contact" className="flex items-center gap-3">
-                  <Rocket className="w-6 h-6" />
-                  Start Your Project
-                  <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
+                  <Rocket className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="whitespace-nowrap">Start Your Project</span>
+                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-2" />
                 </Link>
               </Button>
             </motion.div>
@@ -192,13 +192,13 @@ export const Hero = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 asChild
-                className="group relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/20 text-white font-bold px-10 py-8 text-lg rounded-2xl hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 uppercase tracking-wider"
+                className="group relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/20 text-white font-bold px-6 py-6 sm:px-8 sm:py-7 md:px-10 md:py-8 text-base sm:text-lg rounded-xl sm:rounded-2xl hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 uppercase tracking-wider w-full sm:w-auto"
               >
                 <Link to="/portfolio" className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#00D9FF]/20 transition-all">
-                    <Play className="w-5 h-5 fill-white ml-1" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#00D9FF]/20 transition-all">
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white ml-1" />
                   </div>
-                  View Our Work
+                  <span className="whitespace-nowrap">View Our Work</span>
                 </Link>
               </Button>
             </motion.div>
@@ -212,8 +212,8 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 1 }}
             className="border-t-2 border-white/10 pt-10"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex -space-x-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-3 mb-6">
+              <div className="flex -space-x-2 sm:-space-x-3">
                 {trustedAvatars.map((item, i) => {
                   const avatar = (
                     <motion.div
@@ -221,7 +221,7 @@ export const Hero = () => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 1.1 + i * 0.05, type: "spring" }}
-                      className="w-10 h-10 rounded-full border-2 border-[#0A0F1C] overflow-hidden ring-2 ring-[#00D9FF]/40"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#0A0F1C] overflow-hidden ring-2 ring-[#00D9FF]/40"
                     >
                       <img src={item.src} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
                     </motion.div>
@@ -242,12 +242,12 @@ export const Hero = () => {
                   );
                 })}
               </div>
-              <p className="text-sm text-white/50 font-bold uppercase tracking-wider">
+              <p className="text-xs sm:text-sm text-white/50 font-bold uppercase tracking-wider">
                 Trusted by 5+ Industry Leaders
               </p>
             </div>
             
-            <div className="flex flex-wrap items-center gap-8 lg:gap-12">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
               {[
                 { name: "Aitds Events", href: "https://aitd-events.club/" },
                 { name: "InnovateCo" },
@@ -261,7 +261,7 @@ export const Hero = () => {
                   transition: { delay: 1.2 + i * 0.1 },
                   whileHover: { scale: 1.1, opacity: 0.8 },
                   className:
-                    "text-xl lg:text-2xl font-black text-white/30 hover:text-white/60 transition-all cursor-pointer uppercase tracking-wide",
+                    "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-black text-white/30 hover:text-white/60 transition-all cursor-pointer uppercase tracking-wide",
                   style: { fontFamily: "'Oswald', sans-serif" },
                 };
 

@@ -18,3 +18,5 @@ export const EMAIL_TO = process.env.EMAIL_TO;
 export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME || "";
 export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || "";
 export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
+
+export const GROQ_API_KEY = process.env.GROQ_API_KEY;

@@ -11,6 +11,7 @@ import About from "@/pages/About.tsx";
 import Pricing from "@/pages/Pricing.tsx";
 import Portfolio from "@/pages/Portfolio.tsx";
 import Contact from "@/pages/Contact.tsx";
+import Inquiry from "@/pages/Inquiry.tsx";
 import Blog from "@/pages/Blog.tsx";
 import BlogDetail from "@/pages/BlogDetail.tsx"; // Add this import
 import Careers from "@/pages/Careers.tsx";
@@ -92,6 +93,14 @@ const AnimatedRoutes = () => {
           element={
             <PageTransition>
               <Contact />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/inquiry"
+          element={
+            <PageTransition>
+              <Inquiry />
             </PageTransition>
           }
         />

@@ -13,15 +13,17 @@ import {
   MessageSquare,
   Clock,
   Users,
-  ArrowRight
+  ArrowRight,
+  Building2,
+  FileText
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AnimatedSection } from "./AnimatedSection";
-import { useSubmitContactMutation, useGetServicesQuery } from "@/lib/api";
+import { useSubmitInquiryMutation, useGetServicesQuery } from "@/lib/api";
 import * as Yup from "yup";
 
 // Yup Validation Schema
-const contactSchema = Yup.object().shape({
+const inquirySchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "Name must be at least 2 characters long")
     .matches(/^[a-zA-Z\s]+$/, "Name should contain only letters")
@@ -33,34 +35,41 @@ const contactSchema = Yup.object().shape({
     .matches(/^[0-9]+$/, "Phone number should contain only numbers")
     .min(10, "Phone number must be at least 10 digits")
     .max(13, "Phone number must not exceed 13 digits")
-    .required("Phone number is required"),
-  service: Yup.string()
-    .required("Please select a service"),
+    .optional(),
+  company: Yup.string()
+    .optional(),
+  subject: Yup.string()
+    .min(3, "Subject must be at least 3 characters long")
+    .required("Subject is required"),
   message: Yup.string()
     .min(10, "Message must be at least 10 characters long")
     .required("Message is required"),
+  service: Yup.string()
+    .optional(),
 });
 
-export const Contact = () => {
+export const Inquiry = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    service: "",
+    company: "",
+    subject: "",
     message: "",
+    service: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
-  const [submitContact] = useSubmitContactMutation();
+  const [submitInquiry] = useSubmitInquiryMutation();
   const { data: servicesData, isLoading: servicesLoading, isError: servicesError } = useGetServicesQuery();
 
   // Live validation function
   const validateField = async (fieldName: string, value: string) => {
     try {
-      await Yup.reach(contactSchema, fieldName).validate(value);
+      await Yup.reach(inquirySchema, fieldName).validate(value);
       setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[fieldName];
@@ -117,23 +126,31 @@ export const Contact = () => {
     setTouchedFields(allTouched);
 
     try {
-      await contactSchema.validate(formData, { abortEarly: false });
+      await inquirySchema.validate(formData, { abortEarly: false });
       setErrors({});
 
-      const result = await submitContact(formData).unwrap();
+      // Remove empty optional fields
+      const payload: any = { ...formData };
+      if (!payload.phone) delete payload.phone;
+      if (!payload.company) delete payload.company;
+      if (!payload.service) delete payload.service;
+
+      const result = await submitInquiry(payload).unwrap();
       setIsSubmitted(true);
       
       setFormData({
         name: "",
         email: "",
         phone: "",
-        service: "",
+        company: "",
+        subject: "",
         message: "",
+        service: "",
       });
       setTouchedFields({});
       
       toast({
-        title: "Message Sent Successfully! 🎉",
+        title: "Inquiry Sent Successfully! 🎉",
         description: result.message || "We'll get back to you within 24 hours.",
       });
     } catch (error: any) {
@@ -204,7 +221,7 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-[#0A0F1C] overflow-hidden">
+    <section id="inquiry" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-[#0A0F1C] overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
@@ -244,15 +261,15 @@ export const Contact = () => {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
               style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
             >
-              LET'S BUILD
+              HAVE A
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
-                SOMETHING AMAZING
+                QUESTION?
               </span>
             </h2>
             
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
-              Ready to transform your vision into reality? Let's start a conversation about your next big project
+              We're here to help! Send us your inquiry and we'll get back to you as soon as possible
             </p>
           </AnimatedSection>
 
@@ -274,8 +291,8 @@ export const Contact = () => {
                     {/* Glow effect */}
                     <div className={`absolute -inset-1 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500 rounded-2xl`} />
                     
-                    <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-6 group-hover:border-white/30 transition-all">
-                      <div className="flex items-start gap-5">
+                    <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 group-hover:border-white/30 transition-all">
+                      <div className="flex items-start gap-3 sm:gap-5">
                         <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
                           <item.icon className="w-7 h-7 text-white" />
                         </div>
@@ -333,7 +350,7 @@ export const Contact = () => {
               </AnimatedSection>
             </div>
 
-            {/* Right - Contact Form */}
+            {/* Right - Inquiry Form */}
             <div className="lg:col-span-3">
               <AnimatedSection delay={0.2}>
                 <div className="relative">
@@ -371,10 +388,10 @@ export const Contact = () => {
                           className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 sm:mb-4 uppercase tracking-wide px-2 sm:px-0" 
                           style={{ fontFamily: "'Oswald', sans-serif" }}
                         >
-                          Message Sent!
+                          Inquiry Sent!
                         </h3>
                         <p className="text-white/70 mb-6 sm:mb-8 text-base sm:text-lg max-w-md px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
-                          We've received your message and will get back to you within 24 hours.
+                          We've received your inquiry and will get back to you within 24 hours.
                         </p>
                         
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -382,14 +399,14 @@ export const Contact = () => {
                             onClick={() => setIsSubmitted(false)}
                             className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-6 py-5 sm:px-8 sm:py-6 rounded-lg sm:rounded-xl text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:shadow-[0_0_50px_rgba(0,217,255,0.6)]"
                           >
-                            Send Another Message
+                            Send Another Inquiry
                             <ArrowRight className="w-5 h-5 ml-2" />
                           </Button>
                         </motion.div>
                       </motion.div>
                     ) : (
                       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="grid sm:grid-cols-2 gap-6">
                           {/* Name Input */}
                           <div>
                             <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
@@ -429,7 +446,7 @@ export const Contact = () => {
                               onChange={handleInputChange}
                               onBlur={() => handleBlur("email")}
                               placeholder="john@example.com"
-                              className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-xl focus:border-[#00D9FF] focus:bg-white/10 font-semibold transition-all ${
+                              className={`h-12 sm:h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-lg sm:rounded-xl focus:border-[#00D9FF] focus:bg-white/10 font-semibold transition-all text-sm sm:text-base ${
                                 errors.email && touchedFields.email ? "border-red-500" : ""
                               }`}
                               disabled={isSubmitting}
@@ -446,31 +463,87 @@ export const Contact = () => {
                           </div>
                         </div>
 
-                        {/* Phone Input */}
+                        <div className="grid sm:grid-cols-2 gap-6">
+                          {/* Phone Input */}
+                          <div>
+                            <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
+                              Phone Number
+                            </label>
+                            <Input
+                              type="tel"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleInputChange}
+                              onBlur={() => handleBlur("phone")}
+                              placeholder="1234567890"
+                              inputMode="numeric"
+                              className={`h-12 sm:h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-lg sm:rounded-xl focus:border-[#00D9FF] focus:bg-white/10 font-semibold transition-all text-sm sm:text-base ${
+                                errors.phone && touchedFields.phone ? "border-red-500" : ""
+                              }`}
+                              disabled={isSubmitting}
+                            />
+                            {errors.phone && touchedFields.phone && (
+                              <motion.p 
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-red-400 text-sm mt-2 font-semibold"
+                              >
+                                {errors.phone}
+                              </motion.p>
+                            )}
+                          </div>
+
+                          {/* Company Input */}
+                          <div>
+                            <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
+                              Company
+                            </label>
+                            <Input
+                              name="company"
+                              value={formData.company}
+                              onChange={handleInputChange}
+                              onBlur={() => handleBlur("company")}
+                              placeholder="Company Name"
+                              className={`h-12 sm:h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-lg sm:rounded-xl focus:border-[#00D9FF] focus:bg-white/10 font-semibold transition-all text-sm sm:text-base ${
+                                errors.company && touchedFields.company ? "border-red-500" : ""
+                              }`}
+                              disabled={isSubmitting}
+                            />
+                            {errors.company && touchedFields.company && (
+                              <motion.p 
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-red-400 text-sm mt-2 font-semibold"
+                              >
+                                {errors.company}
+                              </motion.p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Subject Input */}
                         <div>
                           <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
-                            Phone Number *
+                            Subject *
                           </label>
                           <Input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
+                            name="subject"
+                            value={formData.subject}
                             onChange={handleInputChange}
-                            onBlur={() => handleBlur("phone")}
-                            placeholder="1234567890"
-                            inputMode="numeric"
+                            onBlur={() => handleBlur("subject")}
+                            placeholder="What is your inquiry about?"
                             className={`h-14 bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-xl focus:border-[#00D9FF] focus:bg-white/10 font-semibold transition-all ${
-                              errors.phone && touchedFields.phone ? "border-red-500" : ""
+                              errors.subject && touchedFields.subject ? "border-red-500" : ""
                             }`}
                             disabled={isSubmitting}
                           />
-                          {errors.phone && touchedFields.phone && (
+                          {errors.subject && touchedFields.subject && (
                             <motion.p 
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
                               className="text-red-400 text-sm mt-2 font-semibold"
                             >
-                              {errors.phone}
+                              {errors.subject}
                             </motion.p>
                           )}
                         </div>
@@ -478,7 +551,7 @@ export const Contact = () => {
                         {/* Service Select */}
                         <div>
                           <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
-                            Service Interested In *
+                            Service Interested In
                           </label>
                           <select
                             name="service"
@@ -491,7 +564,7 @@ export const Contact = () => {
                             disabled={isSubmitting || servicesLoading || servicesError}
                           >
                             <option value="" className="bg-[#0A0F1C]">
-                              {servicesLoading ? "Loading services..." : servicesError ? "Failed to load services" : "Select a service"}
+                              {servicesLoading ? "Loading services..." : servicesError ? "Failed to load services" : "Select a service (optional)"}
                             </option>
                             {servicesData?.items?.length > 0 ? (
                               servicesData.items.map((service) => (
@@ -515,14 +588,14 @@ export const Contact = () => {
                         {/* Message Textarea */}
                         <div>
                           <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
-                            Project Details *
+                            Your Inquiry *
                           </label>
                           <Textarea
                             name="message"
                             value={formData.message}
                             onChange={handleInputChange}
                             onBlur={() => handleBlur("message")}
-                            placeholder="Tell us about your project, goals, and requirements..."
+                            placeholder="Tell us about your inquiry, questions, or how we can help you..."
                             rows={6}
                             className={`bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 rounded-lg sm:rounded-xl resize-none focus:border-[#00D9FF] focus:ring-0 focus:bg-white/10 font-semibold transition-all text-sm sm:text-base ${
                               errors.message && touchedFields.message ? "border-red-500" : ""
@@ -558,7 +631,7 @@ export const Contact = () => {
                               </span>
                             ) : (
                               <span className="flex items-center justify-center gap-3">
-                                Send Message
+                                Send Inquiry
                                 <Send className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                               </span>
                             )}
@@ -585,3 +658,4 @@ export const Contact = () => {
     </section>
   );
 };
+

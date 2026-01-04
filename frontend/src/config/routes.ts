@@ -20,6 +20,7 @@ import {
   Blog,
   Careers,
   Contact,
+  Inquiry,
   AdminLogin,
   NotFound,
 } from '@/pages';
@@ -176,6 +177,13 @@ export const websiteRoutes: RouteConfig[] = [
     path: '/contact',
     label: 'Contact',
     component: Contact,
+    context: 'website',
+    sidebar: true,
+  },
+  {
+    path: '/inquiry',
+    label: 'Inquiry',
+    component: Inquiry,
     context: 'website',
     sidebar: true,
   },

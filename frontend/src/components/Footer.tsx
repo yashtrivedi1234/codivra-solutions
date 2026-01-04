@@ -30,6 +30,8 @@ export const Footer = () => {
     { label: "Careers", href: "/careers" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
+    { label: "Inquiry", href: "/inquiry" },
+    { label: "Admin", href: "/admin", target: "_blank", isExternal: true },
   ];
 
   // Prepare services from backend
@@ -61,8 +63,8 @@ export const Footer = () => {
       </div>
 
       {/* Main Footer */}
-      <div className="container mx-auto px-6 lg:px-12 py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-20 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
           {/* Brand Section */}
           <div className="lg:col-span-4">
             <Link to="/" className="inline-block mb-6">
@@ -73,7 +75,7 @@ export const Footer = () => {
                 className="h-14 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="text-white/70 mb-8 leading-relaxed text-lg font-light max-w-sm" style={{ fontFamily: "'Crimson Pro', serif" }}>
+            <p className="text-white/70 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg font-light max-w-sm" style={{ fontFamily: "'Crimson Pro', serif" }}>
               Innovative IT solutions for modern businesses. We transform ideas into powerful digital experiences.
             </p>
             
@@ -116,18 +118,35 @@ export const Footer = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + (idx * 0.05) }}
                 >
-                  <Link
-                    to={link.href}
-                    className="text-white/70 hover:text-[#00D9FF] transition-all inline-flex items-center gap-2 group font-semibold"
-                  >
-                    <motion.div
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                      whileHover={{ x: 3 }}
+                  {link.isExternal ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/70 hover:text-[#00D9FF] transition-all inline-flex items-center gap-2 group font-semibold"
                     >
-                      <ArrowRight className="w-4 h-4 text-[#00D9FF]" />
-                    </motion.div>
-                    <span className="group-hover:translate-x-1 transition-transform">{link.label}</span>
-                  </Link>
+                      <motion.div
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        whileHover={{ x: 3 }}
+                      >
+                        <ArrowRight className="w-4 h-4 text-[#00D9FF]" />
+                      </motion.div>
+                      <span className="group-hover:translate-x-1 transition-transform">{link.label}</span>
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-white/70 hover:text-[#00D9FF] transition-all inline-flex items-center gap-2 group font-semibold"
+                    >
+                      <motion.div
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                        whileHover={{ x: 3 }}
+                      >
+                        <ArrowRight className="w-4 h-4 text-[#00D9FF]" />
+                      </motion.div>
+                      <span className="group-hover:translate-x-1 transition-transform">{link.label}</span>
+                    </Link>
+                  )}
                 </motion.li>
               ))}
             </ul>

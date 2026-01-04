@@ -157,10 +157,33 @@ export interface SubscriptionPayload {
   source?: string;
 }
 
+export interface InquiryPayload {
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  subject: string;
+  message: string;
+  service?: string;
+}
+
+export interface InquirySubmission {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  subject: string;
+  message: string;
+  service?: string;
+  read?: boolean;
+  created_at?: string;
+}
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery,
-  tagTypes: ["JobApplications", "Jobs", "Pages", "Services", "Team", "Portfolio", "Blog"],
+  tagTypes: ["JobApplications", "Jobs", "Pages", "Services", "Team", "Portfolio", "Blog", "Inquiries"],
   endpoints: (builder) => ({
     submitContact: builder.mutation<
       { status: string; message?: string },
@@ -651,6 +674,81 @@ export const api = createApi({
         body,
       }),
     }),
+    // Chatbot endpoints
+    sendChatbotMessage: builder.mutation<
+      { success: boolean; response: string },
+      { message: string; conversationHistory?: Array<{ sender: string; text: string }> }
+    >({
+      query: (body) => ({
+        url: "/api/chatbot/message",
+        method: "POST",
+        body,
+      }),
+    }),
+    getChatbotHealth: builder.query<{ status: string; configured: boolean }, void>({
+      query: () => ({
+        url: "/api/chatbot/health",
+        method: "GET",
+      }),
+    }),
+    // Inquiry endpoints
+    submitInquiry: builder.mutation<
+      { status: string; message?: string },
+      InquiryPayload
+    >({
+      query: (body) => ({
+        url: "/api/inquiry",
+        method: "POST",
+        body,
+      }),
+    }),
+    adminListInquiries: builder.query<{ items: InquirySubmission[]; success?: boolean }, void>({
+      query: () => ({
+        url: "/api/admin/inquiries",
+        method: "GET",
+      }),
+      providesTags: ["Inquiries"],
+    }),
+    adminDeleteInquiry: builder.mutation<{ success: boolean }, string>({
+      query: (id) => ({
+        url: `/api/admin/inquiries/${id}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patch = dispatch(
+          api.util.updateQueryData("adminListInquiries", undefined, (draft: any) => {
+            draft.items = draft.items.filter((i: InquirySubmission) => i._id !== id);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patch.undo();
+        }
+      },
+    }),
+    adminToggleInquiryRead: builder.mutation<
+      { success: boolean; data: InquirySubmission },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/admin/inquiries/${id}/toggle-read`,
+        method: "PUT",
+      }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patch = dispatch(
+          api.util.updateQueryData("adminListInquiries", undefined, (draft: any) => {
+            const item = draft.items.find((i: InquirySubmission) => i._id === id);
+            if (item) item.read = !item.read;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patch.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -689,6 +787,12 @@ export const {
   useUpdateBlogPostMutation,
   useDeleteBlogPostMutation,
   useSubmitSubscriptionMutation,
-  useGetBlogByIdQuery, // Add this
+  useGetBlogByIdQuery,
+  useSubmitInquiryMutation,
+  useAdminListInquiriesQuery,
+  useAdminDeleteInquiryMutation,
+  useAdminToggleInquiryReadMutation,
+  useSendChatbotMessageMutation,
+  useGetChatbotHealthQuery,
 } = api;
 

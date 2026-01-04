@@ -9,7 +9,7 @@ export const Services = () => {
   const { data, isLoading } = useGetServicesQuery();
 
   return (
-    <section id="services" className="relative py-24 md:py-32 bg-[#0A0F1C] overflow-hidden">
+    <section id="services" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-[#0A0F1C] overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
@@ -61,7 +61,7 @@ export const Services = () => {
           </motion.div>
 
           <h2
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
             style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
           >
             <span className="text-white">COMPREHENSIVE</span>{" "}
@@ -70,7 +70,7 @@ export const Services = () => {
             </span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
             From concept to launch, we deliver end-to-end digital services that transform your business vision into reality
           </p>
         </AnimatedSection>

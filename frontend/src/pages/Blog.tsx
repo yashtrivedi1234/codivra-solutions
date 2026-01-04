@@ -104,8 +104,8 @@ const Blog = () => {
       </div>
 
       {/* Hero Section - Magazine Editorial Style */}
-      <section className="relative py-20 md:py-32">
-        <div className="container mx-auto px-6 lg:px-12">
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <AnimatedSection>
               <motion.div
@@ -126,7 +126,7 @@ const Blog = () => {
                 </motion.div>
                 
                 <h1 
-                  className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-4 sm:mb-6 leading-[0.9] tracking-tight px-2 sm:px-0"
                   style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
                 >
                   DISCOVER{" "}
@@ -135,7 +135,7 @@ const Blog = () => {
                   </span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
                   Deep dives into web development, software architecture, and the bleeding edge of digital innovation
                 </p>
               </motion.div>
@@ -147,7 +147,7 @@ const Blog = () => {
       {/* Featured Post - Dramatic Layout */}
       {featuredPost && (
         <section className="py-12 relative">
-          <div className="container mx-auto px-6 lg:px-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <AnimatedSection>
               <div className="max-w-7xl mx-auto">
                 <motion.div
@@ -235,7 +235,7 @@ const Blog = () => {
 
       {/* Category Pills - Floating Design */}
       <section className="py-16 relative">
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <AnimatedSection>
               <motion.div 
@@ -277,7 +277,7 @@ const Blog = () => {
 
       {/* Posts Grid - Card Masonry Style */}
       <section className="py-12 relative">
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <AnimatedStagger
               key={activeCategory}
@@ -367,8 +367,8 @@ const Blog = () => {
       </section>
 
       {/* Newsletter - Bold CTA */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-6 lg:px-12">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <AnimatedSection>
             <div className="max-w-5xl mx-auto relative">
               {/* Animated background */}

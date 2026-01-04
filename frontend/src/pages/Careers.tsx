@@ -684,8 +684,8 @@ const Careers = () => {
         <PageBreadcrumb />
       
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32">
-          <div className="container mx-auto px-6 lg:px-12">
+        <section className="relative py-12 sm:py-16 md:py-20 lg:py-32">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               <AnimatedSection>
                 <motion.div
@@ -706,7 +706,7 @@ const Careers = () => {
                   </motion.div>
                   
                   <h1 
-                    className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-4 sm:mb-6 leading-[0.9] tracking-tight px-2 sm:px-0"
                     style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
                   >
                     BUILD THE{" "}
@@ -715,7 +715,7 @@ const Careers = () => {
                     </span>
                   </h1>
                   
-                  <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light mb-10" style={{ fontFamily: "'Crimson Pro', serif" }}>
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light mb-8 sm:mb-10 px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
                     Join a team of passionate innovators dedicated to creating exceptional digital experiences that shape tomorrow
                   </p>
 
@@ -738,7 +738,7 @@ const Careers = () => {
 
         {/* Benefits Section */}
         <section className="py-20 relative">
-          <div className="container mx-auto px-6 lg:px-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               <AnimatedSection className="mb-16">
                 <motion.div
@@ -799,7 +799,7 @@ const Careers = () => {
 
         {/* Job Listings Section */}
         <section id="openings" className="py-20 relative">
-          <div className="container mx-auto px-6 lg:px-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               <AnimatedSection className="mb-12">
                 <motion.div
@@ -892,8 +892,8 @@ const Careers = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 relative">
-          <div className="container mx-auto px-6 lg:px-12">
+        <section className="py-12 sm:py-16 md:py-20 lg:py-24 relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <AnimatedSection>
               <div className="max-w-5xl mx-auto relative">
                 {/* Animated background */}

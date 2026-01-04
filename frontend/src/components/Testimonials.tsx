@@ -31,7 +31,7 @@ const testimonials = [
 
 export const Testimonials = () => {
 	return (
-		<section id="testimonials" className="relative py-24 md:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
+		<section id="testimonials" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
 			{/* Animated Background Elements */}
 			<div className="absolute inset-0 pointer-events-none">
 				<motion.div
@@ -52,7 +52,7 @@ export const Testimonials = () => {
 				/>
 			</div>
 
-			<div className="container mx-auto px-6 lg:px-12 relative z-10">
+			<div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
 				{/* Section Header */}
 				<AnimatedSection className="text-center max-w-5xl mx-auto mb-16">
 					<motion.div
@@ -67,7 +67,7 @@ export const Testimonials = () => {
 					</motion.div>
 
 					<h2
-						className="text-5xl md:text-7xl font-black text-white mb-6 leading-[0.95] tracking-tight"
+						className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
 						style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
 					>
 						WHAT OUR{" "}
@@ -76,7 +76,7 @@ export const Testimonials = () => {
 						</span>
 					</h2>
 
-					<p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
+					<p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4 sm:px-0" style={{ fontFamily: "'Crimson Pro', serif" }}>
 						Don't just take our word for it—hear from businesses we've helped succeed
 					</p>
 				</AnimatedSection>

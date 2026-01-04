@@ -9,6 +9,8 @@ import teamRoutes from "./routes/team.routes.mjs";
 import portfolioRoutes from "./routes/portfolio.routes.mjs";
 import blogRoutes from "./routes/blog.routes.mjs";
 import subscriptionRoutes from "./routes/subscription.routes.mjs";
+import inquiryRoutes from "./routes/inquiry.routes.mjs";
+import chatbotRoutes from "./routes/chatbot.routes.mjs";
 import { ALLOWED_ORIGINS } from "./config/env.mjs";
 import { seedDefaultAdmin } from "./controllers/admin.controller.mjs";
 
@@ -53,5 +55,7 @@ app.use(teamRoutes);
 app.use(portfolioRoutes);
 app.use(blogRoutes);
 app.use(subscriptionRoutes);
+app.use(inquiryRoutes);
+app.use(chatbotRoutes);
 
 export default app;
