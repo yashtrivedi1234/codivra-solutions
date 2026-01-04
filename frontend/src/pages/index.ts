@@ -12,7 +12,7 @@ export { default as AdminPortfolio } from './admin/AdminPortfolio';
 export { default as AdminBlog } from './admin/AdminBlog';
 export { default as AdminCareers } from './admin/AdminCareers';
 export { default as AdminContact } from './admin/AdminContact';
-
+export { default as AdminInquiry } from './admin/AdminInquiry';
 // Website Pages
 export { default as Index } from './Index.tsx';
 export { default as Services } from './Services.tsx';

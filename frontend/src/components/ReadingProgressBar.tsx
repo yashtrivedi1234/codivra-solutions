@@ -8,15 +8,16 @@ interface ReadingProgressBarProps {
 const ReadingProgressBar = ({ progress }: ReadingProgressBarProps) => {
   const location = useLocation();
 
-  // Don't show progress bar on admin routes
-  if (location.pathname.startsWith("/admin")) {
-    return null;
-  }
+  if (location.pathname.startsWith("/admin")) return null;
 
   return (
-    <div
-      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] z-50 transition-all duration-300"
-      style={{ width: `${progress}%` }}
+    <motion.div
+      role="presentation"
+      aria-hidden="true"
+      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] z-[60]"
+      initial={{ width: "0%" }}
+      animate={{ width: `${progress}%` }}
+      transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
     />
   );
 };

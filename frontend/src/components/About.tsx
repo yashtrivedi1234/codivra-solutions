@@ -4,7 +4,7 @@ import { AnimatedSection } from "./AnimatedSection";
 import { useGetPageQuery } from "@/lib/api";
 import { useTeamCount } from "@/hooks/use-team-count";
 import { usePortfolioCount } from "@/hooks/use-portfolio-count";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -22,6 +22,15 @@ export const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const statsCardRef = useRef<HTMLDivElement>(null);
   const valuesRef = useRef<HTMLDivElement>(null);
+  
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const title: string =
     main.title ||
@@ -50,61 +59,44 @@ export const About = () => {
   const backgroundY1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const backgroundY2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  // GSAP Animations
+  // GSAP Animations - Only on desktop
   useEffect(() => {
+    if (isMobile) return;
+
     const ctx = gsap.context(() => {
       // Animate stats
       if (statsCardRef.current) {
-        gsap.fromTo(
-          statsCardRef.current.querySelectorAll(".stat-item"),
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.9,
+        gsap.from(statsCardRef.current.querySelectorAll(".stat-item"), {
+          opacity: 0,
+          y: 20,
+          duration: 0.6,
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: statsCardRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: statsCardRef.current,
-              start: "top 80%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+        });
       }
 
       // Animate values
       if (valuesRef.current) {
-        gsap.fromTo(
-          valuesRef.current.querySelectorAll(".value-item"),
-          {
-            opacity: 0,
-            x: -50,
+        gsap.from(valuesRef.current.querySelectorAll(".value-card"), {
+          opacity: 0,
+          y: 30,
+          duration: 0.6,
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: valuesRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: valuesRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+        });
       }
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   const values = [
     { 
@@ -285,7 +277,7 @@ export const About = () => {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-6 mb-8">
+                    <div className="grid grid-cols-2 gap-6 mb-8 auto-rows-fr">
                       {stats.map((stat: { value: string; label: string }, index: number) => (
                         <motion.div
                           key={stat.label}
@@ -293,7 +285,7 @@ export const About = () => {
                           whileHover={{ y: -5, scale: 1.02 }}
                           transition={{ type: "spring", stiffness: 300 }}
                         >
-                          <div className="relative bg-white/5 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300">
+                          <div className="relative bg-white/5 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 h-full">
                             <motion.div 
                               className="text-3xl sm:text-4xl md:text-5xl font-black text-[#00D9FF] mb-2" 
                               style={{ fontFamily: "'Oswald', sans-serif" }}
@@ -356,11 +348,6 @@ export const About = () => {
           </div>
         </div>
       </div>
-
-      {/* Add Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
     </section>
   );
 };

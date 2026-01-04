@@ -477,19 +477,23 @@ export const Contact = () => {
 
                         {/* Service Select */}
                         <div>
-                          <label className="text-sm font-black text-white mb-3 block uppercase tracking-wider">
-                            Service Interested In *
-                          </label>
-                          <select
-                            name="service"
-                            value={formData.service}
-                            onChange={handleInputChange}
-                            onBlur={() => handleBlur("service")}
-                            className={`w-full h-12 sm:h-14 px-4 rounded-lg sm:rounded-xl bg-white/5 border-2 border-white/20 text-white font-semibold focus:border-[#00D9FF] focus:ring-0 focus:outline-none transition-all text-sm sm:text-base ${
-                              errors.service && touchedFields.service ? "border-red-500" : ""
-                            }`}
-                            disabled={isSubmitting || servicesLoading || servicesError}
+                          <label
+                            htmlFor="service"
+                            className="text-sm font-black text-white mb-3 block uppercase tracking-wider"
                           >
+                             Service Interested In *
+                           </label>
+                           <select
+                            id="service"
+                             name="service"
+                             value={formData.service}
+                             onChange={handleInputChange}
+                             onBlur={() => handleBlur("service")}
+                             className={`w-full h-12 sm:h-14 px-4 rounded-lg sm:rounded-xl bg-white/5 border-2 border-white/20 text-white font-semibold focus:border-[#00D9FF] focus:ring-0 focus:outline-none transition-all text-sm sm:text-base ${
+                               errors.service && touchedFields.service ? "border-red-500" : ""
+                             }`}
+                             disabled={isSubmitting || servicesLoading || servicesError}
+                           >
                             <option value="" className="bg-[#0A0F1C]">
                               {servicesLoading ? "Loading services..." : servicesError ? "Failed to load services" : "Select a service"}
                             </option>
@@ -577,11 +581,6 @@ export const Contact = () => {
           </div>
         </div>
       </div>
-
-      {/* Add Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
     </section>
   );
 };

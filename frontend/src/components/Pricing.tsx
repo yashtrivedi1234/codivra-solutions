@@ -282,11 +282,6 @@ export const Pricing = () => {
 					</div>
 				</AnimatedSection>
 			</div>
-
-			{/* Add Google Fonts */}
-			<style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
 		</section>
 	);
 };

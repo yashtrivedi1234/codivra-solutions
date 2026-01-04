@@ -63,6 +63,7 @@ export const Footer = () => {
 
       {/* Main Footer */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-20 relative z-10">
+        <h2 className="sr-only">Footer navigation and contact</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
           {/* Brand Section */}
           <div className="lg:col-span-4">
@@ -71,6 +72,8 @@ export const Footer = () => {
                 whileHover={{ scale: 1.05 }}
                 src={logo}
                 alt="Codivra Solutions"
+                width={160}
+                height={64}
                 className="h-14 w-auto object-contain brightness-0 invert"
               />
             </Link>
@@ -103,12 +106,12 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 
+            <h3 
               className="font-black text-white text-xl mb-6 uppercase tracking-wide" 
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Quick Links
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {quickLinks.map((link, idx) => (
                 <motion.li 
@@ -153,12 +156,12 @@ export const Footer = () => {
 
           {/* Services */}
           <div className="lg:col-span-3">
-            <h4 
+            <h3 
               className="font-black text-white text-xl mb-6 uppercase tracking-wide" 
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Services
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {isLoading && (
                 <li className="text-white/50 font-semibold">Loading services...</li>
@@ -195,12 +198,12 @@ export const Footer = () => {
 
           {/* Contact Info */}
           <div className="lg:col-span-3">
-            <h4 
+            <h3 
               className="font-black text-white text-xl mb-6 uppercase tracking-wide" 
               style={{ fontFamily: "'Oswald', sans-serif" }}
             >
               Get In Touch
-            </h4>
+            </h3>
             <ul className="space-y-4">
               <motion.li 
                 initial={{ opacity: 0, y: 20 }}
@@ -269,12 +272,12 @@ export const Footer = () => {
           <div className="max-w-3xl mx-auto text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Sparkles className="w-6 h-6 text-[#00D9FF]" />
-              <h4 
+              <h3 
                 className="font-black text-white text-3xl uppercase tracking-wide" 
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
                 Stay Updated
-              </h4>
+              </h3>
               <Sparkles className="w-6 h-6 text-[#00D9FF]" />
             </div>
             <p className="text-white/70 mb-8 text-lg font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
@@ -379,11 +382,6 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-
-      {/* Add Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
     </footer>
   );
 };

@@ -1,4 +1,4 @@
-import { BarChart3, Zap, Palette, DollarSign, Layout, BookOpen, Briefcase, MessageSquare, Home } from 'lucide-react';
+import { BarChart3, Zap, Palette, DollarSign, Layout, BookOpen, Briefcase, MessageSquare, Home, FileText } from 'lucide-react';
 
 /**
  * Page File References
@@ -85,6 +85,13 @@ export const adminSidebarItems: SidebarItem[] = [
     path: '/admin/contact',
     icon: MessageSquare,
     componentPath: 'src/pages/admin/AdminContact.tsx',
+  },
+  {
+    id: 'inquiry',
+    label: 'Inquiries',
+    path: '/admin/inquiry',
+    icon: FileText,
+    componentPath: 'src/pages/admin/AdminInquiry.tsx',
   },
   {
     id: 'settings',

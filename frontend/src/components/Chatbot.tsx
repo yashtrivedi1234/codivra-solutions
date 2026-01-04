@@ -130,7 +130,7 @@ export const Chatbot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50"
+            className="fixed bottom-23 right-6 sm:bottom-6 sm:right-6 z-50 mb-4 sm:mb-0"
           >
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -141,6 +141,7 @@ export const Chatbot = () => {
                   setIsOpen(true);
                   setIsMinimized(false);
                 }}
+                aria-label="Open chat assistant"
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white shadow-[0_0_30px_rgba(0,217,255,0.5)] hover:shadow-[0_0_50px_rgba(0,217,255,0.7)] transition-all duration-300"
               >
                 <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -162,8 +163,8 @@ export const Chatbot = () => {
               height: isMinimized ? "auto" : "600px"
             }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
-            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-            style={{ maxHeight: "calc(100vh - 6rem)" }}
+            className="fixed bottom-23 right-7 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col mb-4 sm:mb-0"
+            style={{ maxHeight: "calc(100vh - 8rem)" }}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] p-4 flex items-center justify-between">
@@ -183,6 +184,7 @@ export const Chatbot = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsMinimized(!isMinimized)}
+                  aria-label={isMinimized ? "Expand chat window" : "Minimize chat window"}
                   className="h-8 w-8 text-white hover:bg-white/20"
                 >
                   <Minimize2 className="w-4 h-4" />
@@ -191,6 +193,7 @@ export const Chatbot = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsOpen(false)}
+                  aria-label="Close chat window"
                   className="h-8 w-8 text-white hover:bg-white/20"
                 >
                   <X className="w-4 h-4" />
@@ -265,6 +268,7 @@ export const Chatbot = () => {
                     <Button
                       onClick={handleSend}
                       disabled={!input.trim() || isTyping}
+                      aria-label="Send message"
                       className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white hover:shadow-[0_0_20px_rgba(0,217,255,0.5)] transition-all"
                     >
                       <Send className="w-5 h-5" />

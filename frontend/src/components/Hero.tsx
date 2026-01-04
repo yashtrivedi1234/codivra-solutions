@@ -169,12 +169,18 @@ export const Hero = () => {
             {subtitle}
           </motion.p>
 
+          {/* Accessible CTA heading to maintain proper heading order */}
+          <h2 id="hero-cta-heading" className="sr-only">
+            Start your project or view our work
+          </h2>
+          
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-12 sm:mb-16"
+            aria-labelledby="hero-cta-heading"
+             initial={{ opacity: 0, y: 30 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.7 }}
+             className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-12 sm:mb-16"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
@@ -285,13 +291,6 @@ export const Hero = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Add Google Fonts */}
-
-      {/* Add Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
     </section>
   );
 };

@@ -6,13 +6,14 @@ import logo from "@/assets/logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-	{ href: "/services", label: "Services" },
-	{ href: "/about", label: "About" },
-	{ href: "/pricing", label: "Pricing" },
-	{ href: "/portfolio", label: "Portfolio" },
-	{ href: "/blog", label: "Blog" },
-	{ href: "/careers", label: "Careers" },
-	{ href: "/contact", label: "Contact" },
+    { href: "/", label: "Home" },
+    { href: "/services", label: "Services" },
+    { href: "/about", label: "About" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/blog", label: "Blog" },
+    { href: "/careers", label: "Careers" },
+    { href: "/contact", label: "Contact" },
 ];
 
 export const Header = () => {
@@ -36,6 +37,8 @@ export const Header = () => {
 								whileTap={{ scale: 0.95 }}
 								src={logo}
 								alt="Codivra"
+								width={160}
+								height={64}
 								className="h-10 sm:h-12 lg:h-16 w-auto object-contain transition-all duration-300 brightness-0 invert"
 							/>
 						</Link>
@@ -263,11 +266,6 @@ export const Header = () => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			{/* Add Google Fonts */}
-			<style>{`
-				@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
-			`}</style>
 		</>
 	);
 };

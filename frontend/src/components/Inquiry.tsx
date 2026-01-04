@@ -258,11 +258,10 @@ export const Inquiry = () => {
             </motion.div>
             
             <h2 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-4 sm:mb-6 leading-[0.95] tracking-tight px-2 sm:px-0 whitespace-nowrap"
               style={{ fontFamily: "'Oswald', 'Impact', sans-serif" }}
             >
-              HAVE A
-              <br />
+              HAVE A{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00D9FF] to-[#0066FF]">
                 QUESTION?
               </span>
@@ -650,11 +649,6 @@ export const Inquiry = () => {
           </div>
         </div>
       </div>
-
-      {/* Add Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap');
-      `}</style>
     </section>
   );
 };

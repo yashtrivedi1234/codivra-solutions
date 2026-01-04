@@ -26,7 +26,7 @@ import AdminContact from "@/pages/admin/AdminContact.tsx";
 import AdminTeam from "@/pages/admin/AdminTeam.tsx";
 import RequireAdmin from "./admin/RequireAdmin";
 import NotificationsPage from "@/pages/admin/Notifications";
-
+import AdminInquiry from "@/pages/admin/AdminInquiry.tsx";
 const AnimatedRoutes = () => {
   const location = useLocation();
   // Scroll to top on route change
@@ -226,6 +226,18 @@ const AnimatedRoutes = () => {
             </RequireAdmin>
           }
         />
+
+<Route
+          path="/admin/inquiry"
+          element={
+            <RequireAdmin>
+              <PageTransition>
+                <AdminInquiry />
+              </PageTransition>
+            </RequireAdmin>
+          }
+        />
+
         <Route
           path="/privacy-policy"
           element={

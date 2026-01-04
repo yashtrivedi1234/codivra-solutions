@@ -18,19 +18,13 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const doc = document.documentElement;
-      const scrollTop = doc.scrollTop || document.body.scrollTop;
-      const scrollHeight = doc.scrollHeight - doc.clientHeight;
-      const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      setProgress(Math.min(100, Math.max(0, pct)));
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
+      setProgress(scrolled);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
