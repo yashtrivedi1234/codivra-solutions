@@ -123,7 +123,7 @@ export const Chatbot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-6 right-6 z-50"
+            className="fixed top-20 right-4 sm:top-24 sm:right-6 z-50"
           >
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -147,16 +147,16 @@ export const Chatbot = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
             animate={{ 
               opacity: 1, 
               y: 0, 
               scale: 1,
               height: isMinimized ? "auto" : "600px"
             }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-            style={{ maxHeight: "calc(100vh - 2rem)" }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            className="fixed top-20 right-4 sm:top-24 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            style={{ maxHeight: "calc(100vh - 6rem)" }}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] p-4 flex items-center justify-between">
