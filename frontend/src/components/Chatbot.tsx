@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ interface Message {
 }
 
 export const Chatbot = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -114,6 +116,11 @@ export const Chatbot = () => {
     }
   };
 
+  // Don't show chatbot on admin routes
+  if (location.pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <>
       {/* Chatbot Button */}
@@ -123,7 +130,7 @@ export const Chatbot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed top-20 right-4 sm:top-24 sm:right-6 z-50"
+            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50"
           >
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -155,7 +162,7 @@ export const Chatbot = () => {
               height: isMinimized ? "auto" : "600px"
             }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
-            className="fixed top-20 right-4 sm:top-24 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-gradient-to-br from-white/[0.95] to-white/[0.98] backdrop-blur-xl border-2 border-white/20 rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             style={{ maxHeight: "calc(100vh - 6rem)" }}
           >
             {/* Header */}

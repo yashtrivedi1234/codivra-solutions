@@ -30,7 +30,6 @@ export const Footer = () => {
     { label: "Careers", href: "/careers" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
-    { label: "Inquiry", href: "/inquiry" },
     { label: "Admin", href: "/admin", target: "_blank", isExternal: true },
   ];
 
