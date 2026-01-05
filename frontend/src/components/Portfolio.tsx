@@ -334,7 +334,7 @@ const PortfolioCard = ({ project, index }: PortfolioCardProps) => {
           <div className="pt-4 mt-4 border-t-2 border-white/10 flex items-center justify-between">
             {project.link ? (
               <>
-                <Link
+                <a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -342,7 +342,7 @@ const PortfolioCard = ({ project, index }: PortfolioCardProps) => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   View Project
-                </Link>
+                </a>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
