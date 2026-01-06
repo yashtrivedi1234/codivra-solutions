@@ -78,7 +78,7 @@ export const WhyChooseUs = () => {
     { value: portfolioLoading ? "..." : `${portfolioCount}+`, label: "Projects Completed" },
     ...staticStats,
   ].slice(0, 4);
-
+console.log(stats);
   return (
     <section id="why-us" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
       {/* Animated Background Elements */}
