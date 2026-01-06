@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { Shield, Clock, Headphones, Award, Zap, Heart, Sparkles, TrendingUp, Rocket } from "lucide-react";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "./AnimatedSection";
@@ -78,7 +79,6 @@ export const WhyChooseUs = () => {
     { value: portfolioLoading ? "..." : `${portfolioCount}+`, label: "Projects Completed" },
     ...staticStats,
   ].slice(0, 4);
-console.log(stats);
   return (
     <section id="why-us" className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#0A0F1C] to-[#070B14] overflow-hidden">
       {/* Animated Background Elements */}
@@ -197,7 +197,7 @@ console.log(stats);
                 
                 <div className="relative bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-8 text-center group-hover:border-white/30 transition-all duration-500 h-full flex flex-col">
                   <div className={`inline-flex w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl items-center justify-center mx-auto mb-6 shadow-lg`}>
-                    <service.icon className="w-8 h-8 text-white" />
+                    {React.createElement(service.icon, { className: "w-8 h-8 text-white" })}
                   </div>
                   
                   <h3 
@@ -232,7 +232,7 @@ console.log(stats);
                 <div className="relative flex gap-5 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-sm border-2 border-white/10 rounded-2xl p-6 group-hover:border-white/30 transition-all duration-500 h-full">
                   <div className="flex-shrink-0">
                     <div className={`w-16 h-16 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                      <reason.icon className="w-8 h-8 text-white" />
+                      {React.createElement(reason.icon, { className: "w-8 h-8 text-white" })}
                     </div>
                   </div>
                   <div className="flex-1">
