@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    dedupe: ["react", "react-dom", "react-router-dom"],
   },
   build: {
     target: "esnext",
@@ -40,41 +41,46 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Node modules
-          if (id.includes("node_modules")) {
-            // Group only core React packages together
-            if (id.includes("react/") || id.includes("react-dom/")) {
-              return "react-vendor";
-            }
-            // Keep react-router separate to avoid conflicts
-            if (id.includes("react-router")) {
-              return "router-vendor";
-            }
-            if (id.includes("lucide-react")) {
-              return "icons-vendor";
-            }
-            if (id.includes("@radix-ui")) {
-              return "ui-vendor";
-            }
-            if (id.includes("framer-motion")) {
-              return "animation-vendor";
-            }
-            if (id.includes("gsap")) {
-              return "gsap-vendor";
-            }
-            if (id.includes("@tanstack/react-query")) {
-              return "query-vendor";
-            }
-            if (id.includes("axios")) {
-              return "http-vendor";
-            }
-            if (id.includes("recharts")) {
-              return "charts-vendor";
-            }
-            // Other vendor chunks
-            return "vendor";
-          }
+        manualChunks: {
+          "react-vendor": [
+            "react",
+            "react-dom",
+            "react-router-dom",
+          ],
+          "ui-vendor": [
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-aspect-ratio",
+            "@radix-ui/react-avatar",
+            "@radix-ui/react-checkbox",
+            "@radix-ui/react-collapsible",
+            "@radix-ui/react-context-menu",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-hover-card",
+            "@radix-ui/react-label",
+            "@radix-ui/react-menubar",
+            "@radix-ui/react-navigation-menu",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-progress",
+            "@radix-ui/react-radio-group",
+            "@radix-ui/react-scroll-area",
+            "@radix-ui/react-select",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slider",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-toast",
+            "@radix-ui/react-toggle",
+            "@radix-ui/react-toggle-group",
+            "@radix-ui/react-tooltip",
+          ],
+          "animation-vendor": ["framer-motion", "gsap"],
+          "query-vendor": ["@tanstack/react-query"],
+          "charts-vendor": ["recharts"],
+          "http-vendor": ["axios"],
+          "icons-vendor": ["lucide-react"],
         },
         chunkFileNames: "assets/js/[name]-[hash].js",
         entryFileNames: "assets/js/[name]-[hash].js",

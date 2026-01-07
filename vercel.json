@@ -1,5 +1,15 @@
 {
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "env": {
+    "NODE_ENV": "production"
+  },
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "http://localhost:4000/api/$1",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
