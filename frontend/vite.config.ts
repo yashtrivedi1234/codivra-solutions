@@ -43,8 +43,13 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Node modules
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom") || id.includes("react-router")) {
+            // Group only core React packages together
+            if (id.includes("react/") || id.includes("react-dom/")) {
               return "react-vendor";
+            }
+            // Keep react-router separate to avoid conflicts
+            if (id.includes("react-router")) {
+              return "router-vendor";
             }
             if (id.includes("lucide-react")) {
               return "icons-vendor";
