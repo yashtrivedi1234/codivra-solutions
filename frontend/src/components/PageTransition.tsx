@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ReactNode, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -30,12 +31,17 @@ const pageTransition = {
 const PageTransition = ({ children }: PageTransitionProps) => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => setIsLoading(false), 150);
     return () => clearTimeout(timer);
   }, [location.pathname]);
+
+  if (isMobile) {
+    return <>{children}</>;
+  }
 
   return (
     <motion.div

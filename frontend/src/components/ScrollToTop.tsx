@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ScrollToTop = () => {
+	const isMobile = useIsMobile();
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
@@ -20,6 +22,20 @@ const ScrollToTop = () => {
 			behavior: "smooth",
 		});
 	};
+
+	if (isMobile) {
+		return isVisible ? (
+			<div className="fixed bottom-6 right-6 z-40">
+				<button
+					onClick={scrollToTop}
+					className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white shadow-[0_0_30px_rgba(0,217,255,0.5)] transition-all duration-300 flex items-center justify-center"
+					aria-label="Scroll to top"
+				>
+					<ArrowUp className="w-6 h-6 sm:w-7 sm:h-7" />
+				</button>
+			</div>
+		) : null;
+	}
 
 	return (
 		<AnimatePresence>

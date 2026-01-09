@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ArrowUpRight, Rocket, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,16 @@ export const Header = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const location = useLocation();
 
+	// Close mobile drawer on Escape
+	useEffect(() => {
+		if (!isMobileMenuOpen) return;
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') setIsMobileMenuOpen(false);
+		};
+		document.addEventListener('keydown', onKey);
+		return () => document.removeEventListener('keydown', onKey);
+	}, [isMobileMenuOpen]);
+
 	return (
 		<>
 			<motion.header
@@ -33,14 +43,20 @@ export const Header = () => {
 					<div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
 						{/* Logo */}
 						<Link to="/" className="relative z-10 flex items-center group">
+							{/* Glow backdrop */}
+							<motion.div 
+								initial={{ opacity: 0.7 }}
+								whileHover={{ opacity: 1 }}
+								className="pointer-events-none absolute -inset-3 rounded-2xl bg-gradient-to-r from-[#00D9FF]/30 to-[#0066FF]/30 blur-2xl"
+							/>
 							<motion.img
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
+								whileHover={{ scale: 1.07 }}
+								whileTap={{ scale: 0.96 }}
 								src={logo}
 								alt="Codivra"
-								width={160}
-								height={64}
-								className="h-10 sm:h-12 lg:h-16 w-auto object-contain transition-all duration-300 brightness-0 invert"
+								width={220}
+								height={88}
+								className="relative h-12 sm:h-16 lg:h-20 w-auto object-contain transition-all duration-300 brightness-0 invert drop-shadow-[0_0_18px_rgba(0,217,255,0.55)]"
 								fetchPriority="high"
 								decoding="async"
 							/>
@@ -137,6 +153,8 @@ export const Header = () => {
 							className="lg:hidden relative p-3 text-white/70 hover:text-white transition-colors duration-200 rounded-xl hover:bg-white/10 border border-white/10"
 							onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 							aria-label="Toggle menu"
+							aria-controls="mobile-menu"
+							aria-expanded={isMobileMenuOpen}
 						>
 							<AnimatePresence mode="wait">
 								{isMobileMenuOpen ? (
@@ -165,106 +183,105 @@ export const Header = () => {
 					</div>
 				</div>
 			</motion.header>
-
-			{/* Mobile Menu Overlay */}
+			{/* Mobile Menu Drawer */}
 			<AnimatePresence>
 				{isMobileMenuOpen && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: 0.2 }}
 						className="lg:hidden fixed inset-0 z-40"
 					>
 						{/* Backdrop */}
 						<motion.div
 							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
+							animate={{ opacity: 0.9 }}
 							exit={{ opacity: 0 }}
-							className="absolute inset-0 bg-[#0A0F1C]/98 backdrop-blur-2xl"
+							className="absolute inset-0 bg-[#0A0F1C]/90 backdrop-blur"
 							onClick={() => setIsMobileMenuOpen(false)}
 						/>
-						
-						{/* Menu Content */}
-						<motion.nav 
-							initial={{ opacity: 0, y: 50 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: 50 }}
-							transition={{ duration: 0.4, type: "spring" }}
-							className="relative h-full flex flex-col items-center justify-center px-6"
+
+						{/* Right-side drawer */}
+						<motion.nav
+							id="mobile-menu"
+							initial={{ x: 320 }}
+							animate={{ x: 0 }}
+							exit={{ x: 320 }}
+							transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+							className="absolute right-0 top-0 h-full w-[80vw] max-w-sm bg-[#0A0F1C] border-l-2 border-white/10 shadow-2xl flex flex-col"
+							aria-label="Mobile navigation"
 						>
-							<div className="flex flex-col items-center gap-2 w-full max-w-md">
-								{navLinks.map((link, index) => {
-									const isActive = location.pathname === link.href || 
-													 (link.href.startsWith('#') && location.pathname === '/');
-									const isExternal = link.href.startsWith('http') || link.href === '/admin';
-									
-									return isExternal ? (
-										<motion.a
-											key={link.href}
-											href={link.href}
-											target="_blank"
-											rel="noopener noreferrer"
-											initial={{ opacity: 0, x: -50 }}
-											animate={{ opacity: 1, x: 0 }}
-											transition={{ delay: index * 0.05, type: "spring" }}
-											whileTap={{ scale: 0.95 }}
-											className={`w-full text-center py-4 sm:py-5 text-2xl sm:text-3xl font-black transition-all duration-300 rounded-xl sm:rounded-2xl uppercase tracking-wide ${
-												isActive
-													? "text-[#00D9FF] bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border-2 border-[#00D9FF]/30"
-													: "text-white/70 hover:text-white hover:bg-white/5"
-											}`}
-											style={{ fontFamily: "'Oswald', sans-serif" }}
-										>
-											{link.label}
-										</motion.a>
-									) : (
-										<motion.div
-											key={link.href}
-											initial={{ opacity: 0, x: -50 }}
-											animate={{ opacity: 1, x: 0 }}
-											transition={{ delay: index * 0.05, type: "spring" }}
-											className="w-full"
-										>
-											<Link
-												to={link.href}
-												className={`block w-full text-center py-4 sm:py-5 text-2xl sm:text-3xl font-black transition-all duration-300 rounded-xl sm:rounded-2xl uppercase tracking-wide ${
-													isActive
-														? "text-[#00D9FF] bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 border-2 border-[#00D9FF]/30"
-														: "text-white/70 hover:text-white hover:bg-white/5"
-												}`}
-												onClick={() => setIsMobileMenuOpen(false)}
-												style={{ fontFamily: "'Oswald', sans-serif" }}
-											>
-												{link.label}
-											</Link>
-										</motion.div>
-									);
-								})}
+							<div className="px-5 py-4 border-b-2 border-white/10 flex items-center justify-between">
+								<span className="text-white/80 font-bold tracking-wider uppercase text-sm">Menu</span>
+								<button
+									className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/10 border border-white/10"
+									aria-label="Close menu"
+									onClick={() => setIsMobileMenuOpen(false)}
+								>
+									<X size={20} />
+								</button>
 							</div>
-							
-							{/* Mobile CTA */}
-							<motion.div 
-								className="mt-12 w-full max-w-md"
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.4 }}
-							>
+
+							<div className="flex-1 overflow-y-auto">
+								<ul className="px-3 py-2">
+									{navLinks.map((link, index) => {
+										const isActive = location.pathname === link.href || (link.href.startsWith('#') && location.pathname === '/');
+										const isExternal = link.href.startsWith('http') || link.href === '/admin';
+
+										return (
+											<li key={link.href}>
+												{isExternal ? (
+													<motion.a
+														href={link.href}
+														target="_blank"
+														rel="noopener noreferrer"
+														initial={{ opacity: 0, x: 20 }}
+														animate={{ opacity: 1, x: 0 }}
+														transition={{ delay: index * 0.05 }}
+														className={`flex items-center justify-between px-3 py-3 rounded-lg text-sm font-bold uppercase tracking-wider transition-colors ${
+															isActive ? 'text-[#00D9FF] bg-white/5 border border-[#00D9FF]/30' : 'text-white/80 hover:text-white hover:bg-white/5'
+														}`}
+													>
+														<span style={{ fontFamily: "'Oswald', sans-serif" }}>{link.label}</span>
+														<ArrowUpRight className="w-4 h-4" />
+													</motion.a>
+												) : (
+													<motion.div
+														initial={{ opacity: 0, x: 20 }}
+														animate={{ opacity: 1, x: 0 }}
+														transition={{ delay: index * 0.05 }}
+													>
+														<Link
+															to={link.href}
+															onClick={() => setIsMobileMenuOpen(false)}
+															className={`flex items-center px-3 py-3 rounded-lg text-sm font-bold uppercase tracking-wider block ${
+																isActive ? 'text-[#00D9FF] bg-white/5 border border-[#00D9FF]/30' : 'text-white/80 hover:text-white hover:bg-white/5'
+															}`}
+															style={{ fontFamily: "'Oswald', sans-serif" }}
+														>
+															{link.label}
+														</Link>
+													</motion.div>
+												)}
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+
+							<div className="p-4 border-t-2 border-white/10">
 								<Button
 									asChild
-									className="w-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black py-6 sm:py-7 md:py-8 text-lg sm:text-xl rounded-xl sm:rounded-2xl hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] uppercase tracking-wider"
+									className="w-full bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black py-4 rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.7)] uppercase tracking-wider text-sm"
 								>
-									<Link 
-										to="/inquiry" 
-										onClick={() => setIsMobileMenuOpen(false)}
-										className="flex items-center justify-center gap-3"
-									>
-										<Rocket className="w-6 h-6" />
+									<Link to="/inquiry" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-center gap-2">
+										<Rocket className="w-5 h-5" />
 										Inquiry
-										<Zap className="w-6 h-6" />
+										<Zap className="w-5 h-5" />
 									</Link>
 								</Button>
-							</motion.div>
+							</div>
 						</motion.nav>
 					</motion.div>
 				)}

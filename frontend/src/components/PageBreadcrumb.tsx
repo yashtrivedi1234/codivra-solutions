@@ -33,7 +33,7 @@ const PageBreadcrumb = () => {
 
   return (
     <div className="w-full bg-[#0A0F1C] backdrop-blur-xl border-b border-white/5">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4 sm:pt-6 pb-3 sm:pb-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-3 sm:pt-6 pb-2 sm:pb-4">
         <Breadcrumb>
           <BreadcrumbList className="bg-transparent">
             <BreadcrumbItem>

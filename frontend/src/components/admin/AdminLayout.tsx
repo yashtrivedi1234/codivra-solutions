@@ -43,11 +43,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="Codivra"
-                className="h-8 w-auto object-contain"
-              />
+              <div className="relative">
+                {/* Subtle glow on light background */}
+                <div className="pointer-events-none absolute -inset-2 rounded-xl bg-gradient-to-r from-[#00D9FF]/20 to-[#0066FF]/20 blur-xl" />
+                <img
+                  src={logo}
+                  alt="Codivra"
+                  className="relative h-10 md:h-12 w-auto object-contain drop-shadow-[0_0_12px_rgba(0,102,255,0.35)]"
+                />
+              </div>
               <div className="h-6 w-px bg-gray-300" />
               <span className="text-sm font-semibold text-gray-600">
                 Admin Portal

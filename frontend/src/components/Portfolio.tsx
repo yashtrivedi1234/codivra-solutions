@@ -4,12 +4,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Portfolio = () => {
   const { data, isLoading } = useGetPortfolioQuery();
   const [projects, setProjects] = useState<any[]>([]);
+  const isMobile = useIsMobile();
   
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -32,7 +34,8 @@ export const Portfolio = () => {
       typeof window === "undefined" ||
       !sectionRef.current ||
       projects.length === 0 ||
-      gsapInitializedRef.current
+      gsapInitializedRef.current ||
+      isMobile
     ) {
       return;
     }
@@ -108,7 +111,7 @@ export const Portfolio = () => {
         ctx.revert();
       }
     };
-  }, [projects.length]);
+  }, [projects.length, isMobile]);
 
   if (isLoading) {
     return (
@@ -234,9 +237,10 @@ interface PortfolioCardProps {
 
 const PortfolioCard = ({ project, index }: PortfolioCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useLayoutEffect(() => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || isMobile) return;
 
     const ctx = gsap.context(() => {
       const card = cardRef.current!;
@@ -257,7 +261,7 @@ const PortfolioCard = ({ project, index }: PortfolioCardProps) => {
     }, cardRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   const CardContent = (
     <div

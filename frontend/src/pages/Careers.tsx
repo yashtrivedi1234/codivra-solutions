@@ -231,13 +231,13 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0F1C]/95 backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0A0F1C]/95 backdrop-blur-xl overflow-x-hidden">
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ type: "spring", duration: 0.5 }}
-        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-[#00D9FF]/30 rounded-2xl shadow-[0_0_40px_rgba(0,217,255,0.25)] max-w-lg w-full max-h-[85vh] overflow-hidden"
+        className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-[#00D9FF]/30 rounded-2xl shadow-[0_0_40px_rgba(0,217,255,0.25)] w-full sm:max-w-lg max-w-[calc(100vw-2rem)] max-h-[85vh] overflow-hidden overflow-x-hidden"
       >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-[#00D9FF]/10 to-[#0066FF]/10 backdrop-blur-xl p-5 border-b-2 border-[#00D9FF]/30 flex items-center justify-between z-10">
@@ -258,7 +258,7 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto max-h-[calc(85vh-90px)]">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto overflow-x-hidden max-h-[calc(85vh-90px)]">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-white font-bold text-sm uppercase tracking-wider">
               Full Name
@@ -430,21 +430,21 @@ const ApplicationForm = ({ jobTitle, onClose }: ApplicationFormProps) => {
           </div>
 
           <div className="flex gap-4 pt-6">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="sm:flex-1">
               <Button 
                 type="button" 
                 onClick={onClose} 
-                className="w-full h-11 bg-white/5 border-2 border-white/20 text-white hover:bg-white/10 font-bold text-base rounded-xl uppercase tracking-wider"
+                className="w-auto sm:w-full h-11 bg-white/5 border-2 border-white/20 text-white hover:bg-white/10 font-bold text-base rounded-xl uppercase tracking-wider px-6"
                 disabled={isSubmitting}
               >
                 Cancel
               </Button>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="sm:flex-1">
               <Button 
                 type="submit" 
                 disabled={isSubmitting} 
-                className="w-full h-11 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black text-base rounded-xl uppercase tracking-wider shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:shadow-[0_0_50px_rgba(0,217,255,0.6)] transition-all"
+                className="w-auto h-11 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black text-sm sm:text-base rounded-xl uppercase tracking-wider shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:shadow-[0_0_50px_rgba(0,217,255,0.6)] transition-all px-4 sm:px-6"
               >
                 {isSubmitting ? (
                   <span className="flex items-center gap-2">
@@ -938,13 +938,13 @@ const Careers = () => {
                       We're always looking for exceptional talent. Send us your resume and let us know how you can contribute to our mission
                     </p>
                     
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                       <Button
                         onClick={() => setApplicationJob("General Application")}
-                        className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-10 py-7 text-lg rounded-2xl hover:shadow-[0_0_60px_rgba(0,217,255,0.6)] uppercase tracking-wider transition-all"
+                        className="bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black px-10 sm:px-16 py-5 sm:py-7 text-base sm:text-lg rounded-xl sm:rounded-2xl hover:shadow-[0_0_60px_rgba(0,217,255,0.6)] uppercase tracking-wider transition-all w-full sm:w-auto"
                       >
                         Send Your Resume
-                        <ArrowRight className="w-6 h-6 ml-2" />
+                        <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2" />
                       </Button>
                     </motion.div>
                   </div>

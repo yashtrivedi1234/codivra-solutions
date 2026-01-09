@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AnimatedRoutes from "./components/AnimatedRoutes";
@@ -10,11 +11,13 @@ import ScrollToTop from "./components/ScrollToTop";
 import { useEffect, useState } from "react";
 import ReadingProgressBar from "./components/ReadingProgressBar";
 import { Chatbot } from "./components/Chatbot";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const queryClient = new QueryClient();
 
 function App() {
   const [progress, setProgress] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let ticking = false;
@@ -51,12 +54,14 @@ function App() {
           pauseOnHover
           theme="light"
         />
-        <Router>
-          <ReadingProgressBar progress={progress} />
-          <AnimatedRoutes />
-          <ScrollToTop />
-          <Chatbot />
-        </Router>
+        <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
+          <Router>
+            <ReadingProgressBar progress={progress} />
+            <AnimatedRoutes />
+            <ScrollToTop />
+            <Chatbot />
+          </Router>
+        </MotionConfig>
       </TooltipProvider>
     </QueryClientProvider>
   );

@@ -5,8 +5,10 @@ import logo from "@/assets/logo.png";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Footer = () => {
+  const isMobile = useIsMobile();
   // Newsletter state
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -43,22 +45,31 @@ export const Footer = () => {
     <footer className="relative bg-[#070B14] text-white overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div 
-          className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#00D9FF]/3 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.03, 0.05, 0.03]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#0066FF]/3 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.03, 0.05, 0.03]
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {isMobile ? (
+          <>
+            <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#00D9FF]/3 rounded-full blur-[150px]" />
+            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#0066FF]/3 rounded-full blur-[150px]" />
+          </>
+        ) : (
+          <>
+            <motion.div 
+              className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#00D9FF]/3 rounded-full blur-[150px]"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.03, 0.05, 0.03]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div 
+              className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#0066FF]/3 rounded-full blur-[150px]"
+              animate={{ 
+                scale: [1.2, 1, 1.2],
+                opacity: [0.03, 0.05, 0.03]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </>
+        )}
       </div>
 
       {/* Main Footer */}
@@ -67,14 +78,20 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 mb-12 sm:mb-16">
           {/* Brand Section */}
           <div className="lg:col-span-4">
-            <Link to="/" className="inline-block mb-6">
+            <Link to="/" className="relative inline-block mb-6 group">
+              {/* Glow backdrop */}
+              <motion.div
+                initial={{ opacity: 0.7 }}
+                whileHover={{ opacity: 1 }}
+                className="pointer-events-none absolute -inset-3 rounded-2xl bg-gradient-to-r from-[#00D9FF]/30 to-[#0066FF]/30 blur-2xl"
+              />
               <motion.img
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.06 }}
                 src={logo}
                 alt="Codivra Solutions"
-                width={160}
-                height={64}
-                className="h-14 w-auto object-contain brightness-0 invert"
+                width={220}
+                height={88}
+                className="relative h-16 sm:h-20 w-auto object-contain brightness-0 invert transition-all duration-300 drop-shadow-[0_0_18px_rgba(0,217,255,0.55)]"
               />
             </Link>
             <p className="text-white/70 mb-6 sm:mb-8 leading-relaxed text-base sm:text-lg font-light max-w-sm" style={{ fontFamily: "'Crimson Pro', serif" }}>
@@ -315,7 +332,7 @@ export const Footer = () => {
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="flex-1 h-16 px-6 rounded-xl bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 focus:outline-none transition-all font-semibold"
+                className="flex-1 h-14 sm:h-16 px-4 sm:px-6 rounded-xl bg-white/5 border-2 border-white/20 text-white placeholder:text-white/40 focus:border-[#00D9FF] focus:bg-white/10 focus:outline-none transition-all font-semibold"
                 required
                 disabled={isSubscribing}
               />
@@ -323,7 +340,7 @@ export const Footer = () => {
                 type="submit"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="h-16 px-8 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-all duration-300 whitespace-nowrap uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed group"
+                className="h-14 sm:h-16 px-6 sm:px-8 bg-gradient-to-r from-[#00D9FF] to-[#0066FF] text-white font-black rounded-xl hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-all duration-300 whitespace-nowrap uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed group"
                 disabled={isSubscribing}
               >
                 {isSubscribing ? (

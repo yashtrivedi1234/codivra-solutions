@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ReactNode } from "react";
 
 interface AnimatedSectionProps {
@@ -8,7 +9,7 @@ interface AnimatedSectionProps {
 }
 
 export const AnimatedSection = ({ children, className, delay = 0 }: AnimatedSectionProps) => {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useReducedMotion() || useIsMobile();
   
   return (
     <motion.div
@@ -24,7 +25,7 @@ export const AnimatedSection = ({ children, className, delay = 0 }: AnimatedSect
 };
 
 export const AnimatedStagger = ({ children, className }: { children: ReactNode; className?: string }) => {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useReducedMotion() || useIsMobile();
   
   return (
     <motion.div
@@ -46,7 +47,7 @@ export const AnimatedStagger = ({ children, className }: { children: ReactNode; 
 };
 
 export const AnimatedItem = ({ children, className }: { children: ReactNode; className?: string }) => {
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = useReducedMotion() || useIsMobile();
   
   return (
     <motion.div

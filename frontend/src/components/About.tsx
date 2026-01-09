@@ -4,9 +4,10 @@ import { AnimatedSection } from "./AnimatedSection";
 import { useGetPageQuery } from "@/lib/api";
 import { useTeamCount } from "@/hooks/use-team-count";
 import { usePortfolioCount } from "@/hooks/use-portfolio-count";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -23,14 +24,7 @@ export const About = () => {
   const statsCardRef = useRef<HTMLDivElement>(null);
   const valuesRef = useRef<HTMLDivElement>(null);
   
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const isMobile = useIsMobile();
 
   const title: string =
     main.title ||
@@ -277,35 +271,41 @@ export const About = () => {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-6 mb-8 auto-rows-fr">
-                      {stats.map((stat: { value: string; label: string }, index: number) => (
-                        <motion.div
-                          key={stat.label}
-                          className="stat-item relative group"
-                          whileHover={{ y: -5, scale: 1.02 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
-                          <div className="relative bg-white/5 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-6 text-center hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 h-full">
-                            <motion.div 
-                              className="text-3xl sm:text-4xl md:text-5xl font-black text-[#00D9FF] mb-2" 
-                              style={{ fontFamily: "'Oswald', sans-serif" }}
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ 
-                                type: "spring",
-                                stiffness: 200,
-                                delay: 0.5 + index * 0.1 
-                              }}
-                            >
-                              {stat.value}
-                            </motion.div>
-                            <div className="text-sm text-white/60 font-bold uppercase tracking-wider">
-                              {stat.label}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 auto-rows-fr">
+                      {stats.map((stat: { value: string; label: string }, index: number) => {
+                        const isLong = String(stat.value ?? "").length > 8;
+                        const valueSize = isLong
+                          ? "text-2xl sm:text-3xl md:text-4xl"
+                          : "text-3xl sm:text-4xl md:text-5xl";
+                        return (
+                          <motion.div
+                            key={stat.label}
+                            className="stat-item relative group"
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                          >
+                            <div className="relative bg-white/5 backdrop-blur-sm border-2 border-white/20 rounded-2xl p-4 sm:p-6 text-center hover:bg-white/10 hover:border-[#00D9FF]/40 transition-all duration-300 h-full overflow-hidden min-w-0">
+                              <motion.div 
+                                className={`${valueSize} font-black text-[#00D9FF] mb-2 break-words whitespace-normal leading-tight`} 
+                                style={{ fontFamily: "'Oswald', sans-serif" }}
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ 
+                                  type: "spring",
+                                  stiffness: 200,
+                                  delay: 0.5 + index * 0.1 
+                                }}
+                              >
+                                {stat.value}
+                              </motion.div>
+                              <div className="text-xs sm:text-sm text-white/60 font-bold uppercase tracking-wider break-words whitespace-normal leading-snug">
+                                {stat.label}
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        );
+                      })}
                     </div>
 
                     {/* Achievement Badges */}
