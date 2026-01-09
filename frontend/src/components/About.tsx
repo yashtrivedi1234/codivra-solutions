@@ -218,12 +218,12 @@ export const About = () => {
                         <item.icon className="w-6 h-6 sm:w-7 md:w-8 sm:h-7 md:h-8 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h4
+                        <h3
                           className="font-black text-white text-lg sm:text-xl mb-1 sm:mb-2 uppercase tracking-wide"
                           style={{ fontFamily: "'Oswald', sans-serif" }}
                         >
                           {item.title}
-                        </h4>
+                        </h3>
                         <p className="text-sm sm:text-base text-white/70 leading-relaxed font-light" style={{ fontFamily: "'Crimson Pro', serif" }}>
                           {item.desc}
                         </p>

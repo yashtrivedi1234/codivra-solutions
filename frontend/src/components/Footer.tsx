@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGetServicesQuery, useSubmitSubscriptionMutation } from "@/lib/api";
 import { Linkedin, X, Facebook, Instagram, Mail, Phone, MapPin, ArrowRight, Send, Sparkles } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";

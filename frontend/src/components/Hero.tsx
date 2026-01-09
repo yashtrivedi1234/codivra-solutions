@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Sparkles, Zap, Rocket } from "lucide-react";
 import { useGetPageQuery } from "@/lib/api";
 import { Link } from "react-router-dom";
-import aitdLogo from "@/assets/aitd-logo.png";
+import aitdLogo from "@/assets/aitd-logo.webp";
 import { useState, useEffect } from "react";
 
 const trustedAvatars = [

@@ -12,7 +12,7 @@ import {
 import { ReactNode } from "react";
 import AdminNotifications from "./AdminNotifications";
 import Sidebar from '../Sidebar';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.webp';
 
 interface AdminLayoutProps {
   children: ReactNode;
